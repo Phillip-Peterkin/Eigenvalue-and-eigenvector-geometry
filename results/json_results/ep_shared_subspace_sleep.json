@@ -1,0 +1,2074 @@
+{
+  "analysis": "shared_subspace_sleep",
+  "n_subjects": 10,
+  "parameters": {
+    "window_sec": 0.5,
+    "step_sec": 0.1,
+    "n_components": 15,
+    "pca_mode": "shared_subspace",
+    "downsample_to": 500.0,
+    "line_freq": 50.0,
+    "seed": 42
+  },
+  "subjects": [
+    {
+      "subject": "EPCTL01",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 300000,
+          "N3": 915000,
+          "R": 540000
+        },
+        "total_samples_pooled": 1755000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.17267244946063168,
+          0.1357331691430807,
+          0.11671322399575264,
+          0.0922511555691103,
+          0.08022681250333227,
+          0.060193912929193065,
+          0.051442109186842964,
+          0.04622711210159642,
+          0.03900324598949249,
+          0.03532143275979163,
+          0.03148018886804166,
+          0.023837515839686015,
+          0.02121650266891566,
+          0.01610151273241821,
+          0.01390567538310672
+        ],
+        "cumulative_variance": 0.9363260191309923
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL01",
+          "state": "W",
+          "n_windows": 5995,
+          "mean_spectral_radius": 0.997929909059304,
+          "mean_eigenvalue_gap": 0.012834970254044592,
+          "mean_median_nn_gap": 0.031065525227768783,
+          "mean_p10_nn_gap": 0.015074263702457263,
+          "mean_ep_score": 85.662201264241,
+          "spectral_sensitivity": {
+            "r": 0.021813062184416903,
+            "p_nominal": 0.0912621541722621,
+            "p_adjusted": 0.11131307738472541,
+            "rho": 0.03212121224374041,
+            "p_spearman": 0.012875856331237908,
+            "n_windows": 5995,
+            "n_eff": 5330
+          },
+          "segment": {
+            "start_sec": 2730.0,
+            "end_sec": 3330.0,
+            "n_epochs": 20
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 600.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL01",
+          "state": "N3",
+          "n_windows": 18295,
+          "mean_spectral_radius": 1.0089804128388546,
+          "mean_eigenvalue_gap": 0.012934619662664374,
+          "mean_median_nn_gap": 0.021607742923467187,
+          "mean_p10_nn_gap": 0.01374484491215671,
+          "mean_ep_score": 70.16423931154156,
+          "spectral_sensitivity": {
+            "r": 0.10079379031329232,
+            "p_nominal": 1.5951520954610584e-42,
+            "p_adjusted": 1.6450412295306395e-42,
+            "rho": 0.11950061530333522,
+            "p_spearman": 3.607539525962806e-59,
+            "n_windows": 18295,
+            "n_eff": 18289
+          },
+          "segment": {
+            "start_sec": 9300.0,
+            "end_sec": 11130.0,
+            "n_epochs": 61
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1830.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL01",
+          "state": "R",
+          "n_windows": 10795,
+          "mean_spectral_radius": 1.0003016540997076,
+          "mean_eigenvalue_gap": 0.011470854730623519,
+          "mean_median_nn_gap": 0.02228914468143918,
+          "mean_p10_nn_gap": 0.012546227462879915,
+          "mean_ep_score": 83.31939545264788,
+          "spectral_sensitivity": {
+            "r": 0.06969886512578054,
+            "p_nominal": 4.17941978981899e-13,
+            "p_adjusted": 6.5635154357587e-13,
+            "rho": 0.08914821083638723,
+            "p_spearman": 1.697697398329612e-20,
+            "n_windows": 10795,
+            "n_eff": 10613
+          },
+          "segment": {
+            "start_sec": 25770.0,
+            "end_sec": 26850.0,
+            "n_epochs": 36
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1080.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 81.74890542030334
+    },
+    {
+      "subject": "EPCTL03",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 195000,
+          "N3": 1035000,
+          "R": 675000
+        },
+        "total_samples_pooled": 1905000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.23360365316469342,
+          0.1630147313112775,
+          0.11867556752630434,
+          0.10632136246822409,
+          0.07307014271273062,
+          0.0523565809538173,
+          0.04169247620832704,
+          0.036864061590558085,
+          0.031806899614364,
+          0.02929251007737423,
+          0.02434653188211648,
+          0.021235452958100524,
+          0.015874961346773107,
+          0.011390935700178226,
+          0.007304675425837505
+        ],
+        "cumulative_variance": 0.9668505429406763
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL03",
+          "state": "W",
+          "n_windows": 3895,
+          "mean_spectral_radius": 0.9970939937486286,
+          "mean_eigenvalue_gap": 0.013390341061161957,
+          "mean_median_nn_gap": 0.02741767434077294,
+          "mean_p10_nn_gap": 0.014967750757362413,
+          "mean_ep_score": 73.42074817889612,
+          "spectral_sensitivity": {
+            "r": 0.05187570914744385,
+            "p_nominal": 0.0012007531931406085,
+            "p_adjusted": 0.0016731352825725687,
+            "rho": 0.05041352454240276,
+            "p_spearman": 0.001647879484121542,
+            "n_windows": 3895,
+            "n_eff": 3668
+          },
+          "segment": {
+            "start_sec": 13320.0,
+            "end_sec": 13710.0,
+            "n_epochs": 13
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 390.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL03",
+          "state": "N3",
+          "n_windows": 20695,
+          "mean_spectral_radius": 1.0079724366965443,
+          "mean_eigenvalue_gap": 0.013477192775945557,
+          "mean_median_nn_gap": 0.022777919614214343,
+          "mean_p10_nn_gap": 0.0142659679658841,
+          "mean_ep_score": 66.20344423623528,
+          "spectral_sensitivity": {
+            "r": 0.1133065235703317,
+            "p_nominal": 4.230343149604848e-60,
+            "p_adjusted": 4.81616507689674e-60,
+            "rho": 0.1337816115324045,
+            "p_spearman": 2.9301890867258522e-83,
+            "n_windows": 20695,
+            "n_eff": 20675
+          },
+          "segment": {
+            "start_sec": 3090.0,
+            "end_sec": 5160.0,
+            "n_epochs": 69
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [
+              "C2"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 2070.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL03",
+          "state": "R",
+          "n_windows": 13495,
+          "mean_spectral_radius": 1.0006672845862497,
+          "mean_eigenvalue_gap": 0.011051737718365096,
+          "mean_median_nn_gap": 0.02238447943035442,
+          "mean_p10_nn_gap": 0.012241574493930443,
+          "mean_ep_score": 95.2752728717509,
+          "spectral_sensitivity": {
+            "r": 0.08989592550829865,
+            "p_nominal": 1.2740876646147276e-25,
+            "p_adjusted": 2.2323613771101586e-25,
+            "rho": 0.09488994540123843,
+            "p_spearman": 2.2644770176816446e-28,
+            "n_windows": 13495,
+            "n_eff": 13358
+          },
+          "segment": {
+            "start_sec": 21330.0,
+            "end_sec": 22680.0,
+            "n_epochs": 45
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1350.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 65.75493788719177
+    },
+    {
+      "subject": "EPCTL05",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 390000,
+          "N3": 570000,
+          "R": 810000
+        },
+        "total_samples_pooled": 1770000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.1887769735906687,
+          0.13548422049807293,
+          0.10526476542317259,
+          0.0869118510568469,
+          0.07522082655269448,
+          0.06927787924639184,
+          0.05865104350127271,
+          0.048723291180512954,
+          0.03276990802193385,
+          0.027886477314426457,
+          0.025785158095014044,
+          0.023710002868408176,
+          0.02364267416589383,
+          0.01703061353433012,
+          0.01468351648714696
+        ],
+        "cumulative_variance": 0.9338192015367865
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL05",
+          "state": "W",
+          "n_windows": 7795,
+          "mean_spectral_radius": 0.9949165324781657,
+          "mean_eigenvalue_gap": 0.01250120485023654,
+          "mean_median_nn_gap": 0.02709771711636064,
+          "mean_p10_nn_gap": 0.0141937411784306,
+          "mean_ep_score": 75204462.58678637,
+          "spectral_sensitivity": {
+            "r": 0.2553237629321445,
+            "p_nominal": 2.960148108299651e-116,
+            "p_adjusted": 3.352338727520486e-83,
+            "rho": 0.06953823467996018,
+            "p_spearman": 7.949251695109236e-10,
+            "n_windows": 7795,
+            "n_eff": 5542
+          },
+          "segment": {
+            "start_sec": 690.0,
+            "end_sec": 1470.0,
+            "n_epochs": 26
+          },
+          "preprocess": {
+            "n_channels": 61,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 780.0,
+            "channels_dropped_no_montage": [
+              "F4-",
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL05",
+          "state": "N3",
+          "n_windows": 11395,
+          "mean_spectral_radius": 1.0073672412233468,
+          "mean_eigenvalue_gap": 0.012805006269927267,
+          "mean_median_nn_gap": 0.02292829346444214,
+          "mean_p10_nn_gap": 0.013743156051416143,
+          "mean_ep_score": 72.92927694284793,
+          "spectral_sensitivity": {
+            "r": 0.09955285117366929,
+            "p_nominal": 1.700932215023937e-26,
+            "p_adjusted": 1.8432843658272898e-26,
+            "rho": 0.11932301095004452,
+            "p_spearman": 2.0746593008796903e-37,
+            "n_windows": 11395,
+            "n_eff": 11379
+          },
+          "segment": {
+            "start_sec": 4530.0,
+            "end_sec": 5670.0,
+            "n_epochs": 38
+          },
+          "preprocess": {
+            "n_channels": 61,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1140.0,
+            "channels_dropped_no_montage": [
+              "F4-",
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL05",
+          "state": "R",
+          "n_windows": 16195,
+          "mean_spectral_radius": 0.9997089377686532,
+          "mean_eigenvalue_gap": 0.011284868519748756,
+          "mean_median_nn_gap": 0.023525424224568707,
+          "mean_p10_nn_gap": 0.01250173896289947,
+          "mean_ep_score": 89.64845079411899,
+          "spectral_sensitivity": {
+            "r": 0.08279535759570027,
+            "p_nominal": 4.8777016414942114e-26,
+            "p_adjusted": 1.0285132132530976e-25,
+            "rho": 0.08076117082099747,
+            "p_spearman": 7.526320425940819e-25,
+            "n_windows": 16195,
+            "n_eff": 15980
+          },
+          "segment": {
+            "start_sec": 11820.0,
+            "end_sec": 13440.0,
+            "n_epochs": 54
+          },
+          "preprocess": {
+            "n_channels": 61,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1620.0,
+            "channels_dropped_no_montage": [
+              "F4-",
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 56.171013593673706
+    },
+    {
+      "subject": "EPCTL07",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 855000,
+          "N3": 780000,
+          "R": 255000
+        },
+        "total_samples_pooled": 1890000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.1663199836449602,
+          0.1456929373602821,
+          0.12630364569047844,
+          0.10719940708714455,
+          0.08340720969167441,
+          0.07654479476038722,
+          0.04401129840505982,
+          0.039108693992467296,
+          0.03544395166487839,
+          0.02992663639384689,
+          0.023658977028100023,
+          0.019810037577689666,
+          0.019182554132286478,
+          0.015511728343198247,
+          0.010876381164908008
+        ],
+        "cumulative_variance": 0.9429982369373617
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL07",
+          "state": "W",
+          "n_windows": 17095,
+          "mean_spectral_radius": 0.9951010462654694,
+          "mean_eigenvalue_gap": 0.015049925516831942,
+          "mean_median_nn_gap": 0.03410615507742779,
+          "mean_p10_nn_gap": 0.017390895766514054,
+          "mean_ep_score": 72.16942210111934,
+          "spectral_sensitivity": {
+            "r": -0.05318047015242556,
+            "p_nominal": 3.4600269576257906e-12,
+            "p_adjusted": 2.0579962917571215e-10,
+            "rho": -0.04183943773957492,
+            "p_spearman": 4.4394966644431736e-08,
+            "n_windows": 17095,
+            "n_eff": 14271
+          },
+          "segment": {
+            "start_sec": 21750.0,
+            "end_sec": 23460.0,
+            "n_epochs": 57
+          },
+          "preprocess": {
+            "n_channels": 61,
+            "bad_channels": [
+              "Fp1"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 1710.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F6-Ref",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL07",
+          "state": "N3",
+          "n_windows": 15595,
+          "mean_spectral_radius": 1.0096566505688094,
+          "mean_eigenvalue_gap": 0.012785009588707307,
+          "mean_median_nn_gap": 0.021560296724151065,
+          "mean_p10_nn_gap": 0.0135595476590988,
+          "mean_ep_score": 71.78367867577148,
+          "spectral_sensitivity": {
+            "r": 0.10271487083723686,
+            "p_nominal": 7.555365269557562e-38,
+            "p_adjusted": 8.679515331614744e-38,
+            "rho": 0.126251752496945,
+            "p_spearman": 1.9813995856476574e-56,
+            "n_windows": 15595,
+            "n_eff": 15569
+          },
+          "segment": {
+            "start_sec": 3600.0,
+            "end_sec": 5160.0,
+            "n_epochs": 52
+          },
+          "preprocess": {
+            "n_channels": 61,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1560.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F6-Ref",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL07",
+          "state": "R",
+          "n_windows": 5095,
+          "mean_spectral_radius": 1.0002950487316655,
+          "mean_eigenvalue_gap": 0.011198604260133842,
+          "mean_median_nn_gap": 0.02457096932234216,
+          "mean_p10_nn_gap": 0.012430822814115368,
+          "mean_ep_score": 93.98734153428529,
+          "spectral_sensitivity": {
+            "r": 0.05091140166395686,
+            "p_nominal": 0.00027745863065472523,
+            "p_adjusted": 0.0003117007065607009,
+            "rho": 0.0494789851764031,
+            "p_spearman": 0.0004107618763035509,
+            "n_windows": 5095,
+            "n_eff": 5011
+          },
+          "segment": {
+            "start_sec": 24930.0,
+            "end_sec": 25440.0,
+            "n_epochs": 17
+          },
+          "preprocess": {
+            "n_channels": 61,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 510.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F6-Ref",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 74.46065187454224
+    },
+    {
+      "subject": "EPCTL10",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 1740000,
+          "N3": 1335000,
+          "R": 255000
+        },
+        "total_samples_pooled": 3330000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.5571964654401774,
+          0.059981839534164715,
+          0.05523914560310835,
+          0.04906262755567395,
+          0.03884989455202197,
+          0.03601095041274339,
+          0.03207205607697917,
+          0.02674565896131709,
+          0.023229531020965897,
+          0.02013267446984529,
+          0.018412986210655565,
+          0.013983058132271449,
+          0.013107428251569795,
+          0.010476292022960848,
+          0.008267997961145
+        ],
+        "cumulative_variance": 0.9627686062055997
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL10",
+          "state": "W",
+          "n_windows": 34795,
+          "mean_spectral_radius": 0.9961861595806486,
+          "mean_eigenvalue_gap": 0.013902906256867884,
+          "mean_median_nn_gap": 0.02927161136044985,
+          "mean_p10_nn_gap": 0.0157388859195657,
+          "mean_ep_score": 76.32733032134283,
+          "spectral_sensitivity": {
+            "r": -0.07357382621812922,
+            "p_nominal": 5.6751616004444246e-43,
+            "p_adjusted": 2.7152851734284235e-37,
+            "rho": -0.06480731960401485,
+            "p_spearman": 1.042465442204654e-33,
+            "n_windows": 34795,
+            "n_eff": 30003
+          },
+          "segment": {
+            "start_sec": 18060.0,
+            "end_sec": 21540.0,
+            "n_epochs": 116
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [
+              "FC6"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 3480.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL10",
+          "state": "N3",
+          "n_windows": 26695,
+          "mean_spectral_radius": 1.0089061158636252,
+          "mean_eigenvalue_gap": 0.011837537177422018,
+          "mean_median_nn_gap": 0.021678853930311968,
+          "mean_p10_nn_gap": 0.012989772758056052,
+          "mean_ep_score": 82.69407114017653,
+          "spectral_sensitivity": {
+            "r": 0.11599993120219894,
+            "p_nominal": 1.2546335790812049e-80,
+            "p_adjusted": 1.6688264916117786e-80,
+            "rho": 0.13213443616772808,
+            "p_spearman": 2.966077188196632e-104,
+            "n_windows": 26695,
+            "n_eff": 26653
+          },
+          "segment": {
+            "start_sec": 10200.0,
+            "end_sec": 12870.0,
+            "n_epochs": 89
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 2670.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL10",
+          "state": "R",
+          "n_windows": 5095,
+          "mean_spectral_radius": 1.001291548846576,
+          "mean_eigenvalue_gap": 0.011070814231702999,
+          "mean_median_nn_gap": 0.023304908066850497,
+          "mean_p10_nn_gap": 0.012283937027671235,
+          "mean_ep_score": 88.60968404638112,
+          "spectral_sensitivity": {
+            "r": 0.06862193969148639,
+            "p_nominal": 9.449854489644925e-07,
+            "p_adjusted": 1.1812345225455922e-06,
+            "rho": 0.06513525278093882,
+            "p_spearman": 3.2696975525134542e-06,
+            "n_windows": 5095,
+            "n_eff": 5004
+          },
+          "segment": {
+            "start_sec": 17550.0,
+            "end_sec": 18060.0,
+            "n_epochs": 17
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 510.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 98.87093448638916
+    },
+    {
+      "subject": "EPCTL14",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 510000,
+          "N3": 1035000,
+          "R": 480000
+        },
+        "total_samples_pooled": 2025000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.7312473811452989,
+          0.09441731441211496,
+          0.05140727880135445,
+          0.03259439551521716,
+          0.025650361171923444,
+          0.02142048036266378,
+          0.01133193018863477,
+          0.006537389165468675,
+          0.004511633347546223,
+          0.0034706442591752114,
+          0.002977482140272044,
+          0.002271650776322031,
+          0.0019679358503301033,
+          0.0015882860795770758,
+          0.0014049491882896733
+        ],
+        "cumulative_variance": 0.9927991124041885
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL14",
+          "state": "W",
+          "n_windows": 10195,
+          "mean_spectral_radius": 1.002973609235218,
+          "mean_eigenvalue_gap": 0.011664905703653607,
+          "mean_median_nn_gap": 0.02897281578640001,
+          "mean_p10_nn_gap": 0.013526666576515542,
+          "mean_ep_score": 90.70033205699553,
+          "spectral_sensitivity": {
+            "r": 0.07274495282648842,
+            "p_nominal": 1.9247319223732018e-13,
+            "p_adjusted": 2.4148334511826706e-13,
+            "rho": 0.11015876536797328,
+            "p_spearman": 6.741767768580511e-29,
+            "n_windows": 10195,
+            "n_eff": 10111
+          },
+          "segment": {
+            "start_sec": 20310.0,
+            "end_sec": 21330.0,
+            "n_epochs": 34
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1020.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL14",
+          "state": "N3",
+          "n_windows": 20695,
+          "mean_spectral_radius": 1.0071466187331644,
+          "mean_eigenvalue_gap": 0.012745647272023151,
+          "mean_median_nn_gap": 0.023188185110669984,
+          "mean_p10_nn_gap": 0.013743158274943584,
+          "mean_ep_score": 75.09418089421382,
+          "spectral_sensitivity": {
+            "r": 0.10704761728063127,
+            "p_nominal": 8.400472667966742e-54,
+            "p_adjusted": 1.1154408775016222e-53,
+            "rho": 0.11380368167494709,
+            "p_spearman": 1.2897603596739742e-60,
+            "n_windows": 20695,
+            "n_eff": 20646
+          },
+          "segment": {
+            "start_sec": 2550.0,
+            "end_sec": 4620.0,
+            "n_epochs": 69
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 2070.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL14",
+          "state": "R",
+          "n_windows": 9595,
+          "mean_spectral_radius": 1.0020920003111722,
+          "mean_eigenvalue_gap": 0.01096318992801233,
+          "mean_median_nn_gap": 0.021677493486392092,
+          "mean_p10_nn_gap": 0.012071390423643278,
+          "mean_ep_score": 91.24134386151188,
+          "spectral_sensitivity": {
+            "r": 0.10728045889443114,
+            "p_nominal": 5.795244497486021e-26,
+            "p_adjusted": 8.083924524327282e-26,
+            "rho": 0.11671330257427541,
+            "p_spearman": 1.860728188885259e-30,
+            "n_windows": 9595,
+            "n_eff": 9538
+          },
+          "segment": {
+            "start_sec": 12660.0,
+            "end_sec": 13620.0,
+            "n_epochs": 32
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [
+              "FC6"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 960.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 59.86312937736511
+    },
+    {
+      "subject": "EPCTL17",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 1215000,
+          "N3": 660000,
+          "R": 300000
+        },
+        "total_samples_pooled": 2175000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.20358248508499355,
+          0.18372699552311136,
+          0.09862860029492379,
+          0.09504337028128398,
+          0.07046959190319979,
+          0.05518848940536619,
+          0.0455664082548265,
+          0.034478755086255454,
+          0.030483449756056123,
+          0.029955949837803645,
+          0.024515645387434372,
+          0.02251628652939128,
+          0.019950207342538752,
+          0.016969190915824918,
+          0.013728642141293637
+        ],
+        "cumulative_variance": 0.9448040677443034
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL17",
+          "state": "W",
+          "n_windows": 24295,
+          "mean_spectral_radius": 0.9947348800389875,
+          "mean_eigenvalue_gap": 0.013758511565327475,
+          "mean_median_nn_gap": 0.02952770482285792,
+          "mean_p10_nn_gap": 0.015620638005747658,
+          "mean_ep_score": 74.76570355199945,
+          "spectral_sensitivity": {
+            "r": 0.006005935435860644,
+            "p_nominal": 0.34922343839668557,
+            "p_adjusted": 0.37023650264258445,
+            "rho": 0.009192789894045336,
+            "p_spearman": 0.15190835942178818,
+            "n_windows": 24295,
+            "n_eff": 22260
+          },
+          "segment": {
+            "start_sec": 24930.0,
+            "end_sec": 27360.0,
+            "n_epochs": 81
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [
+              "C3"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 2430.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL17",
+          "state": "N3",
+          "n_windows": 13195,
+          "mean_spectral_radius": 1.0086593998841207,
+          "mean_eigenvalue_gap": 0.012575103004860458,
+          "mean_median_nn_gap": 0.021642549731125366,
+          "mean_p10_nn_gap": 0.013414211318981788,
+          "mean_ep_score": 72.65147687857105,
+          "spectral_sensitivity": {
+            "r": 0.09893745405518456,
+            "p_nominal": 4.5952691773211824e-30,
+            "p_adjusted": 4.9744750062624906e-30,
+            "rho": 0.11458387709454793,
+            "p_spearman": 8.269716470469198e-40,
+            "n_windows": 13195,
+            "n_eff": 13179
+          },
+          "segment": {
+            "start_sec": 3180.0,
+            "end_sec": 4500.0,
+            "n_epochs": 44
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [
+              "C3",
+              "C4"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 1320.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL17",
+          "state": "R",
+          "n_windows": 5995,
+          "mean_spectral_radius": 1.000493441510354,
+          "mean_eigenvalue_gap": 0.010853647448197088,
+          "mean_median_nn_gap": 0.022399853866720762,
+          "mean_p10_nn_gap": 0.01207253566122803,
+          "mean_ep_score": 94.12597490061285,
+          "spectral_sensitivity": {
+            "r": 0.06063600258938892,
+            "p_nominal": 2.6242407521187128e-06,
+            "p_adjusted": 2.9729292418240335e-06,
+            "rho": 0.0762827119633798,
+            "p_spearman": 3.343907505406811e-09,
+            "n_windows": 5995,
+            "n_eff": 5930
+          },
+          "segment": {
+            "start_sec": 19740.0,
+            "end_sec": 20340.0,
+            "n_epochs": 20
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [
+              "C3"
+            ],
+            "sfreq": 500.0,
+            "duration_sec": 600.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 79.32760262489319
+    },
+    {
+      "subject": "EPCTL20",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 195000,
+          "N3": 495000,
+          "R": 540000
+        },
+        "total_samples_pooled": 1230000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.22762593839004994,
+          0.18937403465372957,
+          0.1417408387594249,
+          0.08372600206433783,
+          0.05965797078265331,
+          0.048631893331739014,
+          0.04414011099635176,
+          0.03327310116103117,
+          0.02530428472524557,
+          0.023169995260393216,
+          0.02100663753175463,
+          0.016970883693295413,
+          0.01601387139281904,
+          0.013224819912475304,
+          0.010106374106951825
+        ],
+        "cumulative_variance": 0.9539667567622524
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL20",
+          "state": "W",
+          "n_windows": 3895,
+          "mean_spectral_radius": 0.9985352083055287,
+          "mean_eigenvalue_gap": 0.012273593796901327,
+          "mean_median_nn_gap": 0.028522083871476128,
+          "mean_p10_nn_gap": 0.01428746695660419,
+          "mean_ep_score": 94.90087723288343,
+          "spectral_sensitivity": {
+            "r": 0.060957560379909785,
+            "p_nominal": 0.0001408468153145214,
+            "p_adjusted": 0.0002531241252216867,
+            "rho": 0.06248277056380722,
+            "p_spearman": 9.535898824156079e-05,
+            "n_windows": 3895,
+            "n_eff": 3599
+          },
+          "segment": {
+            "start_sec": 11910.0,
+            "end_sec": 12300.0,
+            "n_epochs": 13
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 390.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL20",
+          "state": "N3",
+          "n_windows": 9895,
+          "mean_spectral_radius": 1.0088367088532912,
+          "mean_eigenvalue_gap": 0.012830599652869685,
+          "mean_median_nn_gap": 0.022372862790474825,
+          "mean_p10_nn_gap": 0.013823315253888116,
+          "mean_ep_score": 70.88818494256135,
+          "spectral_sensitivity": {
+            "r": 0.09655435398200488,
+            "p_nominal": 6.216419818322781e-22,
+            "p_adjusted": 6.216419818322474e-22,
+            "rho": 0.1155822734617124,
+            "p_spearman": 8.82874011337307e-31,
+            "n_windows": 9895,
+            "n_eff": 9895
+          },
+          "segment": {
+            "start_sec": 2130.0,
+            "end_sec": 3120.0,
+            "n_epochs": 33
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 990.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL20",
+          "state": "R",
+          "n_windows": 10795,
+          "mean_spectral_radius": 1.0020847623474,
+          "mean_eigenvalue_gap": 0.01122019216543391,
+          "mean_median_nn_gap": 0.02338584142852994,
+          "mean_p10_nn_gap": 0.012589827264778962,
+          "mean_ep_score": 88.00166457592736,
+          "spectral_sensitivity": {
+            "r": 0.09866512522017509,
+            "p_nominal": 9.125184217114785e-25,
+            "p_adjusted": 1.9042221264906006e-24,
+            "rho": 0.10215262093039001,
+            "p_spearman": 1.937793035375394e-26,
+            "n_windows": 10795,
+            "n_eff": 10646
+          },
+          "segment": {
+            "start_sec": 26400.0,
+            "end_sec": 27480.0,
+            "n_epochs": 36
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1080.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 62.775439977645874
+    },
+    {
+      "subject": "EPCTL24",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 225000,
+          "N3": 870000,
+          "R": 330000
+        },
+        "total_samples_pooled": 1425000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.2305217303872846,
+          0.1630277327608863,
+          0.10994438137503536,
+          0.08820042133685192,
+          0.08291446157097214,
+          0.06978367188017803,
+          0.04896433508593149,
+          0.039176483721380675,
+          0.03227471477597641,
+          0.027048728286137906,
+          0.023966669361099008,
+          0.016671476367044948,
+          0.015439493478050676,
+          0.01001278926195992,
+          0.009931514566975315
+        ],
+        "cumulative_variance": 0.9678786042157647
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL24",
+          "state": "W",
+          "n_windows": 4495,
+          "mean_spectral_radius": 0.9963709506046224,
+          "mean_eigenvalue_gap": 0.013581221033945734,
+          "mean_median_nn_gap": 0.024937977148430962,
+          "mean_p10_nn_gap": 0.014712399518876557,
+          "mean_ep_score": 71.48360607468646,
+          "spectral_sensitivity": {
+            "r": -0.00652342473077237,
+            "p_nominal": 0.6619340658556314,
+            "p_adjusted": 0.6736219194149453,
+            "rho": 0.014475696528402106,
+            "p_spearman": 0.33189671421740674,
+            "n_windows": 4495,
+            "n_eff": 4171
+          },
+          "segment": {
+            "start_sec": 20430.0,
+            "end_sec": 20880.0,
+            "n_epochs": 15
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 450.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL24",
+          "state": "N3",
+          "n_windows": 17395,
+          "mean_spectral_radius": 1.0087301481460145,
+          "mean_eigenvalue_gap": 0.01201095185326443,
+          "mean_median_nn_gap": 0.02061000285079591,
+          "mean_p10_nn_gap": 0.012827900889715943,
+          "mean_ep_score": 76.87693891980969,
+          "spectral_sensitivity": {
+            "r": 0.09160514043788698,
+            "p_nominal": 9.768387211922449e-34,
+            "p_adjusted": 1.0410125101142332e-33,
+            "rho": 0.1183259015796439,
+            "p_spearman": 2.841931184608077e-55,
+            "n_windows": 17395,
+            "n_eff": 17380
+          },
+          "segment": {
+            "start_sec": 16080.0,
+            "end_sec": 17820.0,
+            "n_epochs": 58
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1740.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL24",
+          "state": "R",
+          "n_windows": 6595,
+          "mean_spectral_radius": 0.9980931692586877,
+          "mean_eigenvalue_gap": 0.011724449860157478,
+          "mean_median_nn_gap": 0.022979176377564088,
+          "mean_p10_nn_gap": 0.012630181528589466,
+          "mean_ep_score": 81.40185138712829,
+          "spectral_sensitivity": {
+            "r": 0.040151395918772106,
+            "p_nominal": 0.0011087290528729416,
+            "p_adjusted": 0.0012616655831846702,
+            "rho": 0.040147125778951326,
+            "p_spearman": 0.0011100872912050658,
+            "n_windows": 6595,
+            "n_eff": 6447
+          },
+          "segment": {
+            "start_sec": 13470.0,
+            "end_sec": 14130.0,
+            "n_epochs": 22
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 660.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 66.48512101173401
+    },
+    {
+      "subject": "EPCTL28",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 3,
+        "state_labels": [
+          "W",
+          "N3",
+          "R"
+        ],
+        "samples_per_state": {
+          "W": 255000,
+          "N3": 1290000,
+          "R": 975000
+        },
+        "total_samples_pooled": 2520000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.20842889378870263,
+          0.19952491267944789,
+          0.11256270544833817,
+          0.07649641144432406,
+          0.06727118006121337,
+          0.04906234732270967,
+          0.04204536587135124,
+          0.037253239751056745,
+          0.03249712913894126,
+          0.02699101256322163,
+          0.02383274356342524,
+          0.023191840643864425,
+          0.01988810892596077,
+          0.016600706886389507,
+          0.014897911796346777
+        ],
+        "cumulative_variance": 0.9505445098852937
+      },
+      "states": {
+        "W": {
+          "subject": "EPCTL28",
+          "state": "W",
+          "n_windows": 5095,
+          "mean_spectral_radius": 0.9978908799776764,
+          "mean_eigenvalue_gap": 0.012747664003103761,
+          "mean_median_nn_gap": 0.029428845438572646,
+          "mean_p10_nn_gap": 0.014684857044345495,
+          "mean_ep_score": 86.60932338519282,
+          "spectral_sensitivity": {
+            "r": -0.05703529927988376,
+            "p_nominal": 4.6320805032039745e-05,
+            "p_adjusted": 0.0001460089552711841,
+            "rho": -0.03208283805666498,
+            "p_spearman": 0.022016847434786865,
+            "n_windows": 5095,
+            "n_eff": 4429
+          },
+          "segment": {
+            "start_sec": 15840.0,
+            "end_sec": 16350.0,
+            "n_epochs": 17
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 510.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "N3": {
+          "subject": "EPCTL28",
+          "state": "N3",
+          "n_windows": 25795,
+          "mean_spectral_radius": 1.0081490916519604,
+          "mean_eigenvalue_gap": 0.013299473132833603,
+          "mean_median_nn_gap": 0.02206914953011342,
+          "mean_p10_nn_gap": 0.01407209370886651,
+          "mean_ep_score": 69.13940981715095,
+          "spectral_sensitivity": {
+            "r": 0.09282440012154726,
+            "p_nominal": 1.8124047369785856e-50,
+            "p_adjusted": 1.8929098792963434e-50,
+            "rho": 0.11877263423400596,
+            "p_spearman": 1.1128729996210736e-81,
+            "n_windows": 25795,
+            "n_eff": 25785
+          },
+          "segment": {
+            "start_sec": 5970.0,
+            "end_sec": 8550.0,
+            "n_epochs": 86
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 2580.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        },
+        "R": {
+          "subject": "EPCTL28",
+          "state": "R",
+          "n_windows": 19495,
+          "mean_spectral_radius": 1.0020563022775348,
+          "mean_eigenvalue_gap": 0.010881048663973289,
+          "mean_median_nn_gap": 0.021695547199928434,
+          "mean_p10_nn_gap": 0.012078896234284618,
+          "mean_ep_score": 93.50633941938999,
+          "spectral_sensitivity": {
+            "r": 0.10213623762219244,
+            "p_nominal": 2.2776876393648214e-46,
+            "p_adjusted": 5.607633207809361e-46,
+            "rho": 0.1025767673249601,
+            "p_spearman": 9.329826373433132e-47,
+            "n_windows": 19495,
+            "n_eff": 19324
+          },
+          "segment": {
+            "start_sec": 22110.0,
+            "end_sec": 24060.0,
+            "n_epochs": 65
+          },
+          "preprocess": {
+            "n_channels": 62,
+            "bad_channels": [],
+            "sfreq": 500.0,
+            "duration_sec": 1950.0,
+            "channels_dropped_no_montage": [
+              "FZ",
+              "CZ",
+              "PZ",
+              "F11",
+              "FT11",
+              "FCZ",
+              "TP11",
+              "P11",
+              "POZ",
+              "OZ",
+              "FPZ",
+              "AFZ",
+              "F12",
+              "FT12",
+              "CPZ",
+              "TP12",
+              "P12"
+            ]
+          }
+        }
+      },
+      "elapsed_s": 75.1313145160675
+    }
+  ],
+  "group_statistics": {
+    "n_subjects": 10,
+    "min_gap_awake_vs_n3": {
+      "mean_a": 0.012730114039051785,
+      "mean_b": 0.013170524404207481,
+      "mean_diff": -0.00044041036515569693,
+      "t": -1.1493441964066113,
+      "p": 0.2800401412679328,
+      "cohens_d": -0.3634545476140805,
+      "n": 10
+    },
+    "min_gap_n3_vs_rem": {
+      "mean_a": 0.011171940752634831,
+      "mean_b": 0.012730114039051785,
+      "mean_diff": -0.0015581732864169543,
+      "t": -7.5566695091769205,
+      "p": 3.480163458431739e-05,
+      "cohens_d": -2.3896287174145727,
+      "n": 10
+    },
+    "min_gap_awake_vs_rem": {
+      "mean_a": 0.011171940752634831,
+      "mean_b": 0.013170524404207481,
+      "mean_diff": -0.0019985836515726513,
+      "t": -6.431242642411761,
+      "p": 0.000120763610051902,
+      "cohens_d": -2.033737493522097,
+      "n": 10
+    },
+    "median_nn_gap_awake_vs_n3": {
+      "mean_a": 0.022043585666976624,
+      "mean_b": 0.02903481101905177,
+      "mean_diff": -0.006991225352075146,
+      "t": -8.493086262670541,
+      "p": 1.3683874235529578e-05,
+      "cohens_d": -2.6857496954326003,
+      "n": 10
+    },
+    "median_nn_gap_n3_vs_rem": {
+      "mean_a": 0.02282128380846903,
+      "mean_b": 0.022043585666976624,
+      "mean_diff": 0.0007776981414924073,
+      "t": 1.8290982600796108,
+      "p": 0.10063960373430739,
+      "cohens_d": 0.5784116566102606,
+      "n": 10
+    },
+    "median_nn_gap_awake_vs_rem": {
+      "mean_a": 0.02282128380846903,
+      "mean_b": 0.02903481101905177,
+      "mean_diff": -0.006213527210582738,
+      "t": -8.368934385486808,
+      "p": 1.5412615361311905e-05,
+      "cohens_d": -2.6464894246639923,
+      "n": 10
+    },
+    "p10_nn_gap_awake_vs_n3": {
+      "mean_a": 0.013618396879300772,
+      "mean_b": 0.015019756542641946,
+      "mean_diff": -0.0014013596633411726,
+      "t": -3.53808003566184,
+      "p": 0.006333146827469843,
+      "cohens_d": -1.118839145666118,
+      "n": 10
+    },
+    "p10_nn_gap_n3_vs_rem": {
+      "mean_a": 0.012344713187402078,
+      "mean_b": 0.013618396879300772,
+      "mean_diff": -0.001273683691898696,
+      "t": -7.281410202720589,
+      "p": 4.656465260593483e-05,
+      "cohens_d": -2.302584081858543,
+      "n": 10
+    },
+    "p10_nn_gap_awake_vs_rem": {
+      "mean_a": 0.012344713187402078,
+      "mean_b": 0.015019756542641946,
+      "mean_diff": -0.0026750433552398685,
+      "t": -7.876180351289782,
+      "p": 2.5067100901378872e-05,
+      "cohens_d": -2.4906669172340816,
+      "n": 10
+    },
+    "spectral_radius_awake_vs_n3": {
+      "mean_a": 1.0084404824459732,
+      "mean_b": 0.997173316929425,
+      "mean_diff": 0.011267165516548227,
+      "t": 12.338049398156436,
+      "p": 6.075179808371882e-07,
+      "cohens_d": 3.901633798184401,
+      "n": 10
+    },
+    "spectral_radius_n3_vs_rem": {
+      "mean_a": 1.0007084149738,
+      "mean_b": 1.0084404824459732,
+      "mean_diff": -0.0077320674721730875,
+      "t": -15.230206554897613,
+      "p": 9.8825735712689e-08,
+      "cohens_d": -4.816214194830274,
+      "n": 10
+    },
+    "fdr_correction": {
+      "min_gap_awake_vs_n3": {
+        "p": 0.2800401412679328,
+        "fdr_significant": false
+      },
+      "min_gap_n3_vs_rem": {
+        "p": 3.480163458431739e-05,
+        "fdr_significant": true
+      },
+      "min_gap_awake_vs_rem": {
+        "p": 0.000120763610051902,
+        "fdr_significant": true
+      },
+      "median_nn_gap_awake_vs_n3": {
+        "p": 1.3683874235529578e-05,
+        "fdr_significant": true
+      },
+      "median_nn_gap_n3_vs_rem": {
+        "p": 0.10063960373430739,
+        "fdr_significant": false
+      },
+      "median_nn_gap_awake_vs_rem": {
+        "p": 1.5412615361311905e-05,
+        "fdr_significant": true
+      },
+      "p10_nn_gap_awake_vs_n3": {
+        "p": 0.006333146827469843,
+        "fdr_significant": true
+      },
+      "p10_nn_gap_n3_vs_rem": {
+        "p": 4.656465260593483e-05,
+        "fdr_significant": true
+      },
+      "p10_nn_gap_awake_vs_rem": {
+        "p": 2.5067100901378872e-05,
+        "fdr_significant": true
+      },
+      "spectral_radius_awake_vs_n3": {
+        "p": 6.075179808371882e-07,
+        "fdr_significant": true
+      },
+      "spectral_radius_n3_vs_rem": {
+        "p": 9.8825735712689e-08,
+        "fdr_significant": true
+      }
+    },
+    "comparison_to_original": {
+      "min_gap_n3_vs_rem": {
+        "original_d": -2.506015553098825,
+        "original_p": 2.386972909611552e-05,
+        "shared_d": -2.3896287174145727,
+        "shared_p": 3.480163458431739e-05
+      },
+      "min_gap_awake_vs_rem": {
+        "original_d": -2.1272032372588714,
+        "original_p": 8.587857456597151e-05,
+        "shared_d": -2.033737493522097,
+        "shared_p": 0.000120763610051902
+      },
+      "min_gap_awake_vs_n3": {
+        "original_d": -0.4210808673070097,
+        "original_p": 0.2157390575553903,
+        "shared_d": -0.3634545476140805,
+        "shared_p": 0.2800401412679328
+      }
+    }
+  }
+}

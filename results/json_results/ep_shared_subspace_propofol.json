@@ -1,0 +1,1641 @@
+{
+  "analysis": "shared_subspace_propofol",
+  "n_subjects": 20,
+  "parameters": {
+    "window_sec": 0.5,
+    "step_sec": 0.1,
+    "n_components": 15,
+    "pca_mode": "shared_subspace",
+    "downsample_to": 500.0,
+    "line_freq": 50.0,
+    "seed": 42
+  },
+  "excluded_subjects": [
+    "sub-1037"
+  ],
+  "subjects": [
+    {
+      "subject": "1010",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.9473960586421607,
+          0.03813202339069093,
+          0.00314179729903299,
+          0.0024116469316487177,
+          0.0014647368390068632,
+          0.0013576880974543685,
+          0.0010654086738322466,
+          0.0010277707215380035,
+          0.0007769989154733978,
+          0.0006002322269299153,
+          0.0005466193051054528,
+          0.00041524810183893817,
+          0.00029678585255455363,
+          0.0002834721572470339,
+          0.00027171899159681524
+        ],
+        "cumulative_variance": 0.9991882061461109
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9995299036651065,
+        "mean_eigenvalue_gap": 0.011526828363133226,
+        "mean_median_nn_gap": 0.02399675614213953,
+        "mean_p10_nn_gap": 0.012875596878102004,
+        "mean_ep_score": 95.81038429895553,
+        "spectral_sensitivity": {
+          "r": 0.10337698774940154,
+          "p_nominal": 1.4254273097442325e-08,
+          "p_adjusted": 1.6734174790657583e-08,
+          "rho": 0.1147950009784174,
+          "p_spearman": 2.9658224748774807e-10,
+          "n_windows": 2995,
+          "n_eff": 2966
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0000171401232871,
+        "mean_eigenvalue_gap": 0.012988571117371447,
+        "mean_median_nn_gap": 0.025872908648756132,
+        "mean_p10_nn_gap": 0.014369952538295984,
+        "mean_ep_score": 72.83479456826049,
+        "spectral_sensitivity": {
+          "r": -0.05459965165902145,
+          "p_nominal": 0.002798598377122411,
+          "p_adjusted": 0.004182427006991719,
+          "rho": -0.03551986118939882,
+          "p_spearman": 0.05193370869439828,
+          "n_windows": 2995,
+          "n_eff": 2750
+        }
+      },
+      "delta_spectral_radius": -0.00048723645818060657,
+      "delta_eigenvalue_gap": -0.0014617427542382207,
+      "delta_median_nn_gap": -0.0018761525066166018,
+      "delta_p10_nn_gap": -0.0014943556601939804,
+      "delta_spectral_sensitivity_r": 0.157976639408423,
+      "elapsed_s": 20.824941396713257
+    },
+    {
+      "subject": "1016",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.3224641118122678,
+          0.15773102882868897,
+          0.09168779307013894,
+          0.0825946761419847,
+          0.05641634916348972,
+          0.04935352933098471,
+          0.04373321906488024,
+          0.03874008784220874,
+          0.03168160316578013,
+          0.024012105533970006,
+          0.017619037777993805,
+          0.017304548568481515,
+          0.01651774044036283,
+          0.011553651739302059,
+          0.009350373332172816
+        ],
+        "cumulative_variance": 0.970759855812707
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9999663380933328,
+        "mean_eigenvalue_gap": 0.011254675090343837,
+        "mean_median_nn_gap": 0.023342303607069893,
+        "mean_p10_nn_gap": 0.012678837236480991,
+        "mean_ep_score": 91.60069914563016,
+        "spectral_sensitivity": {
+          "r": 0.12113170155299621,
+          "p_nominal": 2.913837131945946e-11,
+          "p_adjusted": 3.795400313617577e-11,
+          "rho": 0.11757108748658511,
+          "p_spearman": 1.0895479244019234e-10,
+          "n_windows": 2995,
+          "n_eff": 2960
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0014920642323002,
+        "mean_eigenvalue_gap": 0.011397541757868092,
+        "mean_median_nn_gap": 0.021516356115629662,
+        "mean_p10_nn_gap": 0.012375580191077738,
+        "mean_ep_score": 87.40552293348136,
+        "spectral_sensitivity": {
+          "r": 0.06777216732030955,
+          "p_nominal": 0.00020590495447480326,
+          "p_adjusted": 0.0002104970426944602,
+          "rho": 0.10879356087417508,
+          "p_spearman": 2.385071951827672e-09,
+          "n_windows": 2995,
+          "n_eff": 2986
+        }
+      },
+      "delta_spectral_radius": -0.0015257261389673982,
+      "delta_eigenvalue_gap": -0.0001428666675242548,
+      "delta_median_nn_gap": 0.0018259474914402302,
+      "delta_p10_nn_gap": 0.00030325704540325356,
+      "delta_spectral_sensitivity_r": 0.05335953423268666,
+      "elapsed_s": 20.346079349517822
+    },
+    {
+      "subject": "1017",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.43130013448405274,
+          0.15064062565500475,
+          0.09981115327927086,
+          0.06920682259461906,
+          0.0520066733708704,
+          0.03261330344386258,
+          0.02513457381789086,
+          0.02202756931707273,
+          0.019166449197500296,
+          0.017368866253606043,
+          0.015729502966924352,
+          0.011031424361612491,
+          0.009175799719900162,
+          0.007493128799667277,
+          0.00612276289329759
+        ],
+        "cumulative_variance": 0.9688287901551521
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.997260001605001,
+        "mean_eigenvalue_gap": 0.011685703175162803,
+        "mean_median_nn_gap": 0.022347048494390544,
+        "mean_p10_nn_gap": 0.012714962038080526,
+        "mean_ep_score": 86.58406241806406,
+        "spectral_sensitivity": {
+          "r": 0.07731269071215519,
+          "p_nominal": 2.2790717583964367e-05,
+          "p_adjusted": 2.779581850980319e-05,
+          "rho": 0.050865350976956096,
+          "p_spearman": 0.0053638808879336594,
+          "n_windows": 2995,
+          "n_eff": 2932
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9986096443124646,
+        "mean_eigenvalue_gap": 0.01249867909319459,
+        "mean_median_nn_gap": 0.024741190760869985,
+        "mean_p10_nn_gap": 0.013826757304849205,
+        "mean_ep_score": 79.70863423655226,
+        "spectral_sensitivity": {
+          "r": 0.0007786125953854773,
+          "p_nominal": 0.9660259488036131,
+          "p_adjusted": 0.9669986605014242,
+          "rho": -0.020944794519597694,
+          "p_spearman": 0.2518429658754925,
+          "n_windows": 2995,
+          "n_eff": 2826
+        }
+      },
+      "delta_spectral_radius": -0.0013496427074636275,
+      "delta_eigenvalue_gap": -0.0008129759180317865,
+      "delta_median_nn_gap": -0.002394142266479441,
+      "delta_p10_nn_gap": -0.0011117952667686788,
+      "delta_spectral_sensitivity_r": 0.07653407811676971,
+      "elapsed_s": 20.497151851654053
+    },
+    {
+      "subject": "1022",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150500,
+          "sed_run1": 151500
+        },
+        "total_samples_pooled": 302000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.5766610490262476,
+          0.13877155992718448,
+          0.05448472765124107,
+          0.04266409812074729,
+          0.03859977912301996,
+          0.034714138741956085,
+          0.02300130512318404,
+          0.01746529310163655,
+          0.01543092643706422,
+          0.011911547259791261,
+          0.00915700184432119,
+          0.007442962907622227,
+          0.006851076407984358,
+          0.006129826658768908,
+          0.005200171700071574
+        ],
+        "cumulative_variance": 0.9884854640308409
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 3005,
+        "mean_spectral_radius": 0.9991295150248272,
+        "mean_eigenvalue_gap": 0.011487429703606207,
+        "mean_median_nn_gap": 0.02307287645110403,
+        "mean_p10_nn_gap": 0.012630058424069357,
+        "mean_ep_score": 85.93297658134391,
+        "spectral_sensitivity": {
+          "r": 0.09759491239103092,
+          "p_nominal": 8.298237640418485e-08,
+          "p_adjusted": 9.251392077755433e-08,
+          "rho": 0.08866686822610022,
+          "p_spearman": 1.1267753968048677e-06,
+          "n_windows": 3005,
+          "n_eff": 2983
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 3025,
+        "mean_spectral_radius": 1.00047453384957,
+        "mean_eigenvalue_gap": 0.011793128736562321,
+        "mean_median_nn_gap": 0.021174402779707825,
+        "mean_p10_nn_gap": 0.0124831495567334,
+        "mean_ep_score": 76.66288562157035,
+        "spectral_sensitivity": {
+          "r": 0.031092493679524446,
+          "p_nominal": 0.08730402263570138,
+          "p_adjusted": 0.08825133561838892,
+          "rho": 0.0422319897717963,
+          "p_spearman": 0.020187979206120723,
+          "n_windows": 3025,
+          "n_eff": 3007
+        }
+      },
+      "delta_spectral_radius": -0.0013450188247428052,
+      "delta_eigenvalue_gap": -0.0003056990329561148,
+      "delta_median_nn_gap": 0.0018984736713962072,
+      "delta_p10_nn_gap": 0.00014690886733595768,
+      "delta_spectral_sensitivity_r": 0.06650241871150647,
+      "elapsed_s": 21.292619228363037
+    },
+    {
+      "subject": "1024",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.2593694161931821,
+          0.13690817344650988,
+          0.12569918553029094,
+          0.10338238598627107,
+          0.08143673024806666,
+          0.06187269193672927,
+          0.047373523963091115,
+          0.04522457898486107,
+          0.024966440925541976,
+          0.022190316864039224,
+          0.02002981658452907,
+          0.016899140518819147,
+          0.012815844308793229,
+          0.011664594489491606,
+          0.008619135170569467
+        ],
+        "cumulative_variance": 0.9784519751507857
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9953406132141848,
+        "mean_eigenvalue_gap": 0.012197166902740354,
+        "mean_median_nn_gap": 0.022413027623675863,
+        "mean_p10_nn_gap": 0.013001832273807922,
+        "mean_ep_score": 78.35099361116717,
+        "spectral_sensitivity": {
+          "r": 0.05885134716892793,
+          "p_nominal": 0.0012721822750501688,
+          "p_adjusted": 0.0013612588993904746,
+          "rho": 0.053017443532091174,
+          "p_spearman": 0.003704406122923791,
+          "n_windows": 2995,
+          "n_eff": 2959
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9986938938220996,
+        "mean_eigenvalue_gap": 0.012447257806376616,
+        "mean_median_nn_gap": 0.02240165259858893,
+        "mean_p10_nn_gap": 0.013119620863758778,
+        "mean_ep_score": 72.68407692807656,
+        "spectral_sensitivity": {
+          "r": -0.010149726153728828,
+          "p_nominal": 0.578728896974054,
+          "p_adjusted": 0.5819187379405633,
+          "rho": 0.0004478019967129339,
+          "p_spearman": 0.9804566163167011,
+          "n_windows": 2995,
+          "n_eff": 2945
+        }
+      },
+      "delta_spectral_radius": -0.0033532806079148436,
+      "delta_eigenvalue_gap": -0.0002500909036362627,
+      "delta_median_nn_gap": 1.1375025086933499e-05,
+      "delta_p10_nn_gap": -0.00011778858995085614,
+      "delta_spectral_sensitivity_r": 0.06900107332265676,
+      "elapsed_s": 20.88874053955078
+    },
+    {
+      "subject": "1033",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.5610113557184463,
+          0.20789751756278366,
+          0.089884201386527,
+          0.06257678163598437,
+          0.02932460779160447,
+          0.016263683211242837,
+          0.00688363846940206,
+          0.005402214130553962,
+          0.0038010312208892707,
+          0.003139275534242365,
+          0.002014843116893454,
+          0.0019388906149953354,
+          0.0016265874020504165,
+          0.0014985796570866213,
+          0.0010501615784430738
+        ],
+        "cumulative_variance": 0.9943133690311452
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9993891108758273,
+        "mean_eigenvalue_gap": 0.012142454258495552,
+        "mean_median_nn_gap": 0.02257733085901275,
+        "mean_p10_nn_gap": 0.013181095028031579,
+        "mean_ep_score": 82.04035017172234,
+        "spectral_sensitivity": {
+          "r": 0.07130830945838805,
+          "p_nominal": 9.391243902067313e-05,
+          "p_adjusted": 0.00010074114994825954,
+          "rho": 0.06886649141644834,
+          "p_spearman": 0.00016211737466624533,
+          "n_windows": 2995,
+          "n_eff": 2969
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0014752350016511,
+        "mean_eigenvalue_gap": 0.011021015483395338,
+        "mean_median_nn_gap": 0.02577338774300047,
+        "mean_p10_nn_gap": 0.012839221514225929,
+        "mean_ep_score": 97.49858540899528,
+        "spectral_sensitivity": {
+          "r": -0.039345383245408934,
+          "p_nominal": 0.03130503462576183,
+          "p_adjusted": 0.04387458442878485,
+          "rho": -0.04245098295089905,
+          "p_spearman": 0.020164376563789287,
+          "n_windows": 2995,
+          "n_eff": 2624
+        }
+      },
+      "delta_spectral_radius": -0.002086124125823874,
+      "delta_eigenvalue_gap": 0.0011214387751002138,
+      "delta_median_nn_gap": -0.003196056883987719,
+      "delta_p10_nn_gap": 0.0003418735138056503,
+      "delta_spectral_sensitivity_r": 0.11065369270379699,
+      "elapsed_s": 20.618948698043823
+    },
+    {
+      "subject": "1036",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.18602233609269328,
+          0.16943504276377896,
+          0.14303825056905106,
+          0.10072285974688375,
+          0.07985172236833603,
+          0.0671230224935662,
+          0.044844891945434916,
+          0.04053846977624124,
+          0.034180156293049886,
+          0.032722178526828835,
+          0.02626367160194537,
+          0.015204130116694163,
+          0.013003675208141025,
+          0.010949368423859872,
+          0.009066750085495437
+        ],
+        "cumulative_variance": 0.9729665260120001
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0004441788239193,
+        "mean_eigenvalue_gap": 0.01170696479639062,
+        "mean_median_nn_gap": 0.022210129122582675,
+        "mean_p10_nn_gap": 0.012719832522827528,
+        "mean_ep_score": 83.33823325922232,
+        "spectral_sensitivity": {
+          "r": 0.07379146739986303,
+          "p_nominal": 5.29562490771346e-05,
+          "p_adjusted": 5.2956249077134175e-05,
+          "rho": 0.08569753632721533,
+          "p_spearman": 2.6450409007245806e-06,
+          "n_windows": 2995,
+          "n_eff": 2995
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0046822135892222,
+        "mean_eigenvalue_gap": 0.011162617141431212,
+        "mean_median_nn_gap": 0.020757304784284225,
+        "mean_p10_nn_gap": 0.011920569950119341,
+        "mean_ep_score": 81.70445641204756,
+        "spectral_sensitivity": {
+          "r": 0.052286508556776815,
+          "p_nominal": 0.004206770233542222,
+          "p_adjusted": 0.004219485739840354,
+          "rho": 0.07354216424584394,
+          "p_spearman": 5.6136783872967254e-05,
+          "n_windows": 2995,
+          "n_eff": 2993
+        }
+      },
+      "delta_spectral_radius": -0.004238034765302823,
+      "delta_eigenvalue_gap": 0.0005443476549594085,
+      "delta_median_nn_gap": 0.0014528243382984501,
+      "delta_p10_nn_gap": 0.0007992625727081867,
+      "delta_spectral_sensitivity_r": 0.021504958843086217,
+      "elapsed_s": 20.417848348617554
+    },
+    {
+      "subject": "1045",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.2605646467238225,
+          0.16707606762657903,
+          0.11523969421203553,
+          0.09587520973208322,
+          0.06889946320795212,
+          0.055841283033863105,
+          0.04681491349065754,
+          0.03908787246334609,
+          0.029239665289981908,
+          0.026123222959336154,
+          0.025457355437926713,
+          0.017020369751543012,
+          0.01264618437024113,
+          0.010296106846525195,
+          0.00891823015296828
+        ],
+        "cumulative_variance": 0.9791002852988614
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9967843164854375,
+        "mean_eigenvalue_gap": 0.013370490833500729,
+        "mean_median_nn_gap": 0.025450331446572026,
+        "mean_p10_nn_gap": 0.014656136680152886,
+        "mean_ep_score": 71.51644672044634,
+        "spectral_sensitivity": {
+          "r": 0.0287632500978692,
+          "p_nominal": 0.11553758411323806,
+          "p_adjusted": 0.12218701812053968,
+          "rho": 0.02558202925216265,
+          "p_spearman": 0.16161457927664813,
+          "n_windows": 2995,
+          "n_eff": 2889
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.003641898423316,
+        "mean_eigenvalue_gap": 0.011458041230453752,
+        "mean_median_nn_gap": 0.02118518314227864,
+        "mean_p10_nn_gap": 0.012324637796774715,
+        "mean_ep_score": 81.86531009055113,
+        "spectral_sensitivity": {
+          "r": 0.04634139167663801,
+          "p_nominal": 0.011199538112241733,
+          "p_adjusted": 0.011377185962157987,
+          "rho": 0.06800065244798938,
+          "p_spearman": 0.00019593419104604217,
+          "n_windows": 2995,
+          "n_eff": 2982
+        }
+      },
+      "delta_spectral_radius": -0.006857581937878443,
+      "delta_eigenvalue_gap": 0.001912449603046977,
+      "delta_median_nn_gap": 0.0042651483042933855,
+      "delta_p10_nn_gap": 0.0023314988833781705,
+      "delta_spectral_sensitivity_r": -0.017578141578768813,
+      "elapsed_s": 20.279088497161865
+    },
+    {
+      "subject": "1046",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.9026623374986877,
+          0.03150401911128718,
+          0.012758803344224613,
+          0.009707936296515366,
+          0.009476840682693277,
+          0.0059840545541437595,
+          0.00535833411602454,
+          0.004097922938651939,
+          0.0033983115274868786,
+          0.0027271414073760485,
+          0.002365701643527608,
+          0.0022086008881843098,
+          0.0015596871643609605,
+          0.0014567262502849304,
+          0.0011605672835798195
+        ],
+        "cumulative_variance": 0.996426984707029
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9986406601370171,
+        "mean_eigenvalue_gap": 0.011911921437705685,
+        "mean_median_nn_gap": 0.022125237326318506,
+        "mean_p10_nn_gap": 0.01294310551073799,
+        "mean_ep_score": 89.26494543993813,
+        "spectral_sensitivity": {
+          "r": 0.04862071969940721,
+          "p_nominal": 0.0077837362608670305,
+          "p_adjusted": 0.008271643237037048,
+          "rho": 0.04616620765463784,
+          "p_spearman": 0.011510315716031798,
+          "n_windows": 2995,
+          "n_eff": 2949
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0023945223347905,
+        "mean_eigenvalue_gap": 0.011004151389001106,
+        "mean_median_nn_gap": 0.020200485032961155,
+        "mean_p10_nn_gap": 0.011724626208739793,
+        "mean_ep_score": 103.92338441999595,
+        "spectral_sensitivity": {
+          "r": 0.04617526934645817,
+          "p_nominal": 0.011494054529026902,
+          "p_adjusted": 0.011619140779358364,
+          "rho": 0.06214684663531244,
+          "p_spearman": 0.0006666126238438384,
+          "n_windows": 2995,
+          "n_eff": 2986
+        }
+      },
+      "delta_spectral_radius": -0.0037538621977734055,
+      "delta_eigenvalue_gap": 0.000907770048704579,
+      "delta_median_nn_gap": 0.0019247522933573506,
+      "delta_p10_nn_gap": 0.001218479301998197,
+      "delta_spectral_sensitivity_r": 0.00244545035294904,
+      "elapsed_s": 21.079607248306274
+    },
+    {
+      "subject": "1054",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.3129810395056571,
+          0.19580375573245554,
+          0.13227014723096342,
+          0.0840431958922841,
+          0.05691021145973795,
+          0.04072031790595809,
+          0.0336588898725267,
+          0.029017036193178122,
+          0.02179018217011365,
+          0.018565686102677444,
+          0.016224274413426287,
+          0.012856450620049848,
+          0.01019543832691782,
+          0.009991920945250178,
+          0.005668484340985216
+        ],
+        "cumulative_variance": 0.9806970307121814
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9956330534141516,
+        "mean_eigenvalue_gap": 0.012497419085564876,
+        "mean_median_nn_gap": 0.024896150224956514,
+        "mean_p10_nn_gap": 0.013894975414439395,
+        "mean_ep_score": 79.21341986058206,
+        "spectral_sensitivity": {
+          "r": 0.037061642452272656,
+          "p_nominal": 0.04254927955285602,
+          "p_adjusted": 0.046461788045441495,
+          "rho": 0.022469478744539598,
+          "p_spearman": 0.218951891481621,
+          "n_windows": 2995,
+          "n_eff": 2887
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0024890616834008,
+        "mean_eigenvalue_gap": 0.011313461880261928,
+        "mean_median_nn_gap": 0.020443735139520844,
+        "mean_p10_nn_gap": 0.011973862344869092,
+        "mean_ep_score": 81.07443437846506,
+        "spectral_sensitivity": {
+          "r": 0.03483431036061552,
+          "p_nominal": 0.05663129209920222,
+          "p_adjusted": 0.05692124437752462,
+          "rho": 0.0625948567821767,
+          "p_spearman": 0.0006090887297893212,
+          "n_windows": 2995,
+          "n_eff": 2988
+        }
+      },
+      "delta_spectral_radius": -0.0068560082692491475,
+      "delta_eigenvalue_gap": 0.0011839572053029476,
+      "delta_median_nn_gap": 0.00445241508543567,
+      "delta_p10_nn_gap": 0.001921113069570303,
+      "delta_spectral_sensitivity_r": 0.0022273320916571387,
+      "elapsed_s": 20.663968563079834
+    },
+    {
+      "subject": "1055",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.8334268980698856,
+          0.07824942191347356,
+          0.026540292304198916,
+          0.018229130145944863,
+          0.011913780525262086,
+          0.0064658727713524005,
+          0.004725053664580859,
+          0.0042786199556013385,
+          0.0037827145193856104,
+          0.0028792425273091804,
+          0.0022379314532920244,
+          0.0018155410488848176,
+          0.0012914838105924675,
+          0.0008239378652890212,
+          0.0007729996327923155
+        ],
+        "cumulative_variance": 0.997432920207845
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0001044004897115,
+        "mean_eigenvalue_gap": 0.01184261769763771,
+        "mean_median_nn_gap": 0.022969882589372013,
+        "mean_p10_nn_gap": 0.013024756875091548,
+        "mean_ep_score": 84.97550630841697,
+        "spectral_sensitivity": {
+          "r": 0.08769799158264825,
+          "p_nominal": 1.534635670921494e-06,
+          "p_adjusted": 1.7241927650799792e-06,
+          "rho": 0.09616364843512695,
+          "p_spearman": 1.34405418036039e-07,
+          "n_windows": 2995,
+          "n_eff": 2966
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0025874998997926,
+        "mean_eigenvalue_gap": 0.011278737436314006,
+        "mean_median_nn_gap": 0.021490815764582102,
+        "mean_p10_nn_gap": 0.012218977863323963,
+        "mean_ep_score": 82.1369110866825,
+        "spectral_sensitivity": {
+          "r": 0.03895720888421801,
+          "p_nominal": 0.03301386777167213,
+          "p_adjusted": 0.033754632648895715,
+          "rho": 0.06539942770053907,
+          "p_spearman": 0.000341721023680278,
+          "n_windows": 2995,
+          "n_eff": 2970
+        }
+      },
+      "delta_spectral_radius": -0.002483099410081069,
+      "delta_eigenvalue_gap": 0.0005638802613237032,
+      "delta_median_nn_gap": 0.001479066824789911,
+      "delta_p10_nn_gap": 0.0008057790117675847,
+      "delta_spectral_sensitivity_r": 0.04874078269843024,
+      "elapsed_s": 21.126704692840576
+    },
+    {
+      "subject": "1057",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.2833144763022759,
+          0.18413974460570556,
+          0.11213241318571689,
+          0.10058097260594955,
+          0.06823436632218471,
+          0.06142416840926248,
+          0.04158406041499532,
+          0.03709014528824051,
+          0.025095931874673395,
+          0.016733579941275174,
+          0.014561265645866022,
+          0.013763806442676949,
+          0.00853773026352037,
+          0.008112715918455473,
+          0.006865937788526583
+        ],
+        "cumulative_variance": 0.982171315009325
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9978464548070664,
+        "mean_eigenvalue_gap": 0.012240359326194397,
+        "mean_median_nn_gap": 0.024625783600414397,
+        "mean_p10_nn_gap": 0.013614725022464157,
+        "mean_ep_score": 82.34219228151069,
+        "spectral_sensitivity": {
+          "r": 0.10462414238979977,
+          "p_nominal": 9.518723907966268e-09,
+          "p_adjusted": 1.2491778910793138e-08,
+          "rho": 0.10656240342207068,
+          "p_spearman": 5.034892710039826e-09,
+          "n_windows": 2995,
+          "n_eff": 2947
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0045420981390019,
+        "mean_eigenvalue_gap": 0.010829233204517254,
+        "mean_median_nn_gap": 0.020398374039610735,
+        "mean_p10_nn_gap": 0.011681088708592824,
+        "mean_ep_score": 82.70007312901102,
+        "spectral_sensitivity": {
+          "r": 0.07164015912566211,
+          "p_nominal": 8.708070135930151e-05,
+          "p_adjusted": 8.779500595874928e-05,
+          "rho": 0.07266560465124289,
+          "p_spearman": 6.881574961130566e-05,
+          "n_windows": 2995,
+          "n_eff": 2992
+        }
+      },
+      "delta_spectral_radius": -0.006695643331935508,
+      "delta_eigenvalue_gap": 0.0014111261216771427,
+      "delta_median_nn_gap": 0.004227409560803662,
+      "delta_p10_nn_gap": 0.0019336363138713324,
+      "delta_spectral_sensitivity_r": 0.03298398326413765,
+      "elapsed_s": 20.600929021835327
+    },
+    {
+      "subject": "1060",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.3608259494515709,
+          0.1465232750795965,
+          0.09994609258903585,
+          0.08128922035490213,
+          0.05647440611232845,
+          0.04458928583826116,
+          0.03535074630799428,
+          0.03366467104246393,
+          0.028062381158013957,
+          0.025640836055803203,
+          0.01985062237511175,
+          0.014504757426205725,
+          0.011148432975156086,
+          0.009482787359681583,
+          0.0072943062086626926
+        ],
+        "cumulative_variance": 0.9746477703347882
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9942622131434861,
+        "mean_eigenvalue_gap": 0.013884458996411006,
+        "mean_median_nn_gap": 0.0313055779642258,
+        "mean_p10_nn_gap": 0.015953946206338505,
+        "mean_ep_score": 79.96500987464066,
+        "spectral_sensitivity": {
+          "r": 0.05945080795828645,
+          "p_nominal": 0.0011336791869204345,
+          "p_adjusted": 0.0013445772015361311,
+          "rho": 0.060087517579810144,
+          "p_spearman": 0.0010019262943567128,
+          "n_windows": 2995,
+          "n_eff": 2906
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0046110057120694,
+        "mean_eigenvalue_gap": 0.01094546411650495,
+        "mean_median_nn_gap": 0.020263876332365073,
+        "mean_p10_nn_gap": 0.0117813837549143,
+        "mean_ep_score": 85.4655343590597,
+        "spectral_sensitivity": {
+          "r": 0.04802132764744364,
+          "p_nominal": 0.00857716836766335,
+          "p_adjusted": 0.008756256701867814,
+          "rho": 0.07058795659572643,
+          "p_spearman": 0.00011052210344528521,
+          "n_windows": 2995,
+          "n_eff": 2979
+        }
+      },
+      "delta_spectral_radius": -0.010348792568583343,
+      "delta_eigenvalue_gap": 0.0029389948799060563,
+      "delta_median_nn_gap": 0.011041701631860724,
+      "delta_p10_nn_gap": 0.004172562451424205,
+      "delta_spectral_sensitivity_r": 0.011429480310842809,
+      "elapsed_s": 20.746230125427246
+    },
+    {
+      "subject": "1061",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.30472634605660737,
+          0.15375798590169354,
+          0.10323133241051846,
+          0.08929531739229926,
+          0.07668522209138913,
+          0.057371529822765596,
+          0.044560303087399576,
+          0.036599167225437726,
+          0.027715535372451694,
+          0.020231875339803473,
+          0.019010111014286932,
+          0.015181863527120316,
+          0.012085090031052886,
+          0.010097211516381268,
+          0.006930033718878933
+        ],
+        "cumulative_variance": 0.9774789245080862
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9985648217213968,
+        "mean_eigenvalue_gap": 0.012325341662248848,
+        "mean_median_nn_gap": 0.022983585531535858,
+        "mean_p10_nn_gap": 0.013448631832753126,
+        "mean_ep_score": 88.33610278300687,
+        "spectral_sensitivity": {
+          "r": 0.03913300550128168,
+          "p_nominal": 0.03223032750877608,
+          "p_adjusted": 0.03428456099917862,
+          "rho": 0.03141334725503485,
+          "p_spearman": 0.08564132327036734,
+          "n_windows": 2995,
+          "n_eff": 2926
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0038986328753146,
+        "mean_eigenvalue_gap": 0.011177788180831595,
+        "mean_median_nn_gap": 0.02081290439375439,
+        "mean_p10_nn_gap": 0.012117613380260737,
+        "mean_ep_score": 88.08008156392066,
+        "spectral_sensitivity": {
+          "r": 0.0615220372161057,
+          "p_nominal": 0.0007552982601767614,
+          "p_adjusted": 0.0007900094515545778,
+          "rho": 0.07674417465112707,
+          "p_spearman": 2.617809034252782e-05,
+          "n_windows": 2995,
+          "n_eff": 2973
+        }
+      },
+      "delta_spectral_radius": -0.0053338111539177335,
+      "delta_eigenvalue_gap": 0.0011475534814172524,
+      "delta_median_nn_gap": 0.0021706811377814675,
+      "delta_p10_nn_gap": 0.0013310184524923888,
+      "delta_spectral_sensitivity_r": -0.022389031714824016,
+      "elapsed_s": 20.67998480796814
+    },
+    {
+      "subject": "1062",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.2898569719485573,
+          0.19835628794664972,
+          0.10462442939293365,
+          0.09072157931116977,
+          0.058043745288057266,
+          0.04558059734135461,
+          0.042725885677694884,
+          0.03398416644525929,
+          0.026099691705617923,
+          0.022353218283843117,
+          0.01849047651398992,
+          0.013990816597082506,
+          0.012053511373947706,
+          0.010546649663035108,
+          0.006163673611389247
+        ],
+        "cumulative_variance": 0.9735917011005819
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9982968572617531,
+        "mean_eigenvalue_gap": 0.012594214456351154,
+        "mean_median_nn_gap": 0.024851794366777664,
+        "mean_p10_nn_gap": 0.013833536230185576,
+        "mean_ep_score": 76.69862311540308,
+        "spectral_sensitivity": {
+          "r": 0.09430200377412974,
+          "p_nominal": 2.3384634979857389e-07,
+          "p_adjusted": 2.565001808921428e-07,
+          "rho": 0.10110490969077378,
+          "p_spearman": 2.9390212273054244e-08,
+          "n_windows": 2995,
+          "n_eff": 2975
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0039586518656367,
+        "mean_eigenvalue_gap": 0.010811429387563047,
+        "mean_median_nn_gap": 0.02164386816341328,
+        "mean_p10_nn_gap": 0.011970892120625725,
+        "mean_ep_score": 89.27436567013741,
+        "spectral_sensitivity": {
+          "r": 0.09376362971328896,
+          "p_nominal": 2.7393565981213615e-07,
+          "p_adjusted": 2.867502151062581e-07,
+          "rho": 0.09394682341629707,
+          "p_spearman": 2.5960189823949637e-07,
+          "n_windows": 2995,
+          "n_eff": 2985
+        }
+      },
+      "delta_spectral_radius": -0.0056617946038836076,
+      "delta_eigenvalue_gap": 0.0017827850687881074,
+      "delta_median_nn_gap": 0.003207926203364384,
+      "delta_p10_nn_gap": 0.0018626441095598509,
+      "delta_spectral_sensitivity_r": 0.000538374060840785,
+      "elapsed_s": 20.584792852401733
+    },
+    {
+      "subject": "1064",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.32804412911690195,
+          0.23242081586949348,
+          0.09050026339080083,
+          0.07060715463295476,
+          0.057933438425763734,
+          0.049015298553874494,
+          0.03438138873164834,
+          0.024813513730854234,
+          0.022742627380167264,
+          0.017511506163469723,
+          0.012574575891953635,
+          0.010460552923095804,
+          0.009989983956213713,
+          0.00878785585544999,
+          0.006939036795802972
+        ],
+        "cumulative_variance": 0.976722141418445
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9969369661792145,
+        "mean_eigenvalue_gap": 0.01209173176218257,
+        "mean_median_nn_gap": 0.024765288811444162,
+        "mean_p10_nn_gap": 0.013370376978787249,
+        "mean_ep_score": 81.22342952075056,
+        "spectral_sensitivity": {
+          "r": 0.06329968116349911,
+          "p_nominal": 0.0005278584615837882,
+          "p_adjusted": 0.0005981516966602376,
+          "rho": 0.0563346556659818,
+          "p_spearman": 0.002041235868777686,
+          "n_windows": 2995,
+          "n_eff": 2937
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0024413813632973,
+        "mean_eigenvalue_gap": 0.010625082272667315,
+        "mean_median_nn_gap": 0.021638972207045696,
+        "mean_p10_nn_gap": 0.011843757305941493,
+        "mean_ep_score": 96.36630707578753,
+        "spectral_sensitivity": {
+          "r": 0.07601084206666503,
+          "p_nominal": 3.1257904365584314e-05,
+          "p_adjusted": 3.3837247535880534e-05,
+          "rho": 0.09027999406941806,
+          "p_spearman": 7.468696949740921e-07,
+          "n_windows": 2995,
+          "n_eff": 2969
+        }
+      },
+      "delta_spectral_radius": -0.005504415184082845,
+      "delta_eigenvalue_gap": 0.0014666494895152551,
+      "delta_median_nn_gap": 0.003126316604398466,
+      "delta_p10_nn_gap": 0.0015266196728457564,
+      "delta_spectral_sensitivity_r": -0.012711160903165916,
+      "elapsed_s": 20.868796348571777
+    },
+    {
+      "subject": "1067",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.5210318139078576,
+          0.3692541902885246,
+          0.07130961056327349,
+          0.01863045772057276,
+          0.008364677812395069,
+          0.004014965235803718,
+          0.0018795164078991725,
+          0.0013366973034972878,
+          0.0008432076958844781,
+          0.0006770182501210486,
+          0.0005533190548655185,
+          0.0003662739374137401,
+          0.00034833670262391985,
+          0.00030953176724275716,
+          0.00020891442652219401
+        ],
+        "cumulative_variance": 0.9991285310744974
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9966123909044716,
+        "mean_eigenvalue_gap": 0.012163783871724914,
+        "mean_median_nn_gap": 0.026165303863103593,
+        "mean_p10_nn_gap": 0.01374142894100576,
+        "mean_ep_score": 83.90502936558558,
+        "spectral_sensitivity": {
+          "r": 0.05376067217043166,
+          "p_nominal": 0.0032500787578371134,
+          "p_adjusted": 0.003621134385889538,
+          "rho": 0.05059747379238843,
+          "p_spearman": 0.00561173379069732,
+          "n_windows": 2995,
+          "n_eff": 2927
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.001041393020968,
+        "mean_eigenvalue_gap": 0.011488009606090251,
+        "mean_median_nn_gap": 0.02230675396764994,
+        "mean_p10_nn_gap": 0.012562460580549367,
+        "mean_ep_score": 91.83036823764887,
+        "spectral_sensitivity": {
+          "r": 0.06324160408507748,
+          "p_nominal": 0.000534149678199602,
+          "p_adjusted": 0.000603848683806387,
+          "rho": 0.0627549063815884,
+          "p_spearman": 0.0005896832329631311,
+          "n_windows": 2995,
+          "n_eff": 2938
+        }
+      },
+      "delta_spectral_radius": -0.004429002116496439,
+      "delta_eigenvalue_gap": 0.0006757742656346623,
+      "delta_median_nn_gap": 0.0038585498954536515,
+      "delta_p10_nn_gap": 0.0011789683604563929,
+      "delta_spectral_sensitivity_r": -0.009480931914645822,
+      "elapsed_s": 20.618907690048218
+    },
+    {
+      "subject": "1068",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.9256694907027042,
+          0.023073563083329172,
+          0.013930824231926191,
+          0.00974997550939883,
+          0.006957562019557082,
+          0.004896283112293401,
+          0.0038612558037231337,
+          0.002254729064795015,
+          0.0021152634729055156,
+          0.001777622279756819,
+          0.0013988778613079197,
+          0.0008998704681022362,
+          0.0008864246385239665,
+          0.0007112641959285095,
+          0.0005312980092120386
+        ],
+        "cumulative_variance": 0.998714304453464
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9986346363592297,
+        "mean_eigenvalue_gap": 0.012104376423867871,
+        "mean_median_nn_gap": 0.027177938108508822,
+        "mean_p10_nn_gap": 0.013812590636683362,
+        "mean_ep_score": 91.77819944632178,
+        "spectral_sensitivity": {
+          "r": 0.030031461971963457,
+          "p_nominal": 0.1003407053792662,
+          "p_adjusted": 0.10717075807143321,
+          "rho": 0.040789905435912224,
+          "p_spearman": 0.025595821295341294,
+          "n_windows": 2995,
+          "n_eff": 2879
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.005300240298693,
+        "mean_eigenvalue_gap": 0.010791917454321056,
+        "mean_median_nn_gap": 0.02140961525813087,
+        "mean_p10_nn_gap": 0.011887907429516318,
+        "mean_ep_score": 86.9439384234707,
+        "spectral_sensitivity": {
+          "r": 0.05921022105883783,
+          "p_nominal": 0.001187501045912542,
+          "p_adjusted": 0.001214899307975627,
+          "rho": 0.07664611046942152,
+          "p_spearman": 2.6808781935613804e-05,
+          "n_windows": 2995,
+          "n_eff": 2983
+        }
+      },
+      "delta_spectral_radius": -0.00666560393946336,
+      "delta_eigenvalue_gap": 0.001312458969546815,
+      "delta_median_nn_gap": 0.005768322850377951,
+      "delta_p10_nn_gap": 0.0019246832071670439,
+      "delta_spectral_sensitivity_r": -0.029178759086874374,
+      "elapsed_s": 21.025277614593506
+    },
+    {
+      "subject": "1071",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.5448269580684776,
+          0.4051311514415613,
+          0.02094679783130322,
+          0.01689926899503395,
+          0.0037698194838141964,
+          0.0020659979319623593,
+          0.001757932039894448,
+          0.0010547502071829096,
+          0.0008036005604742985,
+          0.0005053855497369253,
+          0.0004234369771260922,
+          0.0003846144937830425,
+          0.00029456446757376403,
+          0.0002515088242449714,
+          0.00019656604535638435
+        ],
+        "cumulative_variance": 0.9993123529175254
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9936935050004562,
+        "mean_eigenvalue_gap": 0.01385260020671129,
+        "mean_median_nn_gap": 0.027057747748310233,
+        "mean_p10_nn_gap": 0.015123685444446786,
+        "mean_ep_score": 73.32548479920862,
+        "spectral_sensitivity": {
+          "r": 0.045408162988874706,
+          "p_nominal": 0.012945007750926017,
+          "p_adjusted": 0.014080681712725803,
+          "rho": 0.03355605965313547,
+          "p_spearman": 0.06633410049900662,
+          "n_windows": 2995,
+          "n_eff": 2923
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0033344087459495,
+        "mean_eigenvalue_gap": 0.01164961878754874,
+        "mean_median_nn_gap": 0.023973601187773134,
+        "mean_p10_nn_gap": 0.013019788824067945,
+        "mean_ep_score": 81.80481933926309,
+        "spectral_sensitivity": {
+          "r": 0.07462105965751828,
+          "p_nominal": 4.3557430685334994e-05,
+          "p_adjusted": 4.525652012063289e-05,
+          "rho": 0.12352978623528868,
+          "p_spearman": 1.1726819243024221e-11,
+          "n_windows": 2995,
+          "n_eff": 2982
+        }
+      },
+      "delta_spectral_radius": -0.009640903745493312,
+      "delta_eigenvalue_gap": 0.00220298141916255,
+      "delta_median_nn_gap": 0.003084146560537099,
+      "delta_p10_nn_gap": 0.0021038966203788412,
+      "delta_spectral_sensitivity_r": -0.029212896668643573,
+      "elapsed_s": 20.78037428855896
+    },
+    {
+      "subject": "1074",
+      "pca_mode": "shared_subspace",
+      "shared_pca_info": {
+        "n_states": 2,
+        "state_labels": [
+          "awake",
+          "sed_run1"
+        ],
+        "samples_per_state": {
+          "awake": 150000,
+          "sed_run1": 150000
+        },
+        "total_samples_pooled": 300000,
+        "n_components": 15,
+        "explained_variance_ratio": [
+          0.2479817539360645,
+          0.161665045608981,
+          0.12776856872096007,
+          0.07580085573144701,
+          0.07130911958360268,
+          0.06197911804229072,
+          0.05381186619147965,
+          0.03816653659344179,
+          0.027535032553435448,
+          0.023223184812500863,
+          0.022432558857362415,
+          0.019003460011460367,
+          0.013339122558031609,
+          0.010387898238476762,
+          0.009933868226660848
+        ],
+        "cumulative_variance": 0.9643379896661957
+      },
+      "awake": {
+        "condition": "awake",
+        "n_windows": 2995,
+        "mean_spectral_radius": 0.9998025666883793,
+        "mean_eigenvalue_gap": 0.0118306347863696,
+        "mean_median_nn_gap": 0.023996069494884177,
+        "mean_p10_nn_gap": 0.013164689463608626,
+        "mean_ep_score": 85.79790191570692,
+        "spectral_sensitivity": {
+          "r": 0.09655626222304842,
+          "p_nominal": 1.194316670342017e-07,
+          "p_adjusted": 1.6281676698436565e-07,
+          "rho": 0.08897661365601944,
+          "p_spearman": 1.0769529911500706e-06,
+          "n_windows": 2995,
+          "n_eff": 2931
+        }
+      },
+      "sedation_run1": {
+        "condition": "sed_run1",
+        "n_windows": 2995,
+        "mean_spectral_radius": 1.0047194224243214,
+        "mean_eigenvalue_gap": 0.011406246845345748,
+        "mean_median_nn_gap": 0.02220168071222925,
+        "mean_p10_nn_gap": 0.012511788719169364,
+        "mean_ep_score": 83.5647071243871,
+        "spectral_sensitivity": {
+          "r": 0.07898060167739389,
+          "p_nominal": 1.5095119134860812e-05,
+          "p_adjusted": 1.539528185536094e-05,
+          "rho": 0.09203186435771214,
+          "p_spearman": 4.5305253417876925e-07,
+          "n_windows": 2995,
+          "n_eff": 2989
+        }
+      },
+      "delta_spectral_radius": -0.004916855735942138,
+      "delta_eigenvalue_gap": 0.0004243879410238509,
+      "delta_median_nn_gap": 0.001794388782654928,
+      "delta_p10_nn_gap": 0.0006529007444392616,
+      "delta_spectral_sensitivity_r": 0.01757566054565453,
+      "elapsed_s": 20.890430450439453
+    }
+  ],
+  "group_statistics": {
+    "spectral_radius": {
+      "mean_awake": 0.9978436251946986,
+      "mean_sed": 1.0025202470858574,
+      "mean_diff": -0.004676621891158817,
+      "t": -7.690290653565572,
+      "p": 2.997431207651293e-07,
+      "cohens_d": -1.7196012668103906,
+      "n": 20
+    },
+    "min_eigenvalue_gap": {
+      "mean_awake": 0.01223555864181716,
+      "mean_sed": 0.01140439964638102,
+      "mean_diff": 0.000831158995436144,
+      "t": 3.5023960574623305,
+      "p": 0.0023823570737656645,
+      "cohens_d": 0.783159566861303,
+      "n": 20
+    },
+    "median_nn_gap": {
+      "mean_awake": 0.024416508168819955,
+      "mean_sed": 0.022010353438607615,
+      "mean_diff": 0.0024061547302123352,
+      "t": 3.4759176822440625,
+      "p": 0.00252984689999814,
+      "cohens_d": 0.7772388221691237,
+      "n": 20
+    },
+    "p10_nn_gap": {
+      "mean_awake": 0.013519239981904744,
+      "mean_sed": 0.0124276818478203,
+      "mean_diff": 0.001091558134084443,
+      "t": 3.856024279175511,
+      "p": 0.0010645262650547647,
+      "cohens_d": 0.8622332411126069,
+      "n": 20
+    },
+    "spectral_sensitivity": {
+      "mean_awake": 0.06960386102031377,
+      "mean_sed": 0.042057734180487985,
+      "mean_diff": 0.027546126839825776,
+      "t": 2.475374406248486,
+      "p": 0.022896926057114967,
+      "cohens_d": 0.5535105442134794,
+      "n": 20
+    },
+    "fdr_correction": {
+      "spectral_radius": {
+        "p": 2.997431207651293e-07,
+        "fdr_significant": true
+      },
+      "min_eigenvalue_gap": {
+        "p": 0.0023823570737656645,
+        "fdr_significant": true
+      },
+      "median_nn_gap": {
+        "p": 0.00252984689999814,
+        "fdr_significant": true
+      },
+      "p10_nn_gap": {
+        "p": 0.0010645262650547647,
+        "fdr_significant": true
+      },
+      "spectral_sensitivity": {
+        "p": 0.022896926057114967,
+        "fdr_significant": true
+      }
+    },
+    "comparison_to_original": {
+      "spectral_radius": {
+        "original_d": -1.6637778680873705,
+        "original_p": 4.834233011005602e-07,
+        "shared_d": -1.7196012668103906,
+        "shared_p": 2.997431207651293e-07
+      },
+      "min_eigenvalue_gap": {
+        "original_d": 0.7063444169082915,
+        "original_p": 0.005169007162714185,
+        "shared_d": 0.783159566861303,
+        "shared_p": 0.0023823570737656645
+      }
+    }
+  }
+}

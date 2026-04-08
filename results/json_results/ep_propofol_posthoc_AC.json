@@ -1,0 +1,30 @@
+{
+  "gap_widening": {
+    "mean_awake": 0.012183476276425359,
+    "mean_sed_run1": 0.011398636232000726,
+    "mean_diff_sed_minus_awake": -0.0007848400444246332,
+    "t": -3.1588682634687837,
+    "p_onesided": 0.9974154964186429,
+    "cohens_d": -0.7063444169082915,
+    "n": 20,
+    "hypothesis": "sed_run1 gap > awake gap (modes decouple under propofol)"
+  },
+  "delta_delta_correlation": {
+    "r": -0.6825858813035034,
+    "p": 0.0009125768008944378,
+    "rho": -0.5714285714285714,
+    "p_spearman": 0.008489085694766677,
+    "n_subjects": 20,
+    "description": "cross-subject correlation of delta_r (awake-sed spec_sens) vs delta_gap (awake-sed eigenvalue gap). Deltas are awake minus sed: positive delta_r = sensitivity loss, negative delta_gap = gap widening. A NEGATIVE r supports the hypothesis."
+  },
+  "fdr_correction": {
+    "gap_widening": {
+      "p": 0.9974154964186429,
+      "fdr_significant": false
+    },
+    "delta_delta_correlation": {
+      "p": 0.0009125768008944378,
+      "fdr_significant": true
+    }
+  }
+}

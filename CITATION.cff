@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite it as below."
+title: "Eigenvalue and eigenvector geometry of fitted linear operators covaries with criticality-related measures and distinguishes brain states in human electrophysiology"
+type: software
+authors:
+  - family-names: Peterkin
+    given-names: Phillip
+    orcid: "https://orcid.org/0009-0006-4525-6685"
+    affiliation: "Independent Researcher, Albany, Oregon, United States"
+version: "1.0.0"
+date-released: "2025-01-01"
+license: MIT
+repository-code: "https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry"
+doi: "10.5281/zenodo.XXXXXXX"
+keywords:
+  - criticality
+  - neuronal avalanches
+  - non-normal dynamics
+  - eigenvalue geometry
+  - anesthesia
+  - sleep
+  - electrophysiology
+  - iEEG
+  - EEG
+abstract: >-
+  Code and results for a study reporting that criticality-related summary
+  statistics and geometry summaries of fitted linear operators covary
+  systematically in human electrophysiological data. Eigenvalue spacing and
+  eigenvector non-orthogonality measures derived from sliding-window VAR(1)
+  operators provide descriptive coordinates for inter-individual and
+  state-dependent variability that are not reducible to spectral power alone.
