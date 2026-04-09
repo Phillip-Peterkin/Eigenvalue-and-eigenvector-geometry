@@ -1,4 +1,4 @@
-# Eigenvalue and Eigenvector Geometry of Fitted Linear Operators
+# Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology
 
 Covaries with Criticality-Related Measures and Distinguishes Brain States in Human Electrophysiology
 
