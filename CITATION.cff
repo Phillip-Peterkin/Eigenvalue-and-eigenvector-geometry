@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or data, please cite it as below."
-title: "Eigenvalue and eigenvector geometry of fitted linear operators covaries with criticality-related measures and distinguishes brain states in human electrophysiology"
+title: "Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology"
 type: software
 authors:
   - family-names: Peterkin

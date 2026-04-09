@@ -45,8 +45,8 @@ The JSON result files in `results/json_results/` use key names that include "EP"
 
 | JSON Key | Cautious Interpretation |
 |----------|----------------------|
-| `spectral_sensitivity` | Cross-cohort generalization of spectral radius sensitivity (not independent replication) |
-| `svd_dimension` | Cross-cohort generalization of effective rank vs geometry score relationship |
+| `spectral_sensitivity` | Independent replication of spectral radius sensitivity (separate Zurich SEEG dataset) |
+| `svd_dimension` | Independent replication of effective rank vs geometry score relationship |
 | `state_contrast` | Task condition contrasts (set-size effects in verbal working memory) |
 
 ### jackknife_sensitivity.json

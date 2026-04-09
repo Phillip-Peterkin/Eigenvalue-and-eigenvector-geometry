@@ -466,7 +466,7 @@ def main():
     subjects = config["data"]["subjects"]
 
     log(f"{'='*70}")
-    log(f"CMCC CROSS-COHORT GENERALIZATION — ds004752 (Zurich SEEG)")
+    log(f"CMCC INDEPENDENT REPLICATION — ds004752 (Zurich SEEG)")
     log(f"  {len(subjects)} subjects, line_freq={config['preprocessing']['line_freq']} Hz")
     log(f"  HG passband: {config['preprocessing']['high_gamma_passband']}")
     log(f"  Results: {results_dir}")

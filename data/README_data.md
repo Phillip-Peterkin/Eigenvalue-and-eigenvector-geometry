@@ -4,15 +4,23 @@ This repository does not include raw data. All datasets used in this study are p
 
 ## Datasets
 
-### 1. Zurich SEEG (intracranial EEG)
+### 1. COGITATE iEEG Experiment 1 (Primary iEEG analysis)
+
+- **Source**: Cogitate Consortium
+- **Direct link**: https://cogitate-data.ae.mpg.de/
+- **Reference**: Melloni et al., 2023
+- **Used for**: Primary intracranial criticality and operator-geometry analysis (n=18 ECoG subjects)
+
+### 2. Zurich SEEG (Independent replication)
 
 - **OpenNeuro**: ds004752
 - **DOI**: [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1)
 - **Direct link**: https://openneuro.org/datasets/ds004752
 - **License**: CC0
-- **Used for**: Intracranial criticality analysis (n=18 subjects) and cross-cohort generalization (n=15 subjects)
+- **Reference**: Dimakopoulos et al., eLife 2022
+- **Used for**: Independent replication of operator-geometry analysis (n=15 SEEG subjects)
 
-### 2. Cambridge Propofol EEG
+### 3. Cambridge Propofol EEG
 
 - **OpenNeuro**: ds005620
 - **DOI**: [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0)
@@ -20,7 +28,7 @@ This repository does not include raw data. All datasets used in this study are p
 - **License**: CC0
 - **Used for**: Propofol sedation vs. wakefulness operator-geometry analysis (n=20 subjects)
 
-### 3. Sleep EEG
+### 4. Sleep EEG
 
 - **OSF**: R26FH
 - **DOI**: [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH)

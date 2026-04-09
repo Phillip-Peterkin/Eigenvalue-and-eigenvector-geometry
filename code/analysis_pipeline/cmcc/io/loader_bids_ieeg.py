@@ -9,7 +9,7 @@ Sampling rates are 2000 or 4096 Hz depending on subject/system.
 
 This loader reads standard BIDS iEEG layout and returns data structures
 compatible with the CMCC analysis pipeline, enabling a modality-matched
-cross-cohort generalization test on data from a different lab, paradigm,
+independent replication test on data from a different lab, paradigm,
 patient population, and recording system.
 
 Units

@@ -37,5 +37,5 @@ robustness,jackknife_tau_vs_ep,leave_one_out,n_significant,17,,,,jackknife_sensi
 robustness,multiblock_sleep_N3_vs_REM,multi_block_avg,paired_t,9.085,7.91e-06,d=3.028,10,sleep_multiblock_robustness.json
 robustness,multiblock_sleep_awake_vs_REM,multi_block_avg,paired_t,13.027,3.81e-07,d=4.342,10,sleep_multiblock_robustness.json
 robustness,multiblock_sleep_awake_vs_N3,multi_block_avg,paired_t,3.386,0.008,d=1.129,10,sleep_multiblock_robustness.json
-cross_cohort,spectral_sensitivity,ds004752,mean_r,0.097,2.55e-08,,15,ep_advanced_ds004752.json
-cross_cohort,svd_dimension,ds004752,mean_r,-0.015,6.04e-05,,15,ep_advanced_ds004752.json
+independent_replication,spectral_sensitivity,ds004752,mean_r,0.097,2.55e-08,,15,ep_advanced_ds004752.json
+independent_replication,svd_dimension,ds004752,mean_r,-0.015,6.04e-05,,15,ep_advanced_ds004752.json
