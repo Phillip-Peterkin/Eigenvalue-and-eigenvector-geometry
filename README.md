@@ -1,5 +1,8 @@
 # Sample Code for: Eigenvalue and Eigenvector Geometry of Fitted Linear Operators Covaries with Criticality-Related Measures and Distinguishes Brain States in Human Electrophysiology
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: CC BY 4.0](https://img.shields.io/badge/Manuscript-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
 ## Introduction
 
 This repository contains the code and results that accompany Peterkin (2025) "Eigenvalue and eigenvector geometry of fitted linear operators covaries with criticality-related measures and distinguishes brain states in human electrophysiology." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.

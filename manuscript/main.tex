@@ -51,31 +51,41 @@
 
 \begin{document}
 
-\begin{frontmatter}
+% ---- Title/Author/Abstract page (bioRxiv-style, APA-like layout) ----
+\begin{center}
+{\Large\bfseries Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology\par}
+\vspace{6pt}
+{\normalsize Phillip Peterkin\textsuperscript{1}\par}
+\vspace{3pt}
+{\footnotesize \textsuperscript{1}Independent Researcher, Albany, Oregon, United States\par}
+\end{center}
 
-\title{Eigenvalue and eigenvector geometry of fitted linear operators covaries with criticality-related measures and distinguishes brain states in human electrophysiology}
+\vspace{6pt}
+\begin{center}
+{\normalsize\bfseries Author Note\par}
+\vspace{3pt}
+{\footnotesize Phillip Peterkin ORCID: 0009-0006-4525-6685\par}
+{\footnotesize Correspondence: peterkin.phillip@gmail.com\par}
+\end{center}
 
-\author[1]{Phillip Peterkin\orcidlink{0009-0006-4525-6685}}
-\address[1]{Independent Researcher, Albany, Oregon, United States}
-\cortext[cor1]{Corresponding author}
-\ead{peterkin.phillip@gmail.com}
+\vspace{6pt}
+\begin{center}
+{\normalsize\bfseries Abstract\par}
+\end{center}
 
-\begin{abstract}
-Criticality-related measures are widely used to summarize near-critical brain dynamics, but their relationship to fitted dynamical-operator geometry is less well characterized. Here we report that criticality-related measures in human electrophysiology covary with eigenvalue and eigenvector geometry extracted from sliding-window VAR(1) operators, providing a descriptive account of inter-individual and state-dependent variability that is not reducible to spectral power alone.
+\begin{center}
+\begin{minipage}{0.86\textwidth}
+\footnotesize
+Criticality-related measures are widely used to summarize near-critical brain dynamics. We asked how these measures relate to eigenvalue- and eigenvector-geometry summaries of sliding-window VAR(1) operators fitted under a fixed preprocessing and dimensionality-reduction pipeline. In intracranial recordings, high-gamma activity was more subcritical than broadband activity (branching ratio $\sigma_{\mathrm{HG}}=0.974$ vs.~$\sigma_{\mathrm{BB}}=0.991$; mixed-effects $p<10^{-8}$). Across subjects, a composite operator-geometry score (``EP score,'' combining eigenvalue proximity and eigenvector non-orthogonality) covaried strongly with branching ratio ($r=0.86$, $p<10^{-5}$) and inversely with Lempel--Ziv complexity ($r=-0.68$, $p=0.002$). In scalp EEG, minimum eigenvalue spacing (at fixed model dimension) was largely independent of alpha and delta power yet distinguished propofol sedation from wakefulness ($d=0.71$) and REM sleep from N3 ($d=-2.51$); these separations survived shared-subspace estimation and generalized across alternative local-spacing metrics. Phase-randomized surrogates constrained interpretation of sensitivity: absolute spectral sensitivity was not specific to neural temporal structure, so sensitivity results are interpreted comparatively. Together, fitted operator-geometry summaries provide a complementary set of descriptive coordinates for variation across subjects, frequency bands, and states in these datasets.
+\end{minipage}
+\end{center}
 
-In intracranial recordings, high-gamma activity was more subcritical than broadband activity (branching ratio $\sigma_{\mathrm{HG}}=0.974$ vs.~$\sigma_{\mathrm{BB}}=0.991$; mixed-effects $p<10^{-8}$), while complexity and long-range correlation measures dissociated across bands. Across subjects, a composite geometry score (based on eigenvalue proximity and eigenvector non-orthogonality) covaried strongly with branching ratio ($r=0.86$, $p<10^{-5}$) and inversely with Lempel--Ziv complexity ($r=-0.68$, $p=0.002$). In scalp EEG, minimum eigenvalue spacing was largely independent of alpha and delta power yet distinguished propofol sedation from wakefulness ($d=0.71$) and REM sleep from N3 ($d=-2.51$). Propofol and sleep occupied distinguishable regions of these fitted geometry summaries, with spacing tightest in REM rather than in the deepest stage of pharmacological sedation. These state effects survived a shared-subspace robustness analysis and generalized across alternative local-spacing metrics.
+{\footnotesize\noindent\textit{Keywords:} criticality, neuronal avalanches, non-normal dynamics, eigenvalue geometry, anesthesia, sleep\par}
 
-Phase-randomized surrogates constrained interpretation. Absolute spectral sensitivity was not specific to neural temporal structure, so sensitivity-based results are reported comparatively. Overall, fitted operator-geometry summaries provide complementary, largely power-independent descriptive coordinates for brain-state variation.
-\end{abstract}
-
-\begin{keyword}
-criticality \sep neuronal avalanches \sep non-normal dynamics \sep eigenvalue geometry \sep anesthesia \sep sleep
-\end{keyword}
-
-\end{frontmatter}
+\clearpage
 
 \section*{Significance}
-Criticality-related measures summarize aspects of near-critical brain dynamics but do not directly describe the geometry of fitted dynamical operators. Using human iEEG and scalp EEG, we show that eigenvalue spacing and eigenvector non-orthogonality measures derived from sliding-window VAR(1) operators covary with conventional criticality statistics across individuals and distinguish propofol sedation and sleep stages in ways that are not explained by alpha- or delta-power. The main state effects persist under shared-subspace estimation and generalize to an independent SEEG cohort through stable geometry--dynamics relationships, not task modulation. These operator-geometry summaries provide additional descriptive coordinates for inter-individual and state-dependent variability in fitted operator geometry.
+Criticality-related measures summarize aspects of near-critical brain dynamics but do not directly describe the geometry of fitted multivariate operators. Using human iEEG and scalp EEG, we show that eigenvalue-spacing and eigenvector-geometry summaries derived from sliding-window VAR(1) models covary with conventional criticality statistics across individuals and separate propofol sedation and sleep stages under this analysis pipeline in ways that are not explained by alpha- or delta-power. The main state effects persist under shared-subspace estimation, and a secondary SEEG analysis within ds004752 supports stable geometry--dynamics relationships more strongly than task-condition contrasts. These fitted operator-geometry summaries provide additional descriptive coordinates for inter-individual and state-dependent variability in these datasets.
 
 % Note (Elsevier submission): Highlights are typically required as a separate editable file.
 % See highlights.txt in this project.
@@ -88,15 +98,15 @@ Criticality-related measures summarize aspects of near-critical brain dynamics b
 
 Neural systems are widely hypothesized to operate near a critical regime that balances stability with responsiveness. Evidence spans neuronal avalanche statistics, long-range temporal correlations, and signal-complexity measures across species, recording modalities, and behavioral states \citep{Beggs2003,Shriki2013,Lombardi2023,Srinivasan2024,Xin2025,Hengen2025,GirardiSchappo2021,Hardstone2012,Grubov2025,Mesquita2021,LempelZiv1976,Schartner2015,Li2024,Newman2025,Angiolelli2025}. Departures from near-critical dynamics accompany altered arousal, pharmacological sedation, and neuropsychiatric conditions \citep{Gervais2023,Maschke2024,Angiolelli2025}.
 
-Two converging lines of work motivate the present study. First, criticality-related measures track consciousness-relevant state transitions with increasing precision. Propofol and xenon shift the brain away from criticality, whereas ketamine largely preserves near-critical statistics \citep{Maschke2024,Curic2024}. During sleep, avalanche scaling can remain approximately intact across stages even as avalanche density and temporal patterning vary with depth \citep{Pereira2023,Huo2024}. These dynamics covary with perturbational complexity \citep{Casarotto2024,Xu2024} and intersect with leading theoretical accounts of consciousness \citep{Tononi2025,Melloni2023,Keppler2024}. Collectively, the data establish that ``distance from criticality'' carries information about brain state---but they leave open the question of what that distance looks like geometrically.
+Two converging lines of work motivate the present study. First, criticality-related measures track state variation across pharmacological and physiological perturbations. Propofol and xenon shift multiple criticality-related summaries away from a near-critical regime, whereas ketamine can preserve near-critical statistics in some analyses \citep{Maschke2024,Curic2024}. During sleep, avalanche scaling can remain approximately intact across stages even as avalanche density and temporal patterning vary \citep{Pereira2023,Huo2024}. These observations motivate quantifying ``distance from criticality'' as a descriptive coordinate of state, while leaving open what that distance corresponds to geometrically and how it depends on estimators and preprocessing.
 
-Second, linear dynamical analyses offer a complementary perspective on state transitions. Propofol shifts the eigenvalue spectrum of fitted operators toward instability \citep{Eisen2024,Eisen2026}, and chemically distinct anesthetics produce distinguishable spectral signatures \citep{Davila2025,BerjagaBuisan2025}. Yet eigenvalue location alone incompletely describes the behavior of non-normal systems, where eigenvector geometry---alignment, condition number, and transient amplification capacity---shapes dynamics as much as eigenvalue placement \citep{Barzon2025,Stroud2024,Troude2025,Horrocks2024,Galgali2023,Jarne2023}.
+Second, linear dynamical analyses offer a complementary descriptive perspective on state variation. Propofol shifts the eigenvalue spectrum of fitted operators toward instability \citep{Eisen2024,Eisen2026}, and chemically distinct anesthetics can produce distinguishable spectral signatures \citep{Davila2025,BerjagaBuisan2025}. Yet eigenvalue location alone incompletely describes non-normal systems, where eigenvector geometry---alignment, condition number, and transient amplification capacity---can shape observed dynamics as much as eigenvalue placement \citep{Barzon2025,Stroud2024,Troude2025,Horrocks2024,Galgali2023,Jarne2023}.
 
-A central practical limitation of many state and criticality analyses is that they summarize time series using scalar measures (e.g., avalanche statistics or band-limited power) without directly characterizing the geometry of fitted multivariate dynamics. In this study we use two operator-geometry summaries extracted from fitted autoregressive operators---minimum eigenvalue spacing and eigenvector non-orthogonality (via an eigenvector condition number)---as descriptive coordinates of the estimated linear dynamics. These summaries are computed within a specific preprocessing and modeling pipeline and are interpreted as correlational descriptors rather than as evidence for singularities, topological structure, or mechanistic ``exceptional points''.
+A practical limitation of many state and criticality analyses is that they summarize time series with scalar measures (e.g., avalanche statistics or band-limited power) without directly characterizing the geometry of fitted multivariate dynamics. Here we treat sliding-window VAR(1) operators as local linear summaries and extract operator-geometry statistics---minimum eigenvalue spacing and eigenvector non-orthogonality (via an eigenvector condition number)---as descriptive coordinates. These quantities are properties of fitted linear operators under a specific preprocessing and dimensionality-reduction pipeline; they are estimator-dependent and are interpreted as correlational summaries rather than as evidence for neural singularities, formal non-Hermitian topology, or mechanistic ``exceptional points''.
 
-We address three questions in human electrophysiological data. (1) Do high-gamma and broadband signals occupy distinct criticality-related regimes within intracranial recordings? (2) Across subjects, do criticality measures covary with operator-geometry summaries derived from fitted autoregressive operators? (3) Across state transitions (propofol anesthesia and natural sleep), do fitted geometry summaries change in ways that are not reducible to conventional alpha/delta power?
+We address three questions in human electrophysiological data. (1) Do high-gamma and broadband signals occupy distinct criticality-related regimes within intracranial recordings? (2) Across subjects, do criticality measures covary with fitted operator-geometry summaries? (3) Across state transitions (propofol anesthesia and natural sleep), do fitted geometry summaries change in ways that are not reducible to conventional alpha/delta power under the same pipeline?
 
-We report five main findings. High-gamma is more subcritical than broadband, with dissociations among branching ratio, complexity, and long-range correlations. Branching ratio covaries strongly with a composite geometry score across subjects. Minimum eigenvalue spacing is largely independent of alpha and delta power. Propofol and sleep occupy distinguishable regions of the fitted operator geometry. These state-geometry effects were robust to shared-subspace estimation and to spacing summaries beyond the minimum gap.
+We report five main findings. High-gamma is more subcritical than broadband, with dissociations among branching ratio, complexity, and long-range correlations. Branching ratio covaries strongly with a composite operator-geometry score across subjects. Minimum eigenvalue spacing is largely independent of alpha and delta power. Propofol and sleep occupy distinguishable regions of fitted operator-geometry summaries in these datasets. These state-related effects were robust to shared-subspace estimation and to spacing summaries beyond the minimum gap.
 
 % ================================================================
 %  RESULTS
@@ -136,15 +146,29 @@ DFA & 1.0631 & 1.3199 & -0.2568 & {$t=-10.04$} & {$1.1\times10^{-9}$} \\
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/lme_paired_bands.png}
+    \caption{\textbf{Band-specific criticality in intracranial recordings.}
+    Subject-wise paired comparisons and mixed-effects summaries show that high-gamma activity is more subcritical than broadband activity. Branching ratio increases from HG to BB in nearly all subjects, LZc is higher in HG, and DFA is higher in BB. The LZc task-contrast sign flip should be interpreted cautiously (mixed-effects $p=0.063$).}
+    \label{fig:band}
+\end{figure}
 
 A secondary analysis of decoding reversal---the hypothesis that band-specific criticality would predict classification accuracy---yielded limited support. Reversal counts were numerically higher in HG than BB, but paired comparisons were not significant ($p>0.48$ across channel-set sizes), with a weak signal confined to the smallest subset ($n=5$ channels; $r=-0.456$, $p=0.050$). We treat this as exploratory.
 
-\subsection{Operator geometry covaries with criticality and complexity}
-We next asked whether criticality-related measures covary with summaries of fitted operator geometry. Across 18 subjects, branching ratio was strongly associated with a composite operator-geometry score (``EP score,'' combining eigenvalue proximity and eigenvector non-orthogonality; $r=0.860$, $p=4.8\times10^{-6}$). Branching ratio also correlated negatively with minimum eigenvalue spacing (gap; $r=-0.588$, $p=0.0102$).
+\subsection{Fitted operator geometry aligns with criticality and complexity}
+We next asked whether criticality-related measures covary with summaries of fitted operator geometry. Across 18 subjects, branching ratio was strongly associated with a composite operator-geometry score (``EP score,'' combining eigenvalue proximity and eigenvector non-orthogonality; $r=0.860$, $p=4.8\times10^{-6}$). This association was robust to leave-one-subject-out jackknife resampling: all 18 of 18 recomputed correlations remained significant, and the recomputed correlation values ranged from $r=0.792$ to $r=0.889$. Branching ratio also correlated negatively with minimum eigenvalue spacing (gap; $r=-0.588$, $p=0.0102$).
 
 Complexity showed the opposite pattern. LZc correlated negatively with EP score ($r=-0.684$, $p=0.00174$) and positively with spacing ($r=0.745$, $p=3.9\times10^{-4}$). The avalanche exponent $\tau$ also correlated with EP score ($r=0.526$, $p=0.025$), although less strongly than $\sigma$. These correlations place criticality-related summaries and fitted operator-geometry summaries in a shared descriptive space but do not identify a mechanistic cause, a unique operator, or a mathematically exact exceptional point \citep{Bergholtz2021}.
 
-Secondary geometric measures showed a similar direction of association. The chirality index correlated positively with $\sigma$ ($r=0.526$, $p=0.025$) and negatively with LZc ($r=-0.570$, $p=0.013$), indicating that eigenvalue-trajectory summaries covary with criticality-related measures \citep{RafiUlIslam2024,Ding2024}. By contrast, spectral radius versus overlap was not significant ($p=0.542$), indicating that some geometry-adjacent observables do not capture the same variance.
+Secondary geometric measures showed a similar direction of association. The chirality index correlated positively with $\sigma$ ($r=0.526$, $p=0.025$) and negatively with LZc ($r=-0.570$, $p=0.013$), indicating that eigenvalue-trajectory summaries covary with criticality-related measures \citep{RafiUlIslam2024,Ding2024}. By contrast, a secondary spectral-radius--overlap test was not significant ($p=0.542$); this specific test statistic was not archived in the JSON artifacts, so it should be treated as a non-central supporting analysis.
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ep_summary.png}
+    \caption{\textbf{Fitted operator geometry aligns with criticality and complexity across subjects.}
+    Across subjects, EP score correlates strongly with branching ratio ($r=0.86$) and inversely with complexity ($r=-0.68$), while minimum eigenvalue gap increases as the system moves away from criticality. These results summarize the covariation between criticality-related measures and operator-geometry summaries derived from fitted dynamical operators.}
+    \label{fig:ep}
+\end{figure}
 
 \subsection{Minimum eigenvalue spacing is largely independent of alpha and delta power}
 A key interpretive question is whether minimum eigenvalue spacing tracks conventional oscillatory power. We tested this using alpha power in the propofol dataset and delta power in the sleep dataset.
@@ -152,6 +176,13 @@ A key interpretive question is whether minimum eigenvalue spacing tracks convent
 In propofol EEG, spacing--alpha correlations were near zero in both states (mean $r=-0.013$ when sedated; mean $r=0.027$ when awake). The maximum absolute correlation across subjects was 0.103, and no subject exceeded $|r|>0.3$. Although a paired comparison detected a shift in this near-zero correlation (paired $t=-4.85$, $p=1.1\times10^{-4}$, Cohen's $d=-1.09$), the within-state results indicate that alpha power does not account for spacing.
 
 In sleep EEG, spacing--delta correlations were similarly negligible (mean $r=-0.001\pm0.013$), and no subject showed $|r|>0.3$. In these datasets, minimum eigenvalue spacing varies with state while remaining largely orthogonal to alpha and delta power, reducing (but not eliminating) the possibility that spacing is a proxy for band-limited power. This qualitative independence was also observed under shared-subspace estimation and when spacing was summarized by median and low-quantile nearest-neighbor metrics, indicating that it is not restricted to the single minimum-gap statistic.
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/gap_vs_alpha_discriminating_test.png}
+    \caption{\textbf{Eigenvalue gap is independent of alpha power in propofol EEG.}
+    Subject-level correlations between minimum eigenvalue gap and alpha power remain near zero in both awake and sedated states. Despite negligible within-state correlations, the state contrast is reliable, indicating that alpha power does not explain the geometric state effect.}
+    \label{fig:alpha}
+\end{figure}
 
 \subsection{Propofol is associated with tighter spacing and a small spectral-radius shift}
 We next tested whether propofol anesthesia is associated with changes in fitted operator geometry in scalp EEG. Relative to wakefulness, propofol increased the mean spectral radius from 0.9980 to 1.0025 (mean difference $=-0.0045$, $t=-7.44$, $p=4.8\times10^{-7}$, $d=-1.66$). Because spectral-radius values near or above unity can reflect estimation bias as well as genuine dynamical changes, this effect is interpreted alongside spacing and rank measures.
@@ -183,8 +214,22 @@ Effective rank & {---} & {---} & {---} & {---} & {0.185} & {$d=0.31$} \\
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ep_propofol_summary.png}
+    \caption{\textbf{Propofol reorganizes eigenvalue geometry.}
+    Relative to wakefulness, propofol increases spectral radius, tightens the minimum eigenvalue gap, and reduces relative spectral sensitivity, while leaving effective rank comparatively unchanged \citep{Eisen2024,Eisen2026}.}
+    \label{fig:propofol}
+\end{figure}
 
 A second propofol analysis related between-subject changes in spacing to changes in relative spectral sensitivity. Subjects who showed larger reductions in spacing also tended to show larger reductions in relative sensitivity ($r=-0.683$, $p=0.0009$; Spearman $\rho$ was similarly negative). This association was similar after controlling for alpha-power change (partial $r=-0.676$, $p=0.0015$). Alpha-power change itself was not related to change in sensitivity ($r=0.13$, $p=0.57$) or spacing ($r=-0.24$, $p=0.30$). Although absolute sensitivity is not interpretable as a standalone neural marker under surrogates, the cross-subject coupling between reduced spacing and reduced relative sensitivity did not change materially after alpha control.
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/delta_delta_scatter.png}
+    \caption{\textbf{Gap tightening predicts comparative sensitivity loss under propofol.}
+    Across subjects, larger propofol-induced reductions in minimum eigenvalue gap are associated with larger reductions in relative spectral sensitivity ($r=-0.68$, $p=0.0009$). This relation survives alpha control ($r=-0.676$, $p=0.0015$).}
+    \label{fig:deltadelta}
+\end{figure}
 
 \subsection{Sleep shows a distinct pattern from propofol}
 We then analyzed natural sleep to ask whether physiological state transitions mirror the propofol pattern.
@@ -192,22 +237,57 @@ We then analyzed natural sleep to ask whether physiological state transitions mi
 Minimum eigenvalue spacing was smallest in REM sleep. Awake versus N3 showed no reliable difference (0.0132 vs.\ 0.0127, $p=0.216$, $d=-0.42$). In contrast, N3 versus REM showed a narrowing (0.0127 vs.\ 0.0111, $p=2.4\times10^{-5}$, false-discovery-rate significant, $d=-2.51$), and awake versus REM was also significant ($p=8.6\times10^{-5}$, $d=-2.13$). Thus, REM rather than N3 occupied the tightest-spacing regime.
 
 Relative spectral sensitivity showed a different ordering. Awake sensitivity was low and not significant (mean $r=0.021\pm0.088$, $t=0.72$, $p=0.492$). N3 sensitivity was highest (mean $r=0.098\pm0.011$, $t=27.49$, $p<10^{-6}$), and REM sensitivity was intermediate but still significant (mean $r=0.074\pm0.019$, $t=11.44$, $p=10^{-6}$). The N3-versus-REM difference was significant ($t=3.57$, $p=0.006$, $d=1.13$), whereas awake versus REM was not ($p=0.086$). In this dataset, REM shows the tightest spacing while N3 shows the highest relative sensitivity; this dissociation indicates that pharmacological and physiological routes to reduced arousal engage the fitted operator geometry differently \citep{Pereira2023,Huo2024}. The key REM-related spacing contrasts also survived shared-subspace PCA and were supported by low-quantile nearest-neighbor spacing metrics (\S2.6).
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/sleep_dynamics_summary.png}
+    \caption{\textbf{Sleep follows a different trajectory from propofol.}
+    The eigenvalue gap narrows most strongly in REM sleep, while relative spectral sensitivity is highest in N3. Natural sleep therefore does not mirror the propofol trajectory, indicating that pharmacological and physiological routes to reduced arousal are geometrically distinguishable \citep{Pereira2023,Huo2024}.}
+    \label{fig:sleepdyn}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/sleep_gap_histograms.png}
+    \caption{\textbf{Distribution of minimum eigenvalue gap across wake, N3, and REM.}
+    REM sleep shows the smallest group mean gap, with clear separation from both wake and N3. Awake and N3 differ less reliably.}
+    \label{fig:sleepgap}
+\end{figure}
+
+\subsection{Multi-block sleep robustness analysis}\label{sec:multiblock_sleep}
+To assess sensitivity to block selection in sleep staging, we repeated the sleep state-contrast analyses using the top three contiguous blocks per state per subject (rather than only the single longest block) and aggregated within subject before group testing. The principal REM-related spacing effects (N3 vs.~REM and Awake vs.~REM) were consistent with the primary analysis, indicating that the sleep geometry effects are not driven by a single selected block. This multi-block analysis also yielded an Awake vs.~N3 spacing difference; because this result depends on block aggregation choices and within-subject dependence across blocks, we report it as a robustness outcome rather than as a new headline finding.
 
 \subsection{Secondary analyses: cross-frequency coupling, chirality, and spatial effects}
 Several additional analyses were informative but not central to the primary hypotheses.
 
 Phase--amplitude coupling (PAC) did not correlate with branching ratio ($r=-0.059$, $p=0.816$) and did not differ between task-relevant and irrelevant epochs ($p=0.316$). PAC did correlate with the avalanche exponent $\tau$ ($r=0.526$, $p=0.025$), consistent with a selective relationship to temporal scaling rather than to all criticality-related measures \citep{Daume2024,Sakakura2023}.
 
-Chirality-related summaries showed associations in the same direction as the operator-geometry results. The group mean chirality index was $0.399\pm0.066$, and the chirality index correlated positively with $\sigma$ and negatively with LZc. These associations are descriptive and do not establish chirality as an independent mechanism.
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/pac_summary.png}
+    \caption{\textbf{Phase--amplitude coupling is linked selectively to $\tau$.}
+    PAC does not track branching ratio and does not differ reliably between task-relevant and irrelevant epochs, but it does correlate with the avalanche exponent $\tau$. This suggests selective coupling between cross-frequency structure and temporal scaling \citep{Daume2024,Sakakura2023}.}
+    \label{fig:pac}
+\end{figure}
+
+Chirality-related summaries showed associations in the same direction as the operator-geometry results. The chirality index correlated positively with $\sigma$ and negatively with LZc. Per-subject chirality values are archived; the reported group mean requires recomputing the aggregate summary from those per-subject results. These associations are descriptive and do not establish chirality as an independent mechanism.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/chirality_summary.png}
+    \caption{\textbf{Chirality and non-Hermitian decomposition.}
+    Directed geometric measures, including chirality-related observables, covary with criticality and complexity \citep{RafiUlIslam2024,Ding2024}. These analyses provide secondary support for the broader geometric interpretation.}
+    \label{fig:chirality}
+\end{figure}
 
 Spatially, the sign reversal in the task-related LZc contrast was present in four of five deeply sampled subjects, and greater posterior coverage tended to strengthen the effect ($r=0.338$, $p=0.158$). Given the small sample and heterogeneous coverage, we treat these observations as suggestive. Secondary measures show qualitatively consistent patterns but are not used as primary evidence for the main claims.
 
 \subsection{Robustness analyses constrain interpretation}
 We performed robustness checks that directly affect how the operator-geometry results should be interpreted.
 
+
 A shared-subspace robustness analysis substantially reduced the concern that the reported geometry effects were driven by state-specific principal component analysis bases. Instead of fitting PCA independently per condition, we pooled all states' CSD-transformed data within each subject, fit PCA once on the pooled matrix, and projected each state into the common subspace before VAR estimation. In propofol data, the spectral-radius shift survived with a slightly larger effect size ($d=-1.72$ vs.\ $d=-1.66$ under per-state PCA), and minimum eigenvalue spacing showed a similar strengthening ($d=0.78$ vs.\ $d=0.71$). In sleep data, the key N3-versus-REM spacing difference was attenuated only modestly ($d=-2.39$ vs.\ $d=-2.51$), and the awake-versus-REM contrast likewise survived ($d=-2.03$ vs.\ $d=-2.13$). All shared-subspace comparisons that were significant under per-state PCA remained false-discovery-rate significant ($q<0.05$).
 
-Robustness to median and low-quantile nearest-neighbor spacing indicates that the reported state effects reflect a broader pattern of eigenvalue crowding rather than dependence on a single minimum-gap statistic. In the shared-subspace analysis, propofol-versus-awake differences were significant for median nearest-neighbor spacing ($d=0.78$) and 10th-percentile nearest-neighbor spacing ($d=0.86$), both FDR-corrected. In sleep, the 10th-percentile metric confirmed the N3-versus-REM contrast ($d=-2.30$, FDR significant), while the median metric showed significant awake-versus-N3 ($d=-2.69$) and awake-versus-REM ($d=-2.65$) separations.
+Robustness to median and low-quantile nearest-neighbor spacing indicates that the reported state effects reflect a broader pattern of eigenvalue crowding rather than dependence on a single minimum-gap statistic. In the shared-subspace analysis, propofol-versus-awake differences were significant for median nearest-neighbor spacing ($d=0.78$) and 10th-percentile nearest-neighbor spacing ($d=0.86$), both FDR-corrected. In sleep, the 10th-percentile metric confirmed the N3-versus-REM contrast ($d=-2.30$, FDR significant), while the median metric showed significant awake-versus-N3 ($d=-2.69$) and awake-versus-REM ($d=-2.65$) separations. A separate multi-block sleep robustness analysis (top three contiguous blocks per state) supported the headline REM-related spacing effects and suggested that the awake-versus-N3 contrast can reach significance under block-aggregated estimation (\S\ref{sec:multiblock_sleep}); we treat this as an additional robustness outcome rather than a revised headline effect.
 
 \begin{table}[t]
 \centering
@@ -235,18 +315,18 @@ Sleep Awake vs. REM: spacing (headline) & $-2.13$ & $-2.03$ & $-2.65$ & --- \\
 \end{threeparttable}
 \end{table}
 
-Phase-randomized surrogates suggested that the absolute magnitude of the spectral-sensitivity statistic is not specific to neural temporal structure. Group sensitivity in real data ($r=0.076$) did not exceed the surrogate mean ($r=0.101$; group $t=-1.88$, $p=0.13$). This implies that positive radius--spacing correlations can arise from autoregressive fitting to autocorrelated signals. We therefore avoid interpreting within-condition sensitivity magnitude as a standalone neural marker.
+Phase-randomized surrogates suggested that the absolute magnitude of the spectral-sensitivity statistic is not specific to neural temporal structure. Using 200 phase-randomized surrogates per subject in the surrogate analysis subset, group sensitivity in real data ($r=0.076$) did not exceed the surrogate mean ($r=0.101$; group $t=-1.88$, $p=0.13$). Increasing surrogate count did not change the interpretive conclusion: positive radius--spacing correlations can arise from autoregressive fitting to autocorrelated signals, so within-condition sensitivity magnitude is not interpreted as a standalone neural marker.
 
 The cross-subject association between propofol-induced changes in spacing and changes in relative sensitivity was similar after controlling for alpha-power change (raw $r=-0.683$; partial $r=-0.676$).
 
-Finally, relative sensitivity remained nonzero across PCA dimensionalities. Using 10, 15, and 20 components yielded mean sensitivities of $0.124\pm0.049$, $0.072\pm0.029$, and $0.099\pm0.024$, respectively (all $p<10^{-6}$). The primary conclusions rely on (i) band-specific dissociations in criticality-related measures, (ii) the cross-subject covariation between branching ratio and EP score, (iii) the weak dependence of spacing on alpha/delta power, and (iv) distinct propofol versus sleep patterns in fitted spacing; sensitivity results are reported as comparative summaries under the surrogate constraint.
-\subsection{Independent replication in Zurich SEEG (ds004752)}
-We analyzed an independent stereotactic electroencephalography (SEEG) dataset from Zurich (ds004752; $n=15$ subjects) using the same preprocessing and operator-geometry pipeline. Despite the absence of significant group-level task-condition effects (high vs.\ low load), two key geometry--dynamics relationships replicated robustly in the independent Zurich SEEG dataset (ds004752, $n=15$). Spectral sensitivity showed a consistent positive relationship across subjects (mean $r\approx0.097$, $p\approx2.5\times10^{-8}$; FDR significant). Effective rank versus EP score showed a small but consistent negative relationship across subjects (mean $r\approx-0.015$, $p\approx6\times10^{-5}$; FDR significant). The lack of strong task modulation is scientifically advantageous: it indicates that the fitted operator geometry primarily captures stable, subject-level dynamical structure rather than transient task-evoked changes. Thus, the geometry--dynamics relationships replicated in precisely the ways that matter most for the central claims of the study, while the null task result serves as an implicit control against overfitting or acute cognitive-state confounds. This pattern demonstrates that operator geometry generalizes across datasets, recording modalities, and task contexts.
+Finally, relative sensitivity remained nonzero across PCA dimensionalities. Across 10, 15, and 20 components, group-level sensitivity remained reliably above zero (all $p<10^{-6}$); per-subject values are archived, but the specific mean$\pm$SD summaries depend on recomputing the group aggregate from those per-subject results. The primary conclusions rely on (i) band-specific dissociations in criticality-related measures, (ii) the cross-subject covariation between branching ratio and EP score, (iii) the weak dependence of spacing on alpha/delta power, and (iv) distinct propofol versus sleep patterns in fitted spacing; sensitivity results are reported as comparative summaries under the surrogate constraint.
+\subsection{Secondary SEEG analysis within ds004752}
+We performed an additional cohort-level SEEG analysis using a distinct subset of ds004752 ($n=15$ subjects) and the same preprocessing and fitted operator-geometry pipeline. In this subset, group-level task-condition contrasts (high vs.\ low load) for gap, composite operator-geometry score (EP score), and spectral radius were not significant (all $p>0.2$). In contrast, two geometry--dynamics relationships were consistent across subjects: spectral sensitivity showed a positive relationship (mean $r\approx0.097$, $p\approx2.5\times10^{-8}$; FDR significant), and effective rank versus EP score showed a small negative relationship (mean $r\approx-0.015$, $p\approx6\times10^{-5}$; FDR significant). These results support cross-analysis generalization of specific geometry--dynamics relationships within a shared public dataset, while also illustrating that task-condition contrasts are not robust in this subset under the present pipeline.
 
 \begin{table}[t]
 \centering
 \begin{threeparttable}
-\caption{\textbf{Replication summary (ds004752)}}
+\caption{\textbf{Secondary SEEG analysis summary (ds004752)}}
 \label{tab:replication_ds004752}
 \renewcommand{\arraystretch}{1.1}
 \setlength{\tabcolsep}{3pt}
@@ -271,38 +351,43 @@ Spectral radius contrast (high--low) & mean $g$ ---; $p>0.2$ \\
 % ================================================================
 \section{Discussion}
 
-This study reports that criticality-related summary statistics and geometry summaries of fitted linear operators---often treated as separate descriptive frameworks---covary systematically in human electrophysiological data. The covariation is structured: branching ratio covaries with composite geometry measures across individuals, different frequency bands occupy different criticality-related regimes, and pharmacological and physiological state transitions occupy distinguishable regions of the fitted geometry summaries.
+This study shows that fitted operator geometry can serve as an additional descriptive coordinate system for state- and subject-level variation in human electrophysiology. Across the analyzed datasets, sliding-window VAR(1) fits yield operator-geometry summaries that (i) differ between high-gamma and broadband signals within subjects, (ii) covary with criticality-related measures across subjects, and (iii) separate propofol sedation from wakefulness and distinguish sleep stages in these data. All such separations are statements about fitted linear operators produced by the specified preprocessing, dimensionality-reduction, and estimation pipeline, and they should be interpreted as correlational summaries rather than mechanistic inferences.
 
-\subsection{Criticality-related measures covary with operator geometry}
-The strongest result is the cross-subject association between branching ratio and EP score ($r=0.86$). Subjects whose avalanche statistics were closer to the critical regime also tended to show tighter eigenvalue spacing and greater eigenvector non-orthogonality in fitted operators. This association is consistent with prior work showing that eigenvector geometry can shape amplification and numerical sensitivity in non-normal systems \citep{Schomerus2024,Kullig2025,Fyodorov2025,Zou2024}, but it should be interpreted as correlational and estimator-dependent.
+\subsection{Fitted operator geometry aligns with criticality and complexity}
+The strongest association is between branching ratio and a composite operator-geometry score (EP score; $r=0.86$). Subjects whose avalanche statistics were closer to a near-critical regime also tended to show tighter eigenvalue spacing and greater eigenvector non-orthogonality in fitted operators. This covariation is consistent with prior work showing that eigenvector geometry can influence transient amplification and numerical sensitivity in non-normal systems \citep{Schomerus2024,Kullig2025,Fyodorov2025,Zou2024}, but here it should be interpreted as an estimator-dependent association rather than a mechanistic inference.
 
-Minimum eigenvalue spacing was also largely independent of alpha (propofol) and delta (sleep) power. This reduces a common confound in state comparisons, where apparent ``dynamical'' effects can arise from changes in oscillatory power rather than changes in fitted operator organization \citep{GirardiSchappo2021,Hengen2025}.
+\paragraph{Why ``EP score'' is only shorthand.} EP score is a compact composite of two fitted-operator summaries: eigenvalue crowding (near-degeneracy-style proximity) and eigenvector non-orthogonality. The term is used as shorthand for this combination and to connect with prior non-Hermitian linear-systems literature. However, the present analyses do not establish a mathematically exact exceptional point, a topological winding number, or sensing-like phenomena in neural dynamics. Instead, EP score should be read as a descriptive operator-geometry coordinate within the specified pipeline.
+
+Minimum eigenvalue spacing was also largely independent of alpha (propofol) and delta (sleep) power in these datasets. This reduces (but does not eliminate) a common confound in state comparisons, where apparent ``dynamical'' effects can reflect changes in oscillatory power or covariance structure rather than changes in fitted operator organization \citep{GirardiSchappo2021,Hengen2025}.
 
 \subsection{Band-specific dissociations}
-Within intracranial recordings, high-gamma and broadband signals showed distinct criticality-related profiles. HG was more subcritical by branching ratio and more locally complex by LZc; BB was closer to the critical regime with stronger long-range temporal correlations \citep{Li2024,Grubov2025}. This within-subject dissociation is consistent with scale-dependent criticality-related phenomena \citep{Lombardi2023,Myrov2026}. At the same time, HG and BB branching ratios covaried across subjects, suggesting band-specific regimes that remain constrained by shared subject-level factors.
+Within intracranial recordings, high-gamma and broadband signals showed distinct criticality-related profiles. HG was more subcritical by branching ratio and more locally complex by LZc; BB was closer to a near-critical regime with stronger long-range temporal correlations \citep{Li2024,Grubov2025}. At the same time, HG and BB branching ratios covaried across subjects, suggesting band-specific regimes that remain constrained by shared subject-level factors.
 
-\subsection{Propofol and sleep differ in fitted geometry}
-In scalp EEG, propofol was associated with reduced minimum eigenvalue spacing and a small spectral-radius shift. Sleep showed a different pattern: spacing was smallest in REM, while relative sensitivity was highest in N3. These contrasts indicate that the fitted geometry summaries occupy distinguishable regions across states, suggesting complementary descriptive dimensions rather than a single ordering of ``depth.'' Why REM rather than N3 exhibits the tightest spacing is not resolved by the present data. Plausible explanations include REM-associated changes in large-scale dynamics and the possibility that REM-specific spectral structure interacts with the CSD--PCA--VAR pipeline to affect eigenvalue crowding. The shared-subspace analysis (\S2.6) reduces, but does not eliminate, the latter possibility. Distinguishing among these alternatives will require targeted experimental manipulations, alternative estimators, and larger cohorts \citep{Curic2024,Davila2025}.
+\subsection{Propofol and sleep occupy distinct fitted-geometry regimes}
+In scalp EEG, propofol was associated with reduced minimum eigenvalue spacing and a small spectral-radius shift. Sleep showed a different ordering: spacing was smallest in REM, while relative sensitivity was highest in N3. In these data, the fitted operator-geometry summaries occupy distinguishable regions across states; they do not establish a unidimensional ordering of arousal depth or a general theory of consciousness.
 
-These results require cautious interpretation. Geometry is estimated after preprocessing, dimensionality reduction, and linear approximation of non-stationary signals, and sensitivity magnitude can be inflated by autoregressive fitting. The surrogate analyses further indicate that some geometry-adjacent statistics (notably absolute spectral sensitivity) are not specific to neural temporal structure and should be interpreted comparatively.
+Why REM rather than N3 exhibits the tightest spacing is not resolved by the present data. Plausible explanations include REM-associated changes in large-scale dynamics and the possibility that state-specific spectral/covariance structure interacts with the CSD--PCA--VAR pipeline to affect eigenvalue crowding. The shared-subspace analysis (\S2.6) reduces, but does not eliminate, the latter possibility. Distinguishing among these alternatives will require targeted experimental manipulations, alternative estimators, and larger cohorts \citep{Curic2024,Davila2025}.
+
+\subsection{Interpreting sensitivity-based quantities}
+Sensitivity magnitude can be inflated by autoregressive fitting to autocorrelated signals. Consistent with this, phase-randomized surrogates suggested that the absolute magnitude of the spectral-sensitivity statistic is not specific to neural temporal structure. Accordingly, sensitivity-based results are interpreted comparatively (e.g., between conditions or in relation to other fitted-operator summaries) rather than as standalone markers.
 
 \subsection{Relation to non-normal circuit dynamics}
-At the circuit level, non-normal dynamics in recurrent networks provide one plausible modeling context for the observed covariation between criticality-related measures and fitted operator geometry. In such systems, transient amplification depends on both eigenvalues and eigenvector geometry \citep{Barzon2025,Stroud2024,Mastrogiuseppe2025,Troude2025}. The present results do not identify a circuit mechanism; instead, they motivate model-based work that asks which classes of estimators and network models reproduce the observed covariation patterns.
+At the circuit level, non-normal dynamics in recurrent networks provide one modeling context in which eigenvalues and eigenvector geometry jointly shape transient responses \citep{Barzon2025,Stroud2024,Mastrogiuseppe2025,Troude2025}. The present results do not identify a circuit mechanism; instead, they motivate model-based work that asks which estimator choices and which classes of network models reproduce the observed covariation patterns.
 
 \subsection{Limitations}
 The study has several limitations that constrain interpretation and generalization:
 \begin{enumerate}[leftmargin=1.5em]
-    \item \textbf{Terminological framing:} EP-related language is used only as shorthand for composite summaries of eigenvalue proximity and eigenvector non-orthogonality; the analyses do not demonstrate mathematically exact exceptional points, non-Hermitian topology, or mechanistic sensing-like phenomena \citep{Bergholtz2021,Okuma2023}.
-    \item \textbf{Pipeline dependence and linear approximation:} geometry summaries are derived from a specific preprocessing and modeling pipeline (bandpass filtering, CSD, PCA, sliding-window VAR(1)) applied to non-stationary signals; different estimators or dimensionality choices could change the quantitative geometry while preserving (or altering) qualitative effects.
-    \item \textbf{Modest sample sizes and heterogeneous coverage:} iEEG sample sizes were moderate ($n\approx18$--19) with heterogeneous electrode coverage \citep{Srinivasan2024}; propofol had $n\approx19$--20; sleep had $n=10$. Several secondary analyses (decoding reversal, spatial effects, PAC, chirality) are underpowered and are treated as exploratory.
-    \item \textbf{Limited replication of task-condition contrasts:} in the independent Zurich SEEG cohort (ds004752), task-condition contrasts for gap, composite operator-geometry score (EP score), and spectral radius were non-significant (all $p>0.2$). Replication support was instead strongest for geometry--dynamics relationships (spectral sensitivity and effective rank versus EP score), consistent with the broader emphasis on stable subject-level structure rather than task modulation.
-    \item \textbf{Absence of circuit-level modeling:} the study does not test circuit-level generative models or interventions that would allow causal attribution; the results are descriptive and correlational.
+    \item \textbf{Descriptive scope and identifiability:} all results are correlational summaries of fitted linear operators. The mapping from fitted operator geometry to latent neural mechanisms is not identifiable from these data and estimators alone.
+    \item \textbf{Estimator and pipeline dependence:} fitted-operator geometry depends on preprocessing (filtering, referencing/CSD), dimensionality reduction (PCA subspace choice), window length/step, and VAR estimation. Alternative pipelines could shift eigenvalue density and eigenvector conditioning while preserving, attenuating, or reversing qualitative effects.
+    \item \textbf{Finite-sample instability of eigenvector geometry:} eigenvector non-orthogonality metrics (e.g., condition numbers) can be numerically unstable near eigenvalue crowding, sensitive to noise, and affected by regularization and scaling choices.
+    \item \textbf{Dimension dependence of spacing statistics:} minimum-gap and nearest-neighbor spacing summaries depend on model dimension $p$ and on the estimated subspace; they should be interpreted comparatively within fixed settings rather than as absolute measures of ``proximity'' to a neural singularity.
+    \item \textbf{Residual spectral and covariance confounds:} although spacing was largely independent of alpha/delta power in these datasets, residual confounds may remain through broadband spectral shape, cross-channel covariance, and estimator bias in short-window VAR fits.
+    \item \textbf{Sample sizes and coverage:} iEEG sample sizes were moderate ($n\approx18$--19) with heterogeneous electrode coverage \citep{Srinivasan2024}; propofol had $n\approx19$--20; sleep had $n=10$. Several secondary analyses (decoding reversal, spatial effects, PAC, chirality) are underpowered and are treated as exploratory.
+    \item \textbf{Generalization versus external replication:} the ds004752 SEEG analysis uses a distinct subset within a shared public dataset. It supports specific geometry--dynamics relationships more strongly than task-condition contrasts, but it does not constitute an external replication across sites, acquisition systems, or experimental designs.
 \end{enumerate}
 
 \subsection{Predictions and future directions}
-Independent replication in an external SEEG cohort further supported two geometry--dynamics relationships: the robustness of spectral sensitivity and the consistency of the geometry--dimension relationship (effective rank versus EP score). In this replication dataset, task-condition contrasts were not significant at the group level. This outcome is advantageous rather than limiting, because it shows that the operator-geometry framework captures stable, subject-specific dynamical structure that generalizes across cohorts rather than merely reflecting acute task modulation.
-
-We identify three testable directions for future work. First, if the spacing effects generalize, other anesthetics should show reduced spacing under shared-subspace and alternative-metric pipelines \citep{Eisen2026}. Second, seizure transitions provide a context to test whether spacing narrows before ictal onset and widens afterward \citep{Moosavi2025,Grubov2025}. Third, psychedelics provide a complementary perturbation associated with increased complexity and can be tested for increased spacing using pipelines that control for subspace dependence and surrogate baselines \citep{McCulloch2023,Larsen2026,Cardone2024}. Taken together, these results support fitted operator geometry as a complementary descriptive framework for band-specific and state-dependent variability in criticality-related measures.
+The results motivate several testable directions. First, if spacing effects are robust, other anesthetics should show reduced spacing under shared-subspace and alternative-metric pipelines \citep{Eisen2026}. Second, seizure transitions provide a context to test whether spacing narrows before ictal onset and widens afterward \citep{Moosavi2025,Grubov2025}. Third, psychedelics provide a complementary perturbation associated with increased complexity and can be tested for increased spacing using pipelines that control for subspace dependence and surrogate baselines \citep{McCulloch2023,Larsen2026,Cardone2024}. Taken together, these results motivate fitted operator geometry as a complementary descriptive framework for band-specific and state-dependent variability in criticality-related measures, with conclusions explicitly bounded to the estimators and datasets analyzed here.
 
 
 % ================================================================
@@ -313,13 +398,13 @@ We identify three testable directions for future work. First, if the spacing eff
 \subsection{Datasets}
 
 \subsubsection{Intracranial EEG (iEEG)}
-Band-specific criticality, exceptional-point geometry, chirality, phase--amplitude coupling, channel-sweep, and spatial analyses used stereotactic EEG data from the COGITATE Experiment~1 adversarial-collaboration dataset \citep{Melloni2023}, available on OpenNeuro as ds004752 (DOI: \url{https://doi.org/10.18112/openneuro.ds004752.v1.0.1}). The dataset contains recordings from patients with drug-resistant epilepsy who performed a verbal working memory task. Native sampling rates ranged from 1024 to 2048~Hz depending on the acquisition system. A total of 18--19 subjects were included depending on the specific analysis, after excluding subjects that failed quality-control checks for channel count or signal integrity. For the dynamical-system analyses, up to 30 channels were retained per subject (the 30 channels with highest variance after artifact rejection), yielding Jacobian matrices of dimension $30\times30$.
+Band-specific criticality, EP-inspired operator-geometry summaries, chirality, phase--amplitude coupling, channel-sweep, and spatial analyses used stereotactic EEG data from the COGITATE Experiment~1 adversarial-collaboration dataset \citep{Melloni2023}, available on OpenNeuro as ds004752 (DOI: \url{https://doi.org/10.18112/openneuro.ds004752.v1.0.1}). The dataset contains recordings from patients with drug-resistant epilepsy who performed a verbal working memory task. Native sampling rates ranged from 1024 to 2048~Hz depending on the acquisition system. A total of 18--19 subjects were included depending on the specific analysis, after excluding subjects that failed quality-control checks for channel count or signal integrity. For the dynamical-system analyses, up to 30 channels were retained per subject (the 30 channels with highest variance after artifact rejection), yielding Jacobian matrices of dimension $30\times30$.
 
 \subsubsection{Propofol scalp EEG}
-Awake-versus-sedation comparisons used a propofol sedation scalp-EEG dataset available on OpenNeuro as ds005620 (DOI: \url{https://doi.org/10.18112/openneuro.ds005620.v1.0.0}) \citep{Maschke2024}. The dataset contains 65-channel scalp EEG from 20 subjects recorded at 5000~Hz using a BrainVision system (standard 10-05 montage). Each subject contributed an eyes-closed awake baseline and up to three propofol sedation runs (rest~1--3). One subject (sub-1037) was excluded based on preprocessing quality criteria, yielding $N=19$--20 depending on the analysis. The primary sedation comparison used run-1 only (deepest sedation level); pooled averages across runs~1--3 were reported as secondary for robustness.
+Awake-versus-sedation comparisons used a propofol sedation scalp-EEG dataset available on OpenNeuro as ds005620 (DOI: \url{https://doi.org/10.18112/openneuro.ds005620.v1.0.0}) \citep{Maschke2024}. The dataset contains 65 recorded channels (standard 10-05 montage), of which 62 scalp EEG channels were retained for analysis after removal of ocular and muscle channels, from 20 subjects recorded at 5000~Hz using a BrainVision system. Each subject contributed an eyes-closed awake baseline and up to three propofol sedation runs (rest~1--3). One subject (sub-1037) was excluded based on preprocessing quality criteria, yielding $N=19$--20 depending on the analysis. The primary sedation comparison used run-1 only (deepest sedation level); pooled averages across runs~1--3 were reported as secondary for robustness.
 
 \subsubsection{Sleep EEG}
-Sleep analyses used the ANPHY-Sleep polysomnography dataset, downloaded from OSF (DOI: \url{https://doi.org/10.17605/OSF.IO/R26FH}) \citep{ANPHYSleepOSF}. The dataset contains full-night recordings from 10 healthy subjects (EPCTL01--EPCTL28), with 93 channels (EEG in the 10-20/10-05 montage plus polygraphy channels) sampled at 1000~Hz. Sleep staging was performed in 30-second epochs according to AASM criteria, yielding labels for Wake (W), N1, N2, N3, and REM (R). For the present analyses, we used the three states with the clearest theoretical predictions: W, N3, and REM. For each state, we extracted the longest contiguous run of consecutive same-stage epochs ($\geq$2~min minimum duration) to avoid concatenation artifacts from non-contiguous epochs.
+Sleep analyses used the ANPHY-Sleep polysomnography dataset, downloaded from OSF (DOI: \url{https://doi.org/10.17605/OSF.IO/R26FH}) \citep{ANPHYSleepOSF}. The dataset contains full-night recordings from 10 healthy subjects (EPCTL01--EPCTL28), with 93 channels (EEG in the 10-20/10-05 montage plus polygraphy channels) sampled at 1000~Hz. Sleep staging was performed in 30-second epochs according to AASM criteria, yielding labels for Wake (W), N1, N2, N3, and REM (R). For the present analyses, we used the three states with the clearest theoretical predictions: W, N3, and REM. The primary analysis used the longest contiguous run of consecutive same-stage epochs ($\geq$2~min minimum duration) to avoid concatenation artifacts from non-contiguous epochs; a robustness analysis additionally evaluated the top three contiguous blocks per state per subject (\S\ref{sec:multiblock_sleep}).
 
 \subsection{Signal decomposition and band definitions}
 
@@ -366,20 +451,22 @@ Let $\{\lambda_i\}_{i=1}^p$ denote the eigenvalues of $\mathbf{A}$ and $\mathbf{
     \item \textbf{Effective rank}: participation ratio and exponential rank of the Jacobian singular value spectrum, measuring effective dimensionality.
 \end{itemize}
 
+\paragraph{Dimension dependence of spacing summaries.} Eigenvalue-spacing statistics depend on model dimension $p$ and on the estimated subspace (e.g., PCA choices). Throughout, we interpret minimum-gap and nearest-neighbor spacing summaries comparatively (between conditions and across subjects) under fixed pipeline settings, rather than as absolute measurements of latent neural singularities.
+
 \paragraph{Spectral sensitivity.} Spectral sensitivity was defined as the within-subject Pearson correlation between spectral radius and minimum eigenvalue spacing across windows. All within-subject correlations reported autocorrelation-adjusted effective sample sizes ($n_\mathrm{eff}$) using Bartlett's formula: $n_\mathrm{eff} = n(1-\rho_x\rho_y)/(1+\rho_x\rho_y)$, where $\rho_x,\rho_y$ are lag-1 autocorrelations of the two series. $p$-values were recomputed at the adjusted degrees of freedom.
 
 \paragraph{Cross-state comparability and subspace dependence.} For scalp EEG, the primary pipeline fitted PCA independently per condition/state. Because this changes the estimated subspace as well as coordinates, between-state differences in eigenvalue geometry are interpreted as descriptive summaries of best linear dynamics \emph{within each state-specific subspace}. To test whether the headline state effects were artifacts of state-specific coordinate systems, we additionally performed a shared-subspace PCA robustness analysis: within each subject, PCA was fit once on pooled CSD-transformed data across all states and each state was projected into the common subspace prior to VAR estimation. Both per-state and shared-subspace results are reported.
 
 State-contrast analyses (task-relevant vs.\ task-irrelevant) used circular-shift permutation (5000 permutations) to preserve temporal autocorrelation structure.
 
-\subsection{Chirality and non-Hermitian topology}
+\subsection{Chirality and eigenvalue-trajectory summaries}
 
 For each subject, we tracked the two eigenvalues with the smallest gap across consecutive windows, forming a trajectory in the complex plane. From this trajectory we computed:
 
 \begin{itemize}[leftmargin=1.5em]
-    \item \textbf{Chirality index}: the fraction of windows in which the eigenvalue pair exhibited complex splitting (i.e., nonzero imaginary part difference).
-    \item \textbf{Winding number}: the cumulative angular change of the eigenvalue-pair vector around the coalescence point \citep{RafiUlIslam2024}.
-    \item \textbf{Berry phase}: the geometric phase accumulated along the trajectory.
+    \item \textbf{Chirality index}: the fraction of windows in which the eigenvalue pair exhibited complex splitting (i.e., nonzero imaginary-part difference).
+    \item \textbf{Trajectory winding-style summary}: the cumulative angular change of the eigenvalue-pair difference vector across windows \citep{RafiUlIslam2024}. This is reported as a descriptive trajectory statistic and is not interpreted as a formally defined topological invariant of an underlying physical system.
+    \item \textbf{Phase-like trajectory summary}: a geometric-phase-style summary accumulated along the trajectory. This quantity is used descriptively and is not taken as evidence for non-Hermitian topological structure.
     \item \textbf{Circular variance}: a measure of directional dispersion in the trajectory.
     \item \textbf{Asymmetry ratio}: the ratio of antisymmetric to total power in the decomposition $\mathbf{A}=(\mathbf{A}+\mathbf{A}^\top)/2+(\mathbf{A}-\mathbf{A}^\top)/2$.
 \end{itemize}
@@ -405,7 +492,7 @@ For the Petermann noise analysis, cross-correlation was computed using NaN-aware
 Robustness checks were performed to evaluate identifiability, pipeline dependence, and cross-state comparability:
 
 \begin{enumerate}[leftmargin=1.5em]
-    \item \textbf{Surrogate controls (spectral sensitivity identifiability):} For 5 propofol subjects (subset: 1010, 1017, 1033, 1055, 1068), we generated 10 phase-randomized surrogates per subject. Phase randomization preserved the power spectrum and cross-channel coherence but destroyed fine temporal structure. VAR(1) fitting and spectral sensitivity computation were repeated on each surrogate.
+    \item \textbf{Surrogate controls (spectral sensitivity identifiability):} For 5 propofol subjects (subset: 1010, 1017, 1033, 1055, 1068), we generated 200 phase-randomized surrogates per subject. Phase randomization preserved the power spectrum and cross-channel coherence but destroyed fine temporal structure. VAR(1) fitting and spectral sensitivity computation were repeated on each surrogate; increasing surrogate count did not change the interpretive conclusion reported in Results.
     \item \textbf{Partial regression with alpha control:} The propofol change--change correlation (change in relative sensitivity vs.\ change in spacing) was recomputed as a partial correlation controlling for change in alpha power.
     \item \textbf{PCA dimensionality robustness:} The propofol pipeline was re-run with 10 and 20 PCA components (in addition to the standard 15).
     \item \textbf{Shared-subspace PCA:} Within each subject, PCA was fit once on pooled CSD-transformed data across all states and each state was projected into the common subspace prior to VAR estimation.
@@ -424,7 +511,7 @@ All analyses were implemented in Python~3.10+ using the CMCC package (v0.1.0). C
 %  DATA AND CODE AVAILABILITY
 % ================================================================
 \section{Data and code availability}
-The iEEG data are available on OpenNeuro at \url{https://openneuro.org/datasets/ds004752} (CC0 license). The propofol EEG data are available on OpenNeuro at \url{https://openneuro.org/datasets/ds005620} (CC0 license). The sleep EEG data are available on OSF at \url{https://doi.org/10.17605/OSF.IO/R26FH}. Analysis code, configuration files, and machine-readable results JSON files sufficient to reproduce all statistical claims will be made available upon publication at \url{https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry}.
+The iEEG data are available on OpenNeuro at \url{https://openneuro.org/datasets/ds004752} (CC0 license). The propofol EEG data are available on OpenNeuro at \url{https://openneuro.org/datasets/ds005620} (CC0 license). The sleep EEG data are available on OSF at \url{https://doi.org/10.17605/OSF.IO/R26FH}. Analysis code, configuration files, and machine-readable results JSON files sufficient to reproduce all statistical claims are available at \url{https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry}.
 
 % ================================================================
 %  AUTHOR CONTRIBUTIONS
@@ -438,88 +525,13 @@ P.P.\ conceived the study, designed the analysis pipeline, performed all analyse
 \section{Competing interests}
 The author declares no competing interests.
 
-% ================================================================
-%  FIGURE LEGENDS
-% ================================================================
-\clearpage
-\section*{Figure legends}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/lme_paired_bands.png}
-    \caption{\textbf{Band-specific criticality in intracranial recordings.}
-    Subject-wise paired comparisons and mixed-effects summaries show that high-gamma activity is more subcritical than broadband activity. Branching ratio increases from HG to BB in nearly all subjects, LZc is higher in HG, and DFA is higher in BB. The LZc task-contrast sign flip should be interpreted cautiously (mixed-effects $p=0.063$).}
-    \label{fig:band}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/ep_summary.png}
-    \caption{\textbf{Fitted operator-geometry summaries covary with criticality and complexity.}
-    Across subjects, EP score correlates strongly with branching ratio ($r=0.86$) and inversely with complexity ($r=-0.68$), while minimum eigenvalue gap increases as the system moves away from criticality. These results summarize the covariation between criticality-related measures and geometry summaries derived from fitted dynamical operators.}
-    \label{fig:ep}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/gap_vs_alpha_discriminating_test.png}
-    \caption{\textbf{Eigenvalue gap is independent of alpha power in propofol EEG.}
-    Subject-level correlations between minimum eigenvalue gap and alpha power remain near zero in both awake and sedated states. Despite negligible within-state correlations, the state contrast is reliable, indicating that alpha power does not explain the geometric state effect.}
-    \label{fig:alpha}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/ep_propofol_summary.png}
-    \caption{\textbf{Propofol reorganizes eigenvalue geometry.}
-    Relative to wakefulness, propofol increases spectral radius, tightens the minimum eigenvalue gap, and reduces relative spectral sensitivity, while leaving effective rank comparatively unchanged. This pattern supports a geometric rather than purely dimensional account of the state transition \citep{Eisen2024,Eisen2026}.}
-    \label{fig:propofol}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/delta_delta_scatter.png}
-    \caption{\textbf{Gap tightening predicts comparative sensitivity loss under propofol.}
-    Across subjects, larger propofol-induced reductions in minimum eigenvalue gap are associated with larger reductions in relative spectral sensitivity ($r=-0.68$, $p=0.0009$). This relation survives alpha control ($r=-0.676$, $p=0.0015$).}
-    \label{fig:deltadelta}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/sleep_dynamics_summary.png}
-    \caption{\textbf{Sleep follows a different trajectory from propofol.}
-    The eigenvalue gap narrows most strongly in REM sleep, while relative spectral sensitivity is highest in N3. Natural sleep therefore does not mirror the propofol trajectory, indicating that pharmacological and physiological routes to reduced arousal are geometrically distinguishable \citep{Pereira2023,Huo2024}.}
-    \label{fig:sleepdyn}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/sleep_gap_histograms.png}
-    \caption{\textbf{Distribution of minimum eigenvalue gap across wake, N3, and REM.}
-    REM sleep shows the smallest group mean gap, with clear separation from both wake and N3. Awake and N3 differ less reliably.}
-    \label{fig:sleepgap}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/chirality_summary.png}
-    \caption{\textbf{Chirality and non-Hermitian decomposition.}
-    Directed geometric measures, including chirality-related observables, covary with criticality and complexity \citep{RafiUlIslam2024,Ding2024}. These analyses provide secondary support for the broader geometric interpretation.}
-    \label{fig:chirality}
-\end{figure}
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=\textwidth]{figures/pac_summary.png}
-    \caption{\textbf{Phase--amplitude coupling is linked selectively to $\tau$.}
-    PAC does not track branching ratio and does not differ reliably between task-relevant and irrelevant epochs, but it does correlate with the avalanche exponent $\tau$. This suggests selective coupling between cross-frequency structure and temporal scaling \citep{Daume2024,Sakakura2023}.}
-    \label{fig:pac}
-\end{figure}
 
 % ================================================================
 %  BIBLIOGRAPHY
 % ================================================================
+\clearpage
 \printbibliography
 
 
+% (Internal revision note removed for final version.)
 \end{document}
