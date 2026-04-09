@@ -1,13 +1,13 @@
-"""Dynamical systems analysis: Jacobian estimation, exceptional point
+"""Dynamical systems analysis: Jacobian estimation, near-degeneracy
 detection, and chiral phase flux measurement.
 
 Maps multi-channel neural data into a high-dimensional state space,
 estimates the system Jacobian via windowed VAR(1) regression, detects
-eigenvalue degeneracies (exceptional points) where both eigenvalues
+eigenvalue degeneracies (near-degeneracys) where both eigenvalues
 and eigenvectors coalesce, and measures the directional (chiral) phase
-rotation of coalescing eigenvectors.
+rotation of high-overlap eigenvector configurations.
 
-Exceptional points (EPs) occur in non-Hermitian systems — neural
+Near-degeneracies (EPs) occur in non-Hermitian systems — neural
 dynamics are dissipative, hence the effective Jacobian is generically
 non-Hermitian. Near an EP, the system shows extreme sensitivity to
 perturbation (square-root topology in parameter space), which has
@@ -16,8 +16,8 @@ criticality.
 
 Chirality: When eigenvectors coalesce near an EP, encircling the EP
 in parameter space causes eigenvalue swapping with a definite
-topological winding. In the time domain, this manifests as a
-consistent (chiral) phase rotation of the coalescing eigenvectors.
+eigenvalue-trajectory winding summary. In the time domain, this manifests as a
+consistent (chiral) phase rotation of the high-overlap eigenvector configurations.
 The hypothesis is that conscious processing produces chiral
 (directed) phase rotation, while noise/unconsciousness produces
 random phase jitter even near an EP.
@@ -25,6 +25,22 @@ random phase jitter even near an EP.
 Units: state vectors are z-scored channel amplitudes (dimensionless).
 Time is in samples; convert to seconds via 1/sfreq.
 Phase angles are in radians.
+
+Methodological guardrails
+-------------------------
+- VAR(1) is a local linear summary, not a mechanistic generative model.
+  It approximates the system Jacobian at each window; the true dynamics
+  may be nonlinear, non-stationary, or higher-order.
+- Minimum eigenvalue gap is dimension-dependent: values are meaningful
+  only within fixed preprocessing and model dimension (here: 15 PCA
+  components throughout all analyses).
+- Eigenvector condition numbers and overlaps can be unstable in finite
+  samples. All geometry metrics should be interpreted comparatively
+  across conditions, not as absolute measurements of non-Hermitian
+  degeneracy.
+- The term "EP" (exceptional point) is used as shorthand for a composite
+  of eigenvalue proximity and eigenvector non-orthogonality. This pipeline
+  does not claim detection of mathematically exact exceptional points.
 """
 from __future__ import annotations
 
@@ -52,7 +68,7 @@ class JacobianResult:
         Max |eigenvalue| per window (stability indicator).
     condition_numbers : np.ndarray, shape (n_windows,)
         Condition number of eigenvector matrix per window.
-        Diverges near exceptional points.
+        Diverges near near-degeneracys.
     residual_variance : np.ndarray, shape (n_windows,)
         Fraction of variance unexplained by VAR(1) fit per window.
     regularization : float
@@ -71,7 +87,7 @@ class JacobianResult:
 
 @dataclass
 class ExceptionalPointResult:
-    """Result of exceptional point detection.
+    """Result of operator-geometry analysis.
 
     Attributes
     ----------
@@ -335,9 +351,9 @@ def detect_exceptional_points(
     jac_result: JacobianResult,
     ep_threshold: float = 10.0,
 ) -> ExceptionalPointResult:
-    """Detect exceptional point candidates from Jacobian eigenvalue spectra.
+    """Detect near-degeneracy candidates from Jacobian eigenvalue spectra.
 
-    An exceptional point occurs when two eigenvalues AND their eigenvectors
+    An near-degeneracy occurs when two eigenvalues AND their eigenvectors
     coalesce. We detect this via:
     1. Minimum eigenvalue gap: min_{i!=j} |lambda_i - lambda_j|
     2. Eigenvector overlap: |<v_i|v_j>| for the closest pair (-> 1 at EP)
@@ -521,7 +537,7 @@ class ChiralityResult:
     ----------
     phase_velocities : np.ndarray, shape (n_windows - 1,)
         Instantaneous phase rotation rate (rad/step) of the tracked
-        coalescing eigenvector between consecutive windows.
+        near-degenerate eigenvector pair between consecutive windows.
         Positive = one chirality, negative = other.
     cumulative_phase : np.ndarray, shape (n_windows,)
         Accumulated geometric phase over time (rad).
@@ -654,14 +670,14 @@ def measure_chirality(
     For a real Jacobian, individual eigenvalue phases are trivially 0 or
     pi, or flip randomly between conjugate branches. The splitting phase
     arg(Delta_lambda) is gauge-invariant and directly measures the
-    topological winding around the EP.
+    eigenvalue-trajectory winding summary around the EP.
 
     The Berry phase is computed from gauge-fixed (tracked) eigenvectors
     using the Pancharatnam connection.
 
     A high chirality index indicates consistent rotational direction —
     the system orbits the EP with a definite handedness. A low index
-    indicates random jitter — no topological winding.
+    indicates random jitter — no eigenvalue-trajectory winding summary.
 
     Parameters
     ----------
@@ -826,3 +842,25 @@ def measure_chirality_epochs(
         "channel_indices": ch_idx.tolist(),
         "epoch_results": epoch_results,
     }
+
+
+# ---------------------------------------------------------------------------
+# Backward-compatible aliases (new cautious names -> old implementations)
+# ---------------------------------------------------------------------------
+import warnings as _warnings
+
+def compute_geometry_proximity_timecourse(*args, **kwargs):
+    """Alias for compute_ep_proximity_timecourse.
+
+    Preferred name: uses 'geometry proximity' instead of 'EP proximity'
+    to avoid implying detection of mathematically exact exceptional points.
+    """
+    return compute_ep_proximity_timecourse(*args, **kwargs)
+
+def detect_near_degeneracies(*args, **kwargs):
+    """Alias for detect_exceptional_points.
+
+    Preferred name: uses 'near-degeneracies' instead of 'exceptional points'
+    to avoid implying detection of mathematically exact exceptional points.
+    """
+    return detect_exceptional_points(*args, **kwargs)

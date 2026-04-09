@@ -1,0 +1,1300 @@
+{
+  "analysis": "sleep_multiblock_robustness",
+  "max_blocks_per_state": 3,
+  "min_contiguous_epochs": 4,
+  "n_subjects_attempted": 10,
+  "n_subjects_completed": 10,
+  "per_subject": [
+    {
+      "subject": "EPCTL01",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.013128703084844739,
+              "std_gap": 0.0063349995110229505,
+              "mean_spectral_radius": 0.9980405654814793,
+              "mean_ep_score": 83.25694893953904,
+              "n_windows": 5995,
+              "start_sec": 2730.0,
+              "end_sec": 3330.0,
+              "n_epochs": 20,
+              "duration_sec": 600.0
+            },
+            {
+              "mean_gap": 0.013013233707300063,
+              "std_gap": 0.0055928687741859185,
+              "mean_spectral_radius": 1.0007524443987867,
+              "mean_ep_score": 77.54689319800578,
+              "n_windows": 1495,
+              "start_sec": 11130.0,
+              "end_sec": 11280.0,
+              "n_epochs": 5,
+              "duration_sec": 150.0
+            },
+            {
+              "mean_gap": 0.013868138975369811,
+              "std_gap": 0.00660285088675811,
+              "mean_spectral_radius": 0.9979312169722426,
+              "mean_ep_score": 87.90235926926425,
+              "n_windows": 1495,
+              "start_sec": 28410.0,
+              "end_sec": 28560.0,
+              "n_epochs": 5,
+              "duration_sec": 150.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.01333669192250487,
+          "std_gap_across_blocks": 0.0003787349748718415,
+          "longest_block_gap": 0.013128703084844739
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012906229027438241,
+              "std_gap": 0.004398212792556588,
+              "mean_spectral_radius": 1.0091815862940519,
+              "mean_ep_score": 69.99877929960898,
+              "n_windows": 18295,
+              "start_sec": 9300.0,
+              "end_sec": 11130.0,
+              "n_epochs": 61,
+              "duration_sec": 1830.0
+            },
+            {
+              "mean_gap": 0.01313693120060418,
+              "std_gap": 0.004486658977920708,
+              "mean_spectral_radius": 1.008740922007193,
+              "mean_ep_score": 69.00247719308881,
+              "n_windows": 14395,
+              "start_sec": 1140.0,
+              "end_sec": 2580.0,
+              "n_epochs": 48,
+              "duration_sec": 1440.0
+            },
+            {
+              "mean_gap": 0.012997541761620282,
+              "std_gap": 0.004474817208391525,
+              "mean_spectral_radius": 1.0079189041490986,
+              "mean_ep_score": 68.7924639822928,
+              "n_windows": 7195,
+              "start_sec": 5130.0,
+              "end_sec": 5850.0,
+              "n_epochs": 24,
+              "duration_sec": 720.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013013567329887567,
+          "std_gap_across_blocks": 9.486301458625774e-05,
+          "longest_block_gap": 0.012906229027438241
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011314036901582043,
+              "std_gap": 0.004621920693620979,
+              "mean_spectral_radius": 1.0003066467611652,
+              "mean_ep_score": 87.72109608010015,
+              "n_windows": 10795,
+              "start_sec": 25770.0,
+              "end_sec": 26850.0,
+              "n_epochs": 36,
+              "duration_sec": 1080.0
+            },
+            {
+              "mean_gap": 0.011478072211211394,
+              "std_gap": 0.004573512030425085,
+              "mean_spectral_radius": 0.9999551310868218,
+              "mean_ep_score": 85.88266428711722,
+              "n_windows": 8095,
+              "start_sec": 7350.0,
+              "end_sec": 8160.0,
+              "n_epochs": 27,
+              "duration_sec": 810.0
+            },
+            {
+              "mean_gap": 0.011324850537890988,
+              "std_gap": 0.004578532446594665,
+              "mean_spectral_radius": 1.0001593830656066,
+              "mean_ep_score": 87.429133931646,
+              "n_windows": 7795,
+              "start_sec": 15450.0,
+              "end_sec": 16230.0,
+              "n_epochs": 26,
+              "duration_sec": 780.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011372319883561475,
+          "std_gap_across_blocks": 7.490838753698842e-05,
+          "longest_block_gap": 0.011314036901582043
+        }
+      }
+    },
+    {
+      "subject": "EPCTL03",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.013218687253635302,
+              "std_gap": 0.005723442287063612,
+              "mean_spectral_radius": 0.9972526796172869,
+              "mean_ep_score": 76.40941444784787,
+              "n_windows": 3895,
+              "start_sec": 13320.0,
+              "end_sec": 13710.0,
+              "n_epochs": 13,
+              "duration_sec": 390.0
+            },
+            {
+              "mean_gap": 0.014167132557046904,
+              "std_gap": 0.006456151227327008,
+              "mean_spectral_radius": 0.9968166347566189,
+              "mean_ep_score": 75.02706268180933,
+              "n_windows": 2995,
+              "start_sec": 2130.0,
+              "end_sec": 2430.0,
+              "n_epochs": 10,
+              "duration_sec": 300.0
+            },
+            {
+              "mean_gap": 0.013155991581971794,
+              "std_gap": 0.005727493161745666,
+              "mean_spectral_radius": 0.998223274448109,
+              "mean_ep_score": 84.18657600638426,
+              "n_windows": 1495,
+              "start_sec": 12090.0,
+              "end_sec": 12240.0,
+              "n_epochs": 5,
+              "duration_sec": 150.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013513937130884668,
+          "std_gap_across_blocks": 0.0004625875667595522,
+          "longest_block_gap": 0.013218687253635302
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.013484282757811886,
+              "std_gap": 0.0045316206992882845,
+              "mean_spectral_radius": 1.0080453709157784,
+              "mean_ep_score": 65.89210857631892,
+              "n_windows": 20695,
+              "start_sec": 3090.0,
+              "end_sec": 5160.0,
+              "n_epochs": 69,
+              "duration_sec": 2070.0
+            },
+            {
+              "mean_gap": 0.0130173986767253,
+              "std_gap": 0.004421760407965327,
+              "mean_spectral_radius": 1.0078960781559398,
+              "mean_ep_score": 69.82862075893497,
+              "n_windows": 20095,
+              "start_sec": 16140.0,
+              "end_sec": 18150.0,
+              "n_epochs": 67,
+              "duration_sec": 2010.0
+            },
+            {
+              "mean_gap": 0.013100243051758569,
+              "std_gap": 0.004435988438261597,
+              "mean_spectral_radius": 1.0086479669024648,
+              "mean_ep_score": 68.52100600644113,
+              "n_windows": 14095,
+              "start_sec": 8760.0,
+              "end_sec": 10170.0,
+              "n_epochs": 47,
+              "duration_sec": 1410.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013200641495431919,
+          "std_gap_across_blocks": 0.00020339628300772777,
+          "longest_block_gap": 0.013484282757811886
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.010990616455934436,
+              "std_gap": 0.004564919530873022,
+              "mean_spectral_radius": 1.0008562179254754,
+              "mean_ep_score": 93.31988820951454,
+              "n_windows": 13495,
+              "start_sec": 21330.0,
+              "end_sec": 22680.0,
+              "n_epochs": 45,
+              "duration_sec": 1350.0
+            },
+            {
+              "mean_gap": 0.010809086348644645,
+              "std_gap": 0.004471478263851863,
+              "mean_spectral_radius": 1.0018753983716278,
+              "mean_ep_score": 95.97159077883032,
+              "n_windows": 7495,
+              "start_sec": 12540.0,
+              "end_sec": 13290.0,
+              "n_epochs": 25,
+              "duration_sec": 750.0
+            },
+            {
+              "mean_gap": 0.01122284819666143,
+              "std_gap": 0.00455279170924902,
+              "mean_spectral_radius": 1.0019830673014842,
+              "mean_ep_score": 88.73886823973974,
+              "n_windows": 4195,
+              "start_sec": 18360.0,
+              "end_sec": 18780.0,
+              "n_epochs": 14,
+              "duration_sec": 420.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011007517000413504,
+          "std_gap_across_blocks": 0.0001693397728854292,
+          "longest_block_gap": 0.010990616455934436
+        }
+      }
+    },
+    {
+      "subject": "EPCTL05",
+      "states": {
+        "W": {
+          "n_blocks": 2,
+          "blocks": [
+            {
+              "mean_gap": 0.012556225934329018,
+              "std_gap": 0.005924504251011472,
+              "mean_spectral_radius": 0.9950730725553751,
+              "mean_ep_score": 70553677.7256657,
+              "n_windows": 7795,
+              "start_sec": 690.0,
+              "end_sec": 1470.0,
+              "n_epochs": 26,
+              "duration_sec": 780.0
+            },
+            {
+              "mean_gap": 0.014579778098568625,
+              "std_gap": 0.007195643428626865,
+              "mean_spectral_radius": 0.9973862724851694,
+              "mean_ep_score": 74.48432100020064,
+              "n_windows": 2095,
+              "start_sec": 22350.0,
+              "end_sec": 22560.0,
+              "n_epochs": 7,
+              "duration_sec": 210.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.01356800201644882,
+          "std_gap_across_blocks": 0.0010117760821198038,
+          "longest_block_gap": 0.012556225934329018
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012820417821627714,
+              "std_gap": 0.004422936095219279,
+              "mean_spectral_radius": 1.0074211393602963,
+              "mean_ep_score": 70.03589287850731,
+              "n_windows": 11395,
+              "start_sec": 4530.0,
+              "end_sec": 5670.0,
+              "n_epochs": 38,
+              "duration_sec": 1140.0
+            },
+            {
+              "mean_gap": 0.012755767469963406,
+              "std_gap": 0.0044172030818928655,
+              "mean_spectral_radius": 1.0071054829139854,
+              "mean_ep_score": 71.8670818680308,
+              "n_windows": 10195,
+              "start_sec": 9540.0,
+              "end_sec": 10560.0,
+              "n_epochs": 34,
+              "duration_sec": 1020.0
+            },
+            {
+              "mean_gap": 0.012519484137066774,
+              "std_gap": 0.004397851058536791,
+              "mean_spectral_radius": 1.0082705752644108,
+              "mean_ep_score": 74.85651393149232,
+              "n_windows": 9595,
+              "start_sec": 2310.0,
+              "end_sec": 3270.0,
+              "n_epochs": 32,
+              "duration_sec": 960.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.012698556476219298,
+          "std_gap_across_blocks": 0.0001293447434307433,
+          "longest_block_gap": 0.012820417821627714
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011159029001967366,
+              "std_gap": 0.004648973821816962,
+              "mean_spectral_radius": 1.0000193941953557,
+              "mean_ep_score": 89.39431605849065,
+              "n_windows": 16195,
+              "start_sec": 11820.0,
+              "end_sec": 13440.0,
+              "n_epochs": 54,
+              "duration_sec": 1620.0
+            },
+            {
+              "mean_gap": 0.01141510808984548,
+              "std_gap": 0.004633173229054445,
+              "mean_spectral_radius": 0.9996594666600013,
+              "mean_ep_score": 84.58481881003475,
+              "n_windows": 7195,
+              "start_sec": 19230.0,
+              "end_sec": 19950.0,
+              "n_epochs": 24,
+              "duration_sec": 720.0
+            },
+            {
+              "mean_gap": 0.011423795588231051,
+              "std_gap": 0.004716743854375288,
+              "mean_spectral_radius": 0.9995865477703916,
+              "mean_ep_score": 87.20065990452777,
+              "n_windows": 4795,
+              "start_sec": 18540.0,
+              "end_sec": 19020.0,
+              "n_epochs": 16,
+              "duration_sec": 480.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.0113326442266813,
+          "std_gap_across_blocks": 0.0001228157233321583,
+          "longest_block_gap": 0.011159029001967366
+        }
+      }
+    },
+    {
+      "subject": "EPCTL07",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.01534205457550675,
+              "std_gap": 0.007255946966187178,
+              "mean_spectral_radius": 0.9949674827485971,
+              "mean_ep_score": 69.951861886442,
+              "n_windows": 17095,
+              "start_sec": 21750.0,
+              "end_sec": 23460.0,
+              "n_epochs": 57,
+              "duration_sec": 1710.0
+            },
+            {
+              "mean_gap": 0.015608680790476203,
+              "std_gap": 0.007156695397565294,
+              "mean_spectral_radius": 0.9944861859602886,
+              "mean_ep_score": 71.44630641993388,
+              "n_windows": 8695,
+              "start_sec": 23550.0,
+              "end_sec": 24420.0,
+              "n_epochs": 29,
+              "duration_sec": 870.0
+            },
+            {
+              "mean_gap": 0.014440797508619199,
+              "std_gap": 0.0060942723365138346,
+              "mean_spectral_radius": 0.9924990956039037,
+              "mean_ep_score": 66.98328628667075,
+              "n_windows": 4495,
+              "start_sec": 2340.0,
+              "end_sec": 2790.0,
+              "n_epochs": 15,
+              "duration_sec": 450.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.015130510958200718,
+          "std_gap_across_blocks": 0.0004997004879775237,
+          "longest_block_gap": 0.01534205457550675
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012816636699401746,
+              "std_gap": 0.0044302877674215575,
+              "mean_spectral_radius": 1.0098679941818889,
+              "mean_ep_score": 71.04499899927285,
+              "n_windows": 15595,
+              "start_sec": 3600.0,
+              "end_sec": 5160.0,
+              "n_epochs": 52,
+              "duration_sec": 1560.0
+            },
+            {
+              "mean_gap": 0.012457319637312865,
+              "std_gap": 0.004330399645620331,
+              "mean_spectral_radius": 1.0111009998140217,
+              "mean_ep_score": 75.261006703048,
+              "n_windows": 13495,
+              "start_sec": 8040.0,
+              "end_sec": 9390.0,
+              "n_epochs": 45,
+              "duration_sec": 1350.0
+            },
+            {
+              "mean_gap": 0.012227896850776165,
+              "std_gap": 0.004356865754770898,
+              "mean_spectral_radius": 1.0103284344542283,
+              "mean_ep_score": 76.88167736572119,
+              "n_windows": 13495,
+              "start_sec": 13680.0,
+              "end_sec": 15030.0,
+              "n_epochs": 45,
+              "duration_sec": 1350.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.012500617729163591,
+          "std_gap_across_blocks": 0.0002422941681900377,
+          "longest_block_gap": 0.012816636699401746
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011298597893984645,
+              "std_gap": 0.004812202124654908,
+              "mean_spectral_radius": 1.000547426330679,
+              "mean_ep_score": 88.53169427090651,
+              "n_windows": 5095,
+              "start_sec": 24930.0,
+              "end_sec": 25440.0,
+              "n_epochs": 17,
+              "duration_sec": 510.0
+            },
+            {
+              "mean_gap": 0.011722249148768387,
+              "std_gap": 0.004887796773528098,
+              "mean_spectral_radius": 1.0002624846282313,
+              "mean_ep_score": 81.49832079547208,
+              "n_windows": 3895,
+              "start_sec": 11250.0,
+              "end_sec": 11640.0,
+              "n_epochs": 13,
+              "duration_sec": 390.0
+            },
+            {
+              "mean_gap": 0.011608879471801078,
+              "std_gap": 0.0048015741814974285,
+              "mean_spectral_radius": 0.9997165137004745,
+              "mean_ep_score": 84.35763782918114,
+              "n_windows": 3895,
+              "start_sec": 26880.0,
+              "end_sec": 27270.0,
+              "n_epochs": 13,
+              "duration_sec": 390.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011543242171518038,
+          "std_gap_across_blocks": 0.0001790740774303459,
+          "longest_block_gap": 0.011298597893984645
+        }
+      }
+    },
+    {
+      "subject": "EPCTL10",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.013938778260487677,
+              "std_gap": 0.00655365220162833,
+              "mean_spectral_radius": 0.9966910556949365,
+              "mean_ep_score": 76.01679809267382,
+              "n_windows": 34795,
+              "start_sec": 18060.0,
+              "end_sec": 21540.0,
+              "n_epochs": 116,
+              "duration_sec": 3480.0
+            },
+            {
+              "mean_gap": 0.014578136156844636,
+              "std_gap": 0.00669391862451458,
+              "mean_spectral_radius": 0.9961834510440618,
+              "mean_ep_score": 72.85132022742701,
+              "n_windows": 14695,
+              "start_sec": 23880.0,
+              "end_sec": 25350.0,
+              "n_epochs": 49,
+              "duration_sec": 1470.0
+            },
+            {
+              "mean_gap": 0.013870101987933163,
+              "std_gap": 0.006075033632570887,
+              "mean_spectral_radius": 0.9961743545102979,
+              "mean_ep_score": 71.12081393004323,
+              "n_windows": 4795,
+              "start_sec": 150.0,
+              "end_sec": 630.0,
+              "n_epochs": 16,
+              "duration_sec": 480.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.014129005468421824,
+          "std_gap_across_blocks": 0.00031881853675234175,
+          "longest_block_gap": 0.013938778260487677
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011693589868965279,
+              "std_gap": 0.004429818315472901,
+              "mean_spectral_radius": 1.0089570887053956,
+              "mean_ep_score": 84.7497393266701,
+              "n_windows": 26695,
+              "start_sec": 10200.0,
+              "end_sec": 12870.0,
+              "n_epochs": 89,
+              "duration_sec": 2670.0
+            },
+            {
+              "mean_gap": 0.013024662283573418,
+              "std_gap": 0.00445474855042543,
+              "mean_spectral_radius": 1.01007692013831,
+              "mean_ep_score": 69.4752737655994,
+              "n_windows": 20695,
+              "start_sec": 1530.0,
+              "end_sec": 3600.0,
+              "n_epochs": 69,
+              "duration_sec": 2070.0
+            },
+            {
+              "mean_gap": 0.012137578201085047,
+              "std_gap": 0.004549054875487417,
+              "mean_spectral_radius": 1.009847963911705,
+              "mean_ep_score": 81.54152455045585,
+              "n_windows": 17095,
+              "start_sec": 3990.0,
+              "end_sec": 5700.0,
+              "n_epochs": 57,
+              "duration_sec": 1710.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.01228527678454125,
+          "std_gap_across_blocks": 0.0005533531704670543,
+          "longest_block_gap": 0.011693589868965279
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.010851742111570462,
+              "std_gap": 0.004468614336848288,
+              "mean_spectral_radius": 1.001569353932517,
+              "mean_ep_score": 88.68349462590177,
+              "n_windows": 5095,
+              "start_sec": 17550.0,
+              "end_sec": 18060.0,
+              "n_epochs": 17,
+              "duration_sec": 510.0
+            },
+            {
+              "mean_gap": 0.0113950096802206,
+              "std_gap": 0.004372740582310688,
+              "mean_spectral_radius": 1.0035366749620394,
+              "mean_ep_score": 82.12495184308884,
+              "n_windows": 3895,
+              "start_sec": 6690.0,
+              "end_sec": 7080.0,
+              "n_epochs": 13,
+              "duration_sec": 390.0
+            },
+            {
+              "mean_gap": 0.011555628722235887,
+              "std_gap": 0.004584541685258434,
+              "mean_spectral_radius": 1.0024800438307822,
+              "mean_ep_score": 82.56294699037548,
+              "n_windows": 2695,
+              "start_sec": 13410.0,
+              "end_sec": 13680.0,
+              "n_epochs": 9,
+              "duration_sec": 270.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011267460171342317,
+          "std_gap_across_blocks": 0.00030118183663675497,
+          "longest_block_gap": 0.010851742111570462
+        }
+      }
+    },
+    {
+      "subject": "EPCTL14",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011637619207877974,
+              "std_gap": 0.004972201319277183,
+              "mean_spectral_radius": 1.0029448600039828,
+              "mean_ep_score": 87.47234555472912,
+              "n_windows": 10195,
+              "start_sec": 20310.0,
+              "end_sec": 21330.0,
+              "n_epochs": 34,
+              "duration_sec": 1020.0
+            },
+            {
+              "mean_gap": 0.013705572542372908,
+              "std_gap": 0.006156048085988439,
+              "mean_spectral_radius": 0.994946576795838,
+              "mean_ep_score": 77.96273353031916,
+              "n_windows": 2095,
+              "start_sec": 990.0,
+              "end_sec": 1200.0,
+              "n_epochs": 7,
+              "duration_sec": 210.0
+            },
+            {
+              "mean_gap": 0.012975693097173578,
+              "std_gap": 0.006698344045994012,
+              "mean_spectral_radius": 0.9997253325178844,
+              "mean_ep_score": 83.7102193251338,
+              "n_windows": 1495,
+              "start_sec": 11970.0,
+              "end_sec": 12120.0,
+              "n_epochs": 5,
+              "duration_sec": 150.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.012772961615808154,
+          "std_gap_across_blocks": 0.0008563226761622997,
+          "longest_block_gap": 0.011637619207877974
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012827249336739822,
+              "std_gap": 0.004478649310347265,
+              "mean_spectral_radius": 1.0078907827738117,
+              "mean_ep_score": 71.01689635365535,
+              "n_windows": 20695,
+              "start_sec": 2550.0,
+              "end_sec": 4620.0,
+              "n_epochs": 69,
+              "duration_sec": 2070.0
+            },
+            {
+              "mean_gap": 0.012203753969478218,
+              "std_gap": 0.004448520353203443,
+              "mean_spectral_radius": 1.0104716555846838,
+              "mean_ep_score": 77.56104299371063,
+              "n_windows": 15295,
+              "start_sec": 16170.0,
+              "end_sec": 17700.0,
+              "n_epochs": 51,
+              "duration_sec": 1530.0
+            },
+            {
+              "mean_gap": 0.01249451367786315,
+              "std_gap": 0.004330023981905704,
+              "mean_spectral_radius": 1.0080709967644497,
+              "mean_ep_score": 71.74838639158455,
+              "n_windows": 8395,
+              "start_sec": 8640.0,
+              "end_sec": 9480.0,
+              "n_epochs": 28,
+              "duration_sec": 840.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.012508505661360395,
+          "std_gap_across_blocks": 0.0002547331282614693,
+          "longest_block_gap": 0.012827249336739822
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.010990956540400174,
+              "std_gap": 0.004410421492712196,
+              "mean_spectral_radius": 1.0022528733454195,
+              "mean_ep_score": 87.572668678111,
+              "n_windows": 9595,
+              "start_sec": 12660.0,
+              "end_sec": 13620.0,
+              "n_epochs": 32,
+              "duration_sec": 960.0
+            },
+            {
+              "mean_gap": 0.011046749593232158,
+              "std_gap": 0.004424989158471051,
+              "mean_spectral_radius": 1.0051799088015203,
+              "mean_ep_score": 87.86008236231076,
+              "n_windows": 5095,
+              "start_sec": 17940.0,
+              "end_sec": 18450.0,
+              "n_epochs": 17,
+              "duration_sec": 510.0
+            },
+            {
+              "mean_gap": 0.011356019352886302,
+              "std_gap": 0.0043712486597030165,
+              "mean_spectral_radius": 1.0028522817296712,
+              "mean_ep_score": 85.30597975468558,
+              "n_windows": 3595,
+              "start_sec": 6720.0,
+              "end_sec": 7080.0,
+              "n_epochs": 12,
+              "duration_sec": 360.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011131241828839544,
+          "std_gap_across_blocks": 0.00016056549582339934,
+          "longest_block_gap": 0.010990956540400174
+        }
+      }
+    },
+    {
+      "subject": "EPCTL17",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.013896750889586317,
+              "std_gap": 0.006209490061312887,
+              "mean_spectral_radius": 0.9946202321931452,
+              "mean_ep_score": 76.30421931908724,
+              "n_windows": 24295,
+              "start_sec": 24930.0,
+              "end_sec": 27360.0,
+              "n_epochs": 81,
+              "duration_sec": 2430.0
+            },
+            {
+              "mean_gap": 0.013673785124245991,
+              "std_gap": 0.006369039771470269,
+              "mean_spectral_radius": 0.9940705614861706,
+              "mean_ep_score": 75878681.37393442,
+              "n_windows": 5395,
+              "start_sec": 30.0,
+              "end_sec": 570.0,
+              "n_epochs": 18,
+              "duration_sec": 540.0
+            },
+            {
+              "mean_gap": 0.011976467390484231,
+              "std_gap": 0.005519835282583908,
+              "mean_spectral_radius": 0.9977213792911905,
+              "mean_ep_score": 90.4235135272318,
+              "n_windows": 2095,
+              "start_sec": 20340.0,
+              "end_sec": 20550.0,
+              "n_epochs": 7,
+              "duration_sec": 210.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013182334468105515,
+          "std_gap_across_blocks": 0.0008575216186960411,
+          "longest_block_gap": 0.013896750889586317
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012571003247235068,
+              "std_gap": 0.004326995818295077,
+              "mean_spectral_radius": 1.0089147678534942,
+              "mean_ep_score": 71.73641181719547,
+              "n_windows": 13195,
+              "start_sec": 3180.0,
+              "end_sec": 4500.0,
+              "n_epochs": 44,
+              "duration_sec": 1320.0
+            },
+            {
+              "mean_gap": 0.012698099289662135,
+              "std_gap": 0.004427186232447021,
+              "mean_spectral_radius": 1.008073891300351,
+              "mean_ep_score": 73.15107271814269,
+              "n_windows": 11695,
+              "start_sec": 1440.0,
+              "end_sec": 2610.0,
+              "n_epochs": 39,
+              "duration_sec": 1170.0
+            },
+            {
+              "mean_gap": 0.012278960940691365,
+              "std_gap": 0.0042402329551672535,
+              "mean_spectral_radius": 1.0085844484358408,
+              "mean_ep_score": 72.72122413865597,
+              "n_windows": 7195,
+              "start_sec": 9870.0,
+              "end_sec": 10590.0,
+              "n_epochs": 24,
+              "duration_sec": 720.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.012516021159196188,
+          "std_gap_across_blocks": 0.0001754736663972157,
+          "longest_block_gap": 0.012571003247235068
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.010948840058558954,
+              "std_gap": 0.004520293437718083,
+              "mean_spectral_radius": 1.0007229678077558,
+              "mean_ep_score": 91.12642692247269,
+              "n_windows": 5995,
+              "start_sec": 19740.0,
+              "end_sec": 20340.0,
+              "n_epochs": 20,
+              "duration_sec": 600.0
+            },
+            {
+              "mean_gap": 0.011084636325238697,
+              "std_gap": 0.0044865526959468535,
+              "mean_spectral_radius": 1.0014649939067966,
+              "mean_ep_score": 85.66339032725828,
+              "n_windows": 4795,
+              "start_sec": 13770.0,
+              "end_sec": 14250.0,
+              "n_epochs": 16,
+              "duration_sec": 480.0
+            },
+            {
+              "mean_gap": 0.010822532658111042,
+              "std_gap": 0.004488373826611236,
+              "mean_spectral_radius": 1.0014608272980596,
+              "mean_ep_score": 92.22587046060391,
+              "n_windows": 2695,
+              "start_sec": 8190.0,
+              "end_sec": 8460.0,
+              "n_epochs": 9,
+              "duration_sec": 270.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.010952003013969563,
+          "std_gap_across_blocks": 0.00010702674524198225,
+          "longest_block_gap": 0.010948840058558954
+        }
+      }
+    },
+    {
+      "subject": "EPCTL20",
+      "states": {
+        "W": {
+          "n_blocks": 2,
+          "blocks": [
+            {
+              "mean_gap": 0.012566640200707298,
+              "std_gap": 0.005656135003213276,
+              "mean_spectral_radius": 0.9986840580017078,
+              "mean_ep_score": 81.31155360333732,
+              "n_windows": 3895,
+              "start_sec": 11910.0,
+              "end_sec": 12300.0,
+              "n_epochs": 13,
+              "duration_sec": 390.0
+            },
+            {
+              "mean_gap": 0.013871967588960735,
+              "std_gap": 0.006242356540906867,
+              "mean_spectral_radius": 0.9954368919956171,
+              "mean_ep_score": 69.82638410348878,
+              "n_windows": 2695,
+              "start_sec": 30.0,
+              "end_sec": 300.0,
+              "n_epochs": 9,
+              "duration_sec": 270.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013219303894834018,
+          "std_gap_across_blocks": 0.0006526636941267183,
+          "longest_block_gap": 0.012566640200707298
+        },
+        "N3": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012800442107875907,
+              "std_gap": 0.004484949466863112,
+              "mean_spectral_radius": 1.0091396599705125,
+              "mean_ep_score": 71.94222171806537,
+              "n_windows": 9895,
+              "start_sec": 2130.0,
+              "end_sec": 3120.0,
+              "n_epochs": 33,
+              "duration_sec": 990.0
+            },
+            {
+              "mean_gap": 0.012528099589405232,
+              "std_gap": 0.004326530693155616,
+              "mean_spectral_radius": 1.0093948506543355,
+              "mean_ep_score": 72.92751209657332,
+              "n_windows": 7195,
+              "start_sec": 9660.0,
+              "end_sec": 10380.0,
+              "n_epochs": 24,
+              "duration_sec": 720.0
+            },
+            {
+              "mean_gap": 0.01251032892443457,
+              "std_gap": 0.004398309651877309,
+              "mean_spectral_radius": 1.0101783670298778,
+              "mean_ep_score": 75.03699349783527,
+              "n_windows": 6595,
+              "start_sec": 6600.0,
+              "end_sec": 7260.0,
+              "n_epochs": 22,
+              "duration_sec": 660.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.012612956873905236,
+          "std_gap_across_blocks": 0.00013277043810314764,
+          "longest_block_gap": 0.012800442107875907
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011160568955521727,
+              "std_gap": 0.004613398401509534,
+              "mean_spectral_radius": 1.002266145068002,
+              "mean_ep_score": 92.5904474478189,
+              "n_windows": 10795,
+              "start_sec": 26400.0,
+              "end_sec": 27480.0,
+              "n_epochs": 36,
+              "duration_sec": 1080.0
+            },
+            {
+              "mean_gap": 0.01141768923437629,
+              "std_gap": 0.004553032742462181,
+              "mean_spectral_radius": 1.0023163590798483,
+              "mean_ep_score": 86.64634226843138,
+              "n_windows": 5395,
+              "start_sec": 16020.0,
+              "end_sec": 16560.0,
+              "n_epochs": 18,
+              "duration_sec": 540.0
+            },
+            {
+              "mean_gap": 0.011237117061242497,
+              "std_gap": 0.00459521117901952,
+              "mean_spectral_radius": 1.0020336436358008,
+              "mean_ep_score": 87.19716332323678,
+              "n_windows": 5095,
+              "start_sec": 15390.0,
+              "end_sec": 15900.0,
+              "n_epochs": 17,
+              "duration_sec": 510.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011271791750380171,
+          "std_gap_across_blocks": 0.00010779443399253885,
+          "longest_block_gap": 0.011160568955521727
+        }
+      }
+    },
+    {
+      "subject": "EPCTL24",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.01322233754146716,
+              "std_gap": 0.005591122346931836,
+              "mean_spectral_radius": 0.9966768322172628,
+              "mean_ep_score": 75.67222280886988,
+              "n_windows": 4495,
+              "start_sec": 20430.0,
+              "end_sec": 20880.0,
+              "n_epochs": 15,
+              "duration_sec": 450.0
+            },
+            {
+              "mean_gap": 0.013613966534098475,
+              "std_gap": 0.005516125142960291,
+              "mean_spectral_radius": 0.9953994068142926,
+              "mean_ep_score": 69.62524116317338,
+              "n_windows": 4195,
+              "start_sec": 390.0,
+              "end_sec": 810.0,
+              "n_epochs": 14,
+              "duration_sec": 420.0
+            },
+            {
+              "mean_gap": 0.015090875733704847,
+              "std_gap": 0.006043824577437019,
+              "mean_spectral_radius": 0.9944816859950779,
+              "mean_ep_score": 63.84183747358278,
+              "n_windows": 3595,
+              "start_sec": 1740.0,
+              "end_sec": 2100.0,
+              "n_epochs": 12,
+              "duration_sec": 360.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.01397572660309016,
+          "std_gap_across_blocks": 0.0008045750450187447,
+          "longest_block_gap": 0.01322233754146716
+        },
+        "N3": {
+          "n_blocks": 2,
+          "blocks": [
+            {
+              "mean_gap": 0.012006816374918095,
+              "std_gap": 0.00430785244988558,
+              "mean_spectral_radius": 1.008761841941859,
+              "mean_ep_score": 76.0633439654041,
+              "n_windows": 17395,
+              "start_sec": 16080.0,
+              "end_sec": 17820.0,
+              "n_epochs": 58,
+              "duration_sec": 1740.0
+            },
+            {
+              "mean_gap": 0.012276812706236089,
+              "std_gap": 0.004344977593688903,
+              "mean_spectral_radius": 1.0088896352748709,
+              "mean_ep_score": 73.91113486761978,
+              "n_windows": 14395,
+              "start_sec": 2670.0,
+              "end_sec": 4110.0,
+              "n_epochs": 48,
+              "duration_sec": 1440.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.01214181454057709,
+          "std_gap_across_blocks": 0.00013499816565899683,
+          "longest_block_gap": 0.012006816374918095
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.011648751928719983,
+              "std_gap": 0.00477189630786264,
+              "mean_spectral_radius": 0.9983814993640251,
+              "mean_ep_score": 81.99195364879436,
+              "n_windows": 6595,
+              "start_sec": 13470.0,
+              "end_sec": 14130.0,
+              "n_epochs": 22,
+              "duration_sec": 660.0
+            },
+            {
+              "mean_gap": 0.011416523954342448,
+              "std_gap": 0.004747665312650831,
+              "mean_spectral_radius": 0.9989724754050139,
+              "mean_ep_score": 83.71209841151982,
+              "n_windows": 3895,
+              "start_sec": 23400.0,
+              "end_sec": 23790.0,
+              "n_epochs": 13,
+              "duration_sec": 390.0
+            },
+            {
+              "mean_gap": 0.011804026727340863,
+              "std_gap": 0.0048362209152876656,
+              "mean_spectral_radius": 0.9987376092393978,
+              "mean_ep_score": 79.2903571965216,
+              "n_windows": 2995,
+              "start_sec": 6660.0,
+              "end_sec": 6960.0,
+              "n_epochs": 10,
+              "duration_sec": 300.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011623100870134432,
+          "std_gap_across_blocks": 0.00015923375348898198,
+          "longest_block_gap": 0.011648751928719983
+        }
+      }
+    },
+    {
+      "subject": "EPCTL28",
+      "states": {
+        "W": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.012949865431901414,
+              "std_gap": 0.006197945257349284,
+              "mean_spectral_radius": 0.9978392342959548,
+              "mean_ep_score": 84.93327092577505,
+              "n_windows": 5095,
+              "start_sec": 15840.0,
+              "end_sec": 16350.0,
+              "n_epochs": 17,
+              "duration_sec": 510.0
+            },
+            {
+              "mean_gap": 0.012830621552127337,
+              "std_gap": 0.006571154108016942,
+              "mean_spectral_radius": 0.9992065961986074,
+              "mean_ep_score": 85.76622686457722,
+              "n_windows": 4195,
+              "start_sec": 19170.0,
+              "end_sec": 19590.0,
+              "n_epochs": 14,
+              "duration_sec": 420.0
+            },
+            {
+              "mean_gap": 0.013725797877330739,
+              "std_gap": 0.006065663750942077,
+              "mean_spectral_radius": 0.9963759665801342,
+              "mean_ep_score": 76.89659356414332,
+              "n_windows": 3295,
+              "start_sec": 4860.0,
+              "end_sec": 5190.0,
+              "n_epochs": 11,
+              "duration_sec": 330.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013168761620453164,
+          "std_gap_across_blocks": 0.0003968810227452966,
+          "longest_block_gap": 0.012949865431901414
+        },
+        "N3": {
+          "n_blocks": 2,
+          "blocks": [
+            {
+              "mean_gap": 0.013326828650907825,
+              "std_gap": 0.004536099335082569,
+              "mean_spectral_radius": 1.0083527339273999,
+              "mean_ep_score": 66.94811771257265,
+              "n_windows": 25795,
+              "start_sec": 5970.0,
+              "end_sec": 8550.0,
+              "n_epochs": 86,
+              "duration_sec": 2580.0
+            },
+            {
+              "mean_gap": 0.013063748718161888,
+              "std_gap": 0.004506573343250782,
+              "mean_spectral_radius": 1.0078954662463995,
+              "mean_ep_score": 67.78650906468961,
+              "n_windows": 4795,
+              "start_sec": 11520.0,
+              "end_sec": 12000.0,
+              "n_epochs": 16,
+              "duration_sec": 480.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.013195288684534855,
+          "std_gap_across_blocks": 0.0001315399663729686,
+          "longest_block_gap": 0.013326828650907825
+        },
+        "R": {
+          "n_blocks": 3,
+          "blocks": [
+            {
+              "mean_gap": 0.010903043019564667,
+              "std_gap": 0.004481323139080933,
+              "mean_spectral_radius": 1.0022319849317038,
+              "mean_ep_score": 94.70274544701122,
+              "n_windows": 19495,
+              "start_sec": 22110.0,
+              "end_sec": 24060.0,
+              "n_epochs": 65,
+              "duration_sec": 1950.0
+            },
+            {
+              "mean_gap": 0.011447673138503837,
+              "std_gap": 0.004409986112490508,
+              "mean_spectral_radius": 1.0020312903679918,
+              "mean_ep_score": 82.48408094385364,
+              "n_windows": 4495,
+              "start_sec": 9180.0,
+              "end_sec": 9630.0,
+              "n_epochs": 15,
+              "duration_sec": 450.0
+            },
+            {
+              "mean_gap": 0.011480915522547706,
+              "std_gap": 0.004422226964799429,
+              "mean_spectral_radius": 1.0016506427299507,
+              "mean_ep_score": 83.05958644889186,
+              "n_windows": 3295,
+              "start_sec": 9720.0,
+              "end_sec": 10050.0,
+              "n_epochs": 11,
+              "duration_sec": 330.0
+            }
+          ],
+          "mean_gap_across_blocks": 0.011277210560205404,
+          "std_gap_across_blocks": 0.0002649242349252365,
+          "longest_block_gap": 0.010903043019564667
+        }
+      }
+    }
+  ],
+  "group_contrasts": {
+    "multi_block_average": {
+      "n3_vs_rem": {
+        "mean_n3": 0.01266732467348174,
+        "mean_rem": 0.011277853147704575,
+        "t": 9.08491663981895,
+        "p": 7.906178035177394e-06,
+        "cohens_d": 3.0283055466063167,
+        "n": 10
+      },
+      "awake_vs_rem": {
+        "mean_awake": 0.013599723569875192,
+        "mean_rem": 0.011277853147704575,
+        "t": 13.02705194453539,
+        "p": 3.81428551701736e-07,
+        "cohens_d": 4.342350648178463,
+        "n": 10
+      },
+      "awake_vs_n3": {
+        "mean_awake": 0.013599723569875192,
+        "mean_n3": 0.01266732467348174,
+        "t": 3.3856328124857766,
+        "p": 0.008054687624811601,
+        "cohens_d": 1.1285442708285924,
+        "n": 10
+      }
+    },
+    "longest_block_only": {
+      "n3_vs_rem": {
+        "mean_n3": 0.012725349589292159,
+        "mean_rem": 0.011126618286780446,
+        "t": 7.924716999590109,
+        "p": 2.3869729096327056e-05,
+        "cohens_d": 2.6415723331967027,
+        "n": 10
+      },
+      "awake_vs_rem": {
+        "mean_awake": 0.013245766238034366,
+        "mean_rem": 0.011126618286780446,
+        "t": 6.726807275971898,
+        "p": 8.58785745513123e-05,
+        "cohens_d": 2.2422690919906327,
+        "n": 10
+      },
+      "awake_vs_n3": {
+        "mean_awake": 0.013245766238034366,
+        "mean_n3": 0.012725349589292159,
+        "t": 1.3315746198628342,
+        "p": 0.21573905753847886,
+        "cohens_d": 0.4438582066209448,
+        "n": 10
+      }
+    }
+  },
+  "elapsed_seconds": 1848.991281747818
+}

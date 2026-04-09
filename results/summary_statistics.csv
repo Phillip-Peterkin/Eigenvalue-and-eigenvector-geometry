@@ -28,6 +28,14 @@ robustness,shared_subspace_propofol_radius,,cohens_d,-1.720,,,-,ep_shared_subspa
 robustness,shared_subspace_propofol_gap,,cohens_d,0.783,,,-,ep_shared_subspace_propofol.json
 robustness,shared_subspace_sleep_N3_vs_REM,,cohens_d,-2.390,,,-,ep_shared_subspace_sleep.json
 robustness,shared_subspace_sleep_awake_vs_REM,,cohens_d,-2.034,,,-,ep_shared_subspace_sleep.json
-robustness,surrogate_real_vs_surr,group,paired_t,-1.876,0.134,,5,ep_robustness_checks.json
-replication,spectral_sensitivity,ds004752,mean_r,0.097,2.55e-08,,15,ep_advanced_ds004752.json
-replication,svd_dimension,ds004752,mean_r,-0.015,6.04e-05,,15,ep_advanced_ds004752.json
+robustness,surrogate_real_vs_surr,group,paired_t,-1.405,0.233,,5,ep_robustness_checks.json
+robustness,surrogate_n_per_subject,n_surrogates,count,200,,,-,ep_robustness_checks.json
+robustness,jackknife_sigma_vs_ep,leave_one_out,r_range,0.792-0.889,all<0.05,,18,jackknife_sensitivity.json
+robustness,jackknife_sigma_vs_ep,most_influential,pearson_r,0.792,<0.05,,17,jackknife_sensitivity.json
+robustness,jackknife_lzc_vs_ep,leave_one_out,n_significant,18,all<0.05,,18,jackknife_sensitivity.json
+robustness,jackknife_tau_vs_ep,leave_one_out,n_significant,17,,,,jackknife_sensitivity.json
+robustness,multiblock_sleep_N3_vs_REM,multi_block_avg,paired_t,9.085,7.91e-06,d=3.028,10,sleep_multiblock_robustness.json
+robustness,multiblock_sleep_awake_vs_REM,multi_block_avg,paired_t,13.027,3.81e-07,d=4.342,10,sleep_multiblock_robustness.json
+robustness,multiblock_sleep_awake_vs_N3,multi_block_avg,paired_t,3.386,0.008,d=1.129,10,sleep_multiblock_robustness.json
+cross_cohort,spectral_sensitivity,ds004752,mean_r,0.097,2.55e-08,,15,ep_advanced_ds004752.json
+cross_cohort,svd_dimension,ds004752,mean_r,-0.015,6.04e-05,,15,ep_advanced_ds004752.json

@@ -16,6 +16,16 @@ Three tests that strengthen the scientific validity of the EP findings:
    sensitivity is robust to state-space dimensionality.
 
 Uses propofol (ds005620) data for tests 1 and 3.
+
+Methodological guardrails
+-------------------------
+- Phase-randomized surrogates constrain interpretation: absolute spectral
+  sensitivity magnitude is not specific to neural temporal structure
+  (group p = 0.23 with 200 surrogates per subject).
+- Jackknife sensitivity addresses single-subject leverage only, not
+  causal validity or generalizability.
+- Multi-block sleep analysis addresses segment-selection robustness only,
+  not independence of sleep-stage scoring from eigenvalue geometry.
 """
 from __future__ import annotations
 
@@ -60,7 +70,7 @@ SUBJECT_IDS = [
 ]
 
 SURROGATE_SUBJECTS = ["1010", "1017", "1033", "1055", "1068"]
-N_SURROGATES = 10
+N_SURROGATES = 200
 PCA_VARIANTS = [10, 15, 20]
 
 

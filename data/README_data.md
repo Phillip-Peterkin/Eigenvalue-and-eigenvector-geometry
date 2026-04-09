@@ -10,7 +10,7 @@ This repository does not include raw data. All datasets used in this study are p
 - **DOI**: [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1)
 - **Direct link**: https://openneuro.org/datasets/ds004752
 - **License**: CC0
-- **Used for**: Intracranial criticality analysis (n=18 subjects) and independent replication (n=15 subjects)
+- **Used for**: Intracranial criticality analysis (n=18 subjects) and cross-cohort generalization (n=15 subjects)
 
 ### 2. Cambridge Propofol EEG
 

@@ -2,7 +2,7 @@ import os
 """Chiral phase flux analysis for CMCC iEEG cohort.
 
 Measures the directional (chiral) phase rotation of eigenvalues near
-exceptional points. Tests the hypothesis that conscious processing
+near-degeneracys. Tests the hypothesis that conscious processing
 produces consistent (chiral) eigenvalue phase rotation, while
 noise/unconsciousness produces random phase jitter.
 

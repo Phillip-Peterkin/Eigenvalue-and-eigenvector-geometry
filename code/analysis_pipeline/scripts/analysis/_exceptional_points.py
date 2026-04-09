@@ -1,10 +1,10 @@
 import os
-"""Exceptional Point Analysis for CMCC Pipeline.
+"""Operator-Geometry Analysis for CMCC Pipeline.
 
 Maps iEEG channels into a high-dimensional state space, estimates
 the time-varying Jacobian via windowed VAR(1), and detects eigenvalue
-degeneracies (exceptional points) where eigenvalues AND eigenvectors
-coalesce — a signature of non-Hermitian criticality distinct from
+degeneracies (near-degeneracys) where eigenvalues AND eigenvectors
+coalesce — a signature of non-Hermitian operator geometry distinct from
 branching-process criticality.
 
 Runs on all QC-passed subjects using DurR1 high-gamma data.
@@ -167,7 +167,7 @@ def plot_summary(subjects_data, output_path):
         return
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-    fig.suptitle("Exceptional Point Analysis — CMCC Cohort", fontsize=14, fontweight="bold")
+    fig.suptitle("Operator-Geometry Analysis — CMCC Cohort", fontsize=14, fontweight="bold")
 
     sigmas = [s["hg_sigma"] for s in valid]
     taus = [s["hg_tau"] for s in valid]
@@ -217,8 +217,8 @@ def plot_summary(subjects_data, output_path):
     n_eps = [s["n_ep_candidates"] for s in valid]
     ax.bar(range(len(valid)), n_eps, color="orange", edgecolor="k", linewidth=0.5)
     ax.set_xlabel("Subject index")
-    ax.set_ylabel("# EP candidates")
-    ax.set_title(f"EP candidates per subject (total={sum(n_eps)})")
+    ax.set_ylabel("# high geometry-score windows")
+    ax.set_title(f"high geometry-score windows per subject (total={sum(n_eps)})")
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
@@ -228,7 +228,7 @@ def plot_summary(subjects_data, output_path):
 
 def main():
     log("=" * 70)
-    log("EXCEPTIONAL POINT ANALYSIS — CMCC iEEG Cohort")
+    log("OPERATOR-GEOMETRY ANALYSIS — CMCC iEEG Cohort")
     log("=" * 70)
 
     config = load_config(str(CONFIG_PATH))

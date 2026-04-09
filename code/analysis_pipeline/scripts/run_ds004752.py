@@ -1,4 +1,4 @@
-"""CMCC Independent Replication Pipeline — ds004752 (Zurich SEEG).
+"""CMCC Cross-Cohort Generalization Pipeline — ds004752 (Zurich SEEG).
 
 Cross-dataset generalization test of criticality and exceptional-point
 dynamics on an independent iEEG dataset. ds004752 contains SEEG depth
@@ -466,7 +466,7 @@ def main():
     subjects = config["data"]["subjects"]
 
     log(f"{'='*70}")
-    log(f"CMCC INDEPENDENT REPLICATION — ds004752 (Zurich SEEG)")
+    log(f"CMCC CROSS-COHORT GENERALIZATION — ds004752 (Zurich SEEG)")
     log(f"  {len(subjects)} subjects, line_freq={config['preprocessing']['line_freq']} Hz")
     log(f"  HG passband: {config['preprocessing']['high_gamma_passband']}")
     log(f"  Results: {results_dir}")

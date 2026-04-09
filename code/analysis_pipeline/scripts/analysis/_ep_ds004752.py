@@ -1,6 +1,6 @@
-"""EP Advanced Analyses — ds004752 Independent Replication.
+"""EP Advanced Analyses — ds004752 Cross-Cohort Generalization.
 
-Runs the same four mechanistic tests of non-Hermitian criticality
+Runs the same four mechanistic tests of non-Hermitian operator geometry
 on the Zurich SEEG dataset that were run on the Cogitate iEEG cohort:
 
 1. State-Switch Contrast — EP metrics in high-load vs low-load windows
@@ -368,7 +368,7 @@ def default_ser(obj):
 
 def main():
     log("=" * 70)
-    log("ADVANCED EP ANALYSES — ds004752 (Zurich SEEG) Independent Replication")
+    log("ADVANCED EP ANALYSES — ds004752 (Zurich SEEG) Cross-Cohort Generalization")
     log("=" * 70)
 
     config = load_config(str(CONFIG_PATH))

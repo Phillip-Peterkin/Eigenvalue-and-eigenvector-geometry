@@ -1,7 +1,7 @@
 import os
 """Advanced EP Analyses for CMCC Pipeline.
 
-Four mechanistic tests of non-Hermitian criticality:
+Four mechanistic tests of non-Hermitian operator geometry:
 1. State-Switch Contrast — EP metrics in task-relevant vs irrelevant windows
 2. Spectral Radius Sensitivity — rho vs eigenvalue gap correlation
 3. SVD Dimension — effective rank collapse near EPs
@@ -395,7 +395,7 @@ def plot_ep_advanced_summary(all_results, group_stats, output_dir):
     sc_valid = [s for s in valid if s.get("state_contrast") is not None]
     if sc_valid:
         metrics = ["gap", "ep_score", "spectral_radius", "condition_number"]
-        labels = ["Eig Gap", "EP Score", "Spec Radius", "Cond Num"]
+        labels = ["Eig Gap", "Geometry Score", "Spec Radius", "Cond Num"]
         gs_per_metric = []
         for m in metrics:
             gs = [s["state_contrast"][m]["g"] for s in sc_valid

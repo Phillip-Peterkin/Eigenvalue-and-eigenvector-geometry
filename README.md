@@ -1,115 +1,49 @@
-# Eigenvalue and Eigenvector Geometry of Fitted Linear Operators
+# Sample Code for: Eigenvalue and Eigenvector Geometry of Fitted Linear Operators Covaries with Criticality-Related Measures and Distinguishes Brain States in Human Electrophysiology
 
-Covaries with Criticality-Related Measures and Distinguishes Brain States in Human Electrophysiology
+## Introduction
 
-Phillip Peterkin | Independent Researcher | [ORCID: 0009-0006-4525-6685](https://orcid.org/0009-0006-4525-6685)
+This repository contains the code and results that accompany Peterkin (2025) "Eigenvalue and eigenvector geometry of fitted linear operators covaries with criticality-related measures and distinguishes brain states in human electrophysiology." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
 
----
+Abstract of the paper:
 
-## Overview
+> Neural systems near criticality exhibit enhanced sensitivity, dynamic range, and computational capacity, but the operator-level geometry linking criticality to brain-state transitions remains unexplored. Here we show that the eigenvalue and eigenvector geometry of fitted linear operators -- estimated via sliding-window VAR(1) models on dimensionality-reduced neural recordings -- covaries with established criticality measures and discriminates between conscious states. In intracranial recordings from 18 human subjects, high-gamma-filtered signals are more subcritical than broadband (branching ratio sigma_HG = 0.974 vs sigma_BB = 0.991; p < 10^-8), with the fitted operator's composite geometry score correlating strongly with branching ratio (r = 0.86, p < 10^-5) and inversely with Lempel-Ziv complexity (r = -0.68, p = 0.002). Minimum eigenvalue spacing is independent of spectral power (gap-alpha max |r| = 0.103; gap-delta mean r = -0.001). In propofol sedation (n = 20), eigenvalue spacing tightens (d = 0.71) while spectral radius shifts toward instability (d = -1.66). In overnight sleep (n = 10), REM produces the tightest eigenvalue spacing of any state (d = -2.51 vs N3), dissociating pharmacological from physiological routes to reduced arousal. Phase-randomized surrogates constrained interpretation: absolute spectral sensitivity magnitude was not specific to neural temporal structure (p = 0.23). Shared-subspace PCA, alternative spacing metrics, jackknife sensitivity, and multi-block sleep robustness analyses all confirmed the primary findings. Cross-cohort generalization in a Zurich SEEG subset (n = 15; distinct subjects, electrodes, paradigm) yielded spectral sensitivity p ~ 2.5 x 10^-8.
 
-This repository contains the complete manuscript, analysis pipeline, and machine-readable results for a study that:
+## Interpretation Guardrails
 
-1. **Demonstrates band-specific criticality regimes** in intracranial recordings: high-gamma is more subcritical than broadband (branching ratio $\sigma_{\mathrm{HG}}=0.974$ vs. $\sigma_{\mathrm{BB}}=0.991$; mixed-effects $p < 10^{-8}$; $n = 18$ subjects), with dissociations among branching ratio, complexity, and long-range temporal correlations.
-2. **Identifies strong cross-subject covariation** between criticality-related measures and fitted operator geometry: branching ratio correlates with a composite geometry score ($r = 0.86$, $p < 10^{-5}$) and inversely with Lempel–Ziv complexity ($r = -0.68$, $p = 0.002$).
-3. **Establishes power independence** of minimum eigenvalue spacing: gap–alpha correlations near zero in propofol (max $|r| = 0.103$); gap–delta correlations near zero in sleep (mean $r = -0.001$).
-4. **Distinguishes brain states** via fitted operator geometry: propofol tightens eigenvalue spacing ($d = 0.71$); REM sleep shows the tightest spacing of any state ($d = -2.51$ vs. N3), dissociating pharmacological from physiological routes to reduced arousal.
-5. **Validates robustness** through shared-subspace PCA (all headline effects survive), alternative nearest-neighbor spacing metrics, phase-randomized surrogates, and PCA dimensionality sweeps.
-6. **Replicates key geometry–dynamics relationships** in an independent Zurich SEEG cohort (ds004752; $n = 15$; spectral sensitivity $p \approx 2.5 \times 10^{-8}$).
+Before exploring this repository, please note the following constraints on interpretation:
 
----
+1. **All geometry metrics are derived from fitted VAR(1) operators** applied to sliding windows of neural data. They are descriptive summaries of local linear dynamics, not mechanistic generative models.
+2. **The term "EP" (exceptional point) is used as shorthand** for a composite of eigenvalue proximity and eigenvector non-orthogonality in fitted operators. This study does not claim detection of mathematically exact exceptional points in brain data.
+3. **Minimum eigenvalue gap is dimension-dependent.** Comparisons are valid only within fixed preprocessing and model dimension (here: 15 PCA components throughout).
+4. **Eigenvector condition numbers and overlaps can be unstable in finite samples.** All metrics should be interpreted comparatively across conditions, not as absolute measurements.
+5. **Spectral sensitivity magnitude is not specific to neural temporal structure** under phase-randomized surrogate controls (group p = 0.23). The sensitivity metric tracks operator geometry but its absolute magnitude may reflect spectral properties shared with surrogates.
+6. **The ds004752 cross-cohort analysis is not an independent replication.** Both the primary ECoG analysis (n = 18) and the SEEG generalization (n = 15) draw from the same OpenNeuro dataset, though with non-overlapping subjects, different electrode types, and different paradigms. See `REPLICATION_AND_DATA_PROVENANCE.md` for details.
+7. **All reported associations are correlational.** No causal claims are made.
 
-## Repository Structure
+## Installation (Code)
 
-```
-.
-├── manuscript/
-│   ├── main.tex                     # Full manuscript (LaTeX, Elsevier/elsarticle format)
-│   ├── references.bib               # BibLaTeX bibliography (APA style, biber backend)
-│   ├── figures/
-│   │   ├── lme_paired_bands.png     # Figure 1: Band-specific criticality (HG vs BB)
-│   │   ├── ep_summary.png           # Figure 2: Operator geometry ↔ criticality covariation
-│   │   ├── gap_vs_alpha_discriminating_test.png  # Figure 3: Gap–alpha independence
-│   │   ├── ep_propofol_summary.png  # Figure 4: Propofol eigenvalue geometry
-│   │   ├── delta_delta_scatter.png  # Figure 5: Gap tightening ↔ sensitivity loss
-│   │   ├── sleep_dynamics_summary.png   # Figure 6: Sleep trajectory
-│   │   ├── sleep_gap_histograms.png     # Figure 7: Gap distributions (W, N3, REM)
-│   │   ├── chirality_summary.png    # Figure 8: Chirality & non-Hermitian decomposition
-│   │   └── pac_summary.png          # Figure 9: PAC ↔ τ selective coupling
-│   └── tables/                      # (empty; tables are inline in main.tex)
-│
-├── code/
-│   ├── analysis_pipeline/           # Full CMCC analysis package
-│   │   ├── cmcc/                    # Installable Python package
-│   │   │   ├── analysis/            # Contrasts, decoding, dynamical systems, EP advanced
-│   │   │   ├── features/            # Avalanche, branching, complexity, DFA, entropy, PAC, powerlaw
-│   │   │   ├── io/                  # Data loading, schema validation, artifact handling
-│   │   │   ├── preprocess/          # Epoching, filtering, QC, re-referencing, scalp/seizure EEG
-│   │   │   ├── viz/                 # Comparisons, distributions, spatial maps, summary plots
-│   │   │   ├── config.py            # Configuration loading & validation
-│   │   │   └── provenance.py        # Pipeline provenance logging
-│   │   └── scripts/
-│   │       ├── run_all_subjects.py          # iEEG pipeline (all subjects)
-│   │       ├── run_all_subjects_broadband.py # Broadband comparison pipeline
-│   │       ├── run_ds004752.py              # Replication dataset pipeline
-│   │       ├── run_pipeline.py              # Main orchestrator
-│   │       └── analysis/                    # 41 individual analysis scripts
-│   │           ├── _broadband_comparison.py
-│   │           ├── _exceptional_points.py
-│   │           ├── _ep_propofol_eeg.py
-│   │           ├── _ep_sleep_dynamics.py
-│   │           ├── _ep_shared_subspace_propofol.py
-│   │           ├── _ep_shared_subspace_sleep.py
-│   │           ├── _ep_robustness_checks.py
-│   │           ├── _chirality.py
-│   │           ├── _cross_frequency.py
-│   │           ├── _gap_vs_alpha_test.py
-│   │           ├── _lme_analysis.py
-│   │           └── ...              # 30 additional analysis scripts
-│   ├── config.yaml                  # Pipeline configuration (all paths genericized)
-│   ├── requirements.txt             # Python dependencies
-│   ├── environment.yml              # Conda environment specification
-│   └── run_analysis.sh              # Shell script to reproduce everything
-│
-├── results/
-│   ├── json_results/                # Machine-readable statistical outputs (17 files)
-│   │   ├── broadband_comparison.json
-│   │   ├── lme_results.json
-│   │   ├── exceptional_points.json
-│   │   ├── gap_vs_alpha_test.json
-│   │   ├── ep_propofol_eeg.json
-│   │   ├── ep_sleep_dynamics.json
-│   │   ├── ep_shared_subspace_propofol.json
-│   │   ├── ep_shared_subspace_sleep.json
-│   │   ├── ep_robustness_checks.json
-│   │   ├── chirality.json
-│   │   ├── cross_frequency.json
-│   │   ├── hypothesis_analysis.json
-│   │   ├── theory_synthesis.json
-│   │   └── ds004752/
-│   │       └── ep_advanced_ds004752.json   # Replication dataset results
-│   └── summary_statistics.csv       # Key headline numbers in tabular form
-│
-├── data/
-│   └── README_data.md               # Links to all three public datasets (no raw data)
-│
-├── README.md
-├── LICENSE                          # Dual: MIT (code) + CC-BY-4.0 (manuscript)
-├── CITATION.cff                     # Machine-readable citation (Zenodo DOI placeholder)
-└── .gitignore
-```
-
----
-
-## Installation
+This repository can be downloaded by entering the following commands:
 
 ```bash
+cd $target_directory
 git clone https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry.git
+```
+
+## Installation (Dependencies)
+
+The analysis pipeline requires Python >= 3.10. Install all dependencies with:
+
+```bash
 cd Eigenvalue-and-eigenvector-geometry
 pip install -r code/requirements.txt
 ```
 
-### Dependencies
+Alternatively, use conda:
+
+```bash
+conda env create -f code/environment.yml
+conda activate cmcc
+```
 
 | Package | Version | Purpose |
 |---------|---------|---------|
@@ -120,40 +54,25 @@ pip install -r code/requirements.txt
 | pandas | >= 2.0 | Data manipulation |
 | statsmodels | >= 0.14 | Linear mixed-effects models |
 | powerlaw | >= 1.5 | Avalanche size distribution fitting |
-| antropy | >= 0.1.6 | Lempel–Ziv complexity, DFA |
+| antropy | >= 0.1.6 | Lempel-Ziv complexity, DFA |
 | neurokit2 | >= 0.2 | Signal complexity measures |
 | Matplotlib | >= 3.7 | Figure generation |
 | seaborn | >= 0.12 | Statistical visualization |
 | h5py | >= 3.9 | HDF5 intermediate storage |
 | PyYAML | >= 6.0 | Pipeline configuration |
 
----
+## Installation (Data)
 
-## Running the Pipeline
+The full pipeline requires three public datasets. No raw data is included in this repository.
 
-```bash
-# Run the full analysis pipeline
-cd code
-bash run_analysis.sh
-```
+| Dataset | Subjects | Source | DOI | Used For |
+|---------|----------|--------|-----|----------|
+| COGITATE iEEG Exp. 1 (ECoG subset) | 18 | OpenNeuro ds004752 | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | Primary iEEG analysis |
+| COGITATE iEEG Exp. 1 (SEEG subset) | 15 | OpenNeuro ds004752 | Same as above | Cross-cohort generalization |
+| Cambridge Propofol EEG | 20 | OpenNeuro ds005620 | [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0) | Propofol state contrasts |
+| ANPHY-Sleep polysomnography | 10 | OSF | [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH) | Sleep state contrasts |
 
-Pipeline configuration is controlled entirely by `code/config.yaml`. All parameters (PCA components, CSD regularization, VAR window size, statistical thresholds, random seed = 42) are versioned for reproducibility.
-
----
-
-## Reproducing the Analysis
-
-### Without External Data
-
-All machine-readable statistical results are provided in `results/json_results/` (18 JSON files). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
-
-### With External Data
-
-The full pipeline requires three public datasets:
-
-**Step 1:** Download the datasets (see `data/README_data.md` for DOIs and links).
-
-**Step 2:** Set environment variables pointing to your local copies:
+After downloading, set environment variables pointing to your local copies:
 
 ```bash
 # Linux / macOS
@@ -167,63 +86,38 @@ set PROPOFOL_DATA_ROOT=C:\path\to\ds005620
 set SLEEP_DATA_ROOT=C:\path\to\ANPHY-Sleep
 ```
 
-**Step 3:** Run the pipeline:
+See `data/README_data.md` for detailed download instructions and `REPLICATION_AND_DATA_PROVENANCE.md` for dataset provenance.
+
+## Reproducing the Analysis
+
+### Without External Data
+
+All machine-readable statistical results are provided in `results/json_results/` (20 JSON files). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
+
+### With External Data
+
+Pipeline configuration is controlled entirely by `code/config.yaml`. All parameters (PCA components = 15, CSD regularization lambda = 10^-5, VAR window = 500 ms, step = 100 ms, random seed = 42) are versioned for reproducibility.
 
 ```bash
 cd code
 bash run_analysis.sh
 ```
 
----
+### Steps to Use the Pipeline
 
-## Data Sources
+1. **Set parameters**: Edit `code/config.yaml` to set data paths, preprocessing parameters, and statistical thresholds. The default configuration reproduces all manuscript results.
 
-| Dataset | Subjects | Source | DOI | Access |
-|---------|----------|--------|-----|--------|
-| COGITATE iEEG Exp. 1 | 18–19 | OpenNeuro ds004752 | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | CC0 (public) |
-| Cambridge Propofol EEG | 20 | OpenNeuro ds005620 | [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0) | CC0 (public) |
-| ANPHY-Sleep polysomnography | 10 | OSF | [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH) | Public |
-| Zurich SEEG (replication) | 15 | OpenNeuro ds004752 | Same as above | CC0 (public) |
+2. **Primary iEEG analysis**: Run `scripts/run_all_subjects.py` to process all 18 ECoG subjects from ds004752. This computes per-subject criticality measures (branching ratio, LZc, DFA, tau), fits sliding-window VAR(1) operators, and extracts eigenvalue geometry metrics.
 
----
+3. **Broadband comparison**: Run `scripts/run_all_subjects_broadband.py` to repeat the analysis on broadband (unfiltered) data for the HG vs BB comparison.
 
-## Key Results
+4. **Cross-cohort generalization**: Run `scripts/run_ds004752.py` to analyze the 15-subject Zurich SEEG subset with the same pipeline. Note: this uses the same OpenNeuro dataset (ds004752) as the primary analysis but with non-overlapping subjects, different electrodes, and a different paradigm.
 
-| Metric | Value | Context |
-|--------|-------|---------|
-| Branching ratio σ (HG vs BB) | $t = -5.74$, $p = 8.9 \times 10^{-6}$ | HG more subcritical than BB |
-| LME band effect on σ | coef $= -0.017$, $p = 9.3 \times 10^{-9}$ | Confirmed by mixed-effects model |
-| σ vs EP score | $r = 0.860$, $p = 4.8 \times 10^{-6}$ | Cross-subject geometry–criticality link |
-| LZc vs EP score | $r = -0.684$, $p = 0.002$ | Complexity inversely tracks geometry |
-| Gap–alpha independence | max $|r| = 0.103$ | No subject > 0.3 |
-| Propofol: spectral radius shift | $d = -1.66$, $p = 4.8 \times 10^{-7}$ | Toward instability under sedation |
-| Propofol: eigenvalue gap | $d = 0.71$, $p = 0.005$ | Tighter spacing under sedation |
-| Sleep: N3 vs REM gap | $d = -2.51$, $p = 2.4 \times 10^{-5}$ | REM = tightest spacing |
-| Sleep: Awake vs REM gap | $d = -2.13$, $p = 8.6 \times 10^{-5}$ | REM narrower than wakefulness |
-| Delta-delta (gap ↔ sensitivity) | $r = -0.683$, $p = 0.0009$ | Survives alpha control ($r = -0.676$) |
-| Shared-subspace propofol gap | $d = 0.78$ vs. $d = 0.71$ (per-state) | Effect strengthens under common PCA |
-| Shared-subspace sleep N3–REM | $d = -2.39$ vs. $d = -2.51$ (per-state) | Modest attenuation; FDR significant |
-| Surrogate control | real $r = 0.076$ vs. surr $r = 0.101$ | Sensitivity not specific to neural structure |
-| Replication: spectral sensitivity | $r \approx 0.097$, $p \approx 2.5 \times 10^{-8}$ | Independent SEEG cohort (ds004752) |
-| Replication: rank vs EP score | $r \approx -0.015$, $p \approx 6 \times 10^{-5}$ | Geometry–dimension relationship |
+5. **Statistical analyses**: Individual analysis scripts in `scripts/analysis/` compute all reported statistics, including band comparisons, operator-geometry correlations, gap-power independence tests, state contrasts, shared-subspace robustness, surrogate controls, jackknife sensitivity, and multi-block sleep robustness.
 
----
+6. **Results**: All outputs are saved as machine-readable JSON files in `results/json_results/`. Key figures are generated in `results/figures/`.
 
-## Figures
-
-| Figure | Description |
-|--------|-------------|
-| Figure 1 | Band-specific criticality in intracranial recordings (paired comparisons, LME) |
-| Figure 2 | Fitted operator-geometry summaries covary with criticality and complexity |
-| Figure 3 | Eigenvalue gap is independent of alpha power in propofol EEG |
-| Figure 4 | Propofol reorganizes eigenvalue geometry |
-| Figure 5 | Gap tightening predicts comparative sensitivity loss under propofol |
-| Figure 6 | Sleep follows a different trajectory from propofol |
-| Figure 7 | Distribution of minimum eigenvalue gap across Wake, N3, and REM |
-| Figure 8 | Chirality and non-Hermitian decomposition |
-| Figure 9 | Phase–amplitude coupling is linked selectively to τ |
-
----
+Please make sure to thoroughly read the docstrings in the code to understand the functionality of each module. If you encounter any problems, please report them as issues in the repository.
 
 ## Compiling the Manuscript
 
@@ -237,11 +131,88 @@ pdflatex main.tex  # third pass for cross-references
 
 Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`, `elsarticle`, `amsmath`, `booktabs`, `hyperref`, `siunitx`, `threeparttable`, `orcidlink`, and `microtype`.
 
----
+## Repository Structure
 
-## Citation
+```
+.
++-- manuscript/
+|   +-- main.tex                     # Full manuscript (LaTeX, Elsevier/elsarticle)
+|   +-- references.bib               # BibLaTeX bibliography
+|   +-- figures/                     # All 9 manuscript figures (PNG)
+|   +-- tables/
+|
++-- code/
+|   +-- analysis_pipeline/
+|   |   +-- cmcc/                    # Installable Python package
+|   |   |   +-- analysis/            # Contrasts, decoding, dynamical systems
+|   |   |   +-- features/            # Avalanche, branching, complexity, DFA, entropy, PAC
+|   |   |   +-- io/                  # Data loading, schema validation
+|   |   |   +-- preprocess/          # Epoching, filtering, QC, re-referencing
+|   |   |   +-- viz/                 # Plotting modules
+|   |   +-- scripts/                 # Pipeline entry points and analysis scripts
+|   +-- config.yaml                  # Pipeline configuration
+|   +-- requirements.txt             # Python dependencies
+|   +-- environment.yml              # Conda environment
+|   +-- run_analysis.sh              # Reproduce everything
+|
++-- results/
+|   +-- json_results/                # 20 machine-readable JSON output files
+|   +-- summary_statistics.csv       # Key headline numbers
+|
++-- data/
+|   +-- README_data.md               # Dataset download links (no raw data)
+|
++-- REPLICATION_AND_DATA_PROVENANCE.md
++-- KEY_MIGRATION.md
++-- CITATION.cff
++-- LICENSE
++-- README.md
+```
 
-If you use this code, data, or framework, please cite:
+## Key Results
+
+### Primary Findings
+
+| Metric | Value | Context |
+|--------|-------|---------|
+| Branching ratio sigma (HG vs BB) | t = -5.74, p = 8.9e-6 | HG more subcritical than BB |
+| LME band effect on sigma | coef = -0.017, p = 9.3e-9 | Confirmed by mixed-effects model |
+| sigma vs geometry score | r = 0.860, p = 4.8e-6 | Cross-subject geometry-criticality link |
+| LZc vs geometry score | r = -0.684, p = 0.002 | Complexity inversely tracks geometry |
+| Propofol: spectral radius shift | d = -1.66, p = 4.8e-7 | Toward instability under sedation |
+| Propofol: eigenvalue gap | d = 0.71, p = 0.005 | Tighter spacing under sedation |
+| Sleep: N3 vs REM gap | d = -2.51, p = 2.4e-5 | REM = tightest spacing |
+| Delta-delta (gap vs sensitivity) | r = -0.683, p = 0.0009 | Survives alpha control (r = -0.676) |
+
+### Robustness Checks
+
+| Check | Result | Interpretation |
+|-------|--------|----------------|
+| Shared-subspace PCA (propofol) | d = 0.78 vs 0.71 (per-state) | Effect strengthens under common PCA |
+| Surrogate control (200/subject) | real r = 0.076 vs surr r = 0.097, p = 0.23 | Sensitivity not specific to neural structure |
+| Jackknife: sigma vs geometry score | 18/18 drops significant, r in [0.79, 0.89] | No single subject drives the correlation |
+| Multi-block sleep: N3 vs REM | d = 3.03, p = 7.9e-6 (3-block avg) | Gap contrast not driven by block selection |
+| Cross-cohort (SEEG) | spectral sensitivity p ~ 2.5e-8 | Generalizes within ds004752 |
+
+## Figures
+
+| Figure | Description |
+|--------|-------------|
+| Figure 1 | Band-specific criticality in intracranial recordings |
+| Figure 2 | Fitted operator-geometry summaries covary with criticality and complexity |
+| Figure 3 | Eigenvalue gap is independent of alpha power in propofol EEG |
+| Figure 4 | Propofol reorganizes eigenvalue geometry of fitted operators |
+| Figure 5 | Gap tightening predicts comparative sensitivity loss under propofol |
+| Figure 6 | Sleep follows a different trajectory from propofol |
+| Figure 7 | Distribution of minimum eigenvalue gap across Wake, N3, and REM |
+| Figure 8 | Chirality and non-Hermitian decomposition |
+| Figure 9 | Phase-amplitude coupling is linked selectively to tau |
+
+## Contributors
+
+* Phillip Peterkin (Independent Researcher)
+
+> Citation: Peterkin, P. (2025). Eigenvalue and eigenvector geometry of fitted linear operators covaries with criticality-related measures and distinguishes brain states in human electrophysiology. *Manuscript submitted for publication*.
 
 ```bibtex
 @article{Peterkin2025,
@@ -257,17 +228,22 @@ If you use this code, data, or framework, please cite:
 
 See `CITATION.cff` for machine-readable citation metadata.
 
----
-
 ## License
 
-- **Code**: MIT License
-- **Manuscript and figures**: CC-BY-4.0
+"Eigenvalue-and-eigenvector-geometry" Copyright (c) 2025, Phillip Peterkin. All rights reserved.
 
-See `LICENSE` for full text.
+This repository uses a dual license:
 
----
+**Code** (Python scripts, configuration files, shell scripts): MIT License
 
-## Contact
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-Phillip Peterkin — peterkin.phillip@gmail.com
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+**Manuscript and figures**: Creative Commons Attribution 4.0 International License (CC-BY-4.0)
+
+You are free to share and adapt the material for any purpose, even commercially, under the following terms: You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
