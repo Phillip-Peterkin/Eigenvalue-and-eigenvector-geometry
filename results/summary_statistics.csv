@@ -37,5 +37,11 @@ robustness,jackknife_tau_vs_ep,leave_one_out,n_significant,17,,,,jackknife_sensi
 robustness,multiblock_sleep_N3_vs_REM,multi_block_avg,paired_t,9.085,7.91e-06,d=3.028,10,sleep_multiblock_robustness.json
 robustness,multiblock_sleep_awake_vs_REM,multi_block_avg,paired_t,13.027,3.81e-07,d=4.342,10,sleep_multiblock_robustness.json
 robustness,multiblock_sleep_awake_vs_N3,multi_block_avg,paired_t,3.386,0.008,d=1.129,10,sleep_multiblock_robustness.json
+propofol,residual_kreiss,awake_vs_sed,wilcoxon,,3.81e-06,d=1.819,20,amplification_propofol_hardening.json
+propofol,residual_kreiss,awake_vs_sed,n_positive,19,,,-,amplification_propofol_hardening.json
+propofol,kreiss_dose_response,awake_vs_sed_run1,wilcoxon,,0.000244,d=1.603,14,amplification_propofol_hardening.json
+propofol,kreiss_dose_response,awake_vs_sed_run2,wilcoxon,,0.00525,d=0.881,14,amplification_propofol_hardening.json
+propofol,kreiss_dose_response,awake_vs_sed_run3,wilcoxon,,0.000244,d=1.437,14,amplification_propofol_hardening.json
+propofol,kreiss_dose_response,strict_monotonic,fraction,0.143,,,14,amplification_propofol_hardening.json
 independent_replication,spectral_sensitivity,ds004752,mean_r,0.097,2.55e-08,,15,ep_advanced_ds004752.json
 independent_replication,svd_dimension,ds004752,mean_r,-0.015,6.04e-05,,15,ep_advanced_ds004752.json
