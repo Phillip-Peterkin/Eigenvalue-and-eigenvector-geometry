@@ -397,6 +397,25 @@ The results motivate several testable directions. First, if spacing effects are 
 
 \subsection{Datasets}
 
+\begin{table}[t]
+\centering
+\caption{\textbf{Data sources.}}
+\label{tab:datasources}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\scriptsize
+\begin{tabular}{@{}p{0.33\linewidth} c p{0.20\linewidth} p{0.26\linewidth} p{0.12\linewidth}@{}}
+\toprule
+Dataset & Subjects & Source & DOI & Access \\
+\midrule
+COGITATE iEEG Exp.~1 & 18--19 & Cogitate Consortium & \url{https://cogitate-data.ae.mpg.de/} & Public \\
+Cambridge Propofol EEG & 20 & OpenNeuro ds005620 & \url{https://doi.org/10.18112/openneuro.ds005620.v1.0.0} & CC0 (public) \\
+ANPHY-Sleep polysomnography & 10 & OSF & \url{https://doi.org/10.17605/OSF.IO/R26FH} & Public \\
+Zurich SEEG (independent replication) & 15 & OpenNeuro ds004752 & \url{https://doi.org/10.18112/openneuro.ds004752.v1.0.1} & CC0 (public) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsubsection{Intracranial EEG (iEEG)}
 Band-specific criticality, EP-inspired operator-geometry summaries, chirality, phase--amplitude coupling, channel-sweep, and spatial analyses used stereotactic EEG data from the COGITATE Experiment~1 adversarial-collaboration dataset \citep{Melloni2023}, available from the Cogitate Consortium (\url{https://cogitate-data.ae.mpg.de/}). The dataset contains ECoG recordings from patients with drug-resistant epilepsy who performed a visual consciousness task (face/object/letter/false-font stimuli with task relevance manipulation). Native sampling rates ranged from 1024 to 2048~Hz depending on the acquisition system. A total of 18--19 subjects were included depending on the specific analysis, after excluding subjects that failed quality-control checks for channel count or signal integrity. For the dynamical-system analyses, up to 30 channels were retained per subject (the 30 channels with highest variance after artifact rejection), yielding Jacobian matrices of dimension $30\times30$.
 
