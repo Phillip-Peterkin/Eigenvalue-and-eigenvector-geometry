@@ -5,7 +5,7 @@
 
 ## Introduction
 
-This repository contains the code and results that accompany Peterkin (2025) "Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
+This repository contains the code and results that accompany Peterkin (2026) "Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
 
 Abstract:
 
