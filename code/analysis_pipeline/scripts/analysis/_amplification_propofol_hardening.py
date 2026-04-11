@@ -45,7 +45,9 @@ import numpy as np
 from scipy import stats as sp_stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", message=".*toeplitz.*", category=RuntimeWarning)
 
 from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 from cmcc.analysis.dynamical_systems import estimate_jacobian
@@ -56,7 +58,7 @@ from cmcc.features.transient_amplification import (
 )
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_ROOT = Path(os.environ.get("PROPOFOL_DATA_ROOT", "./data/ds005620"))
+DATA_ROOT = Path(os.environ.get("DS005620_ROOT", r"c:\openneuro\ds005620"))
 RESULTS_DIR = CMCC_ROOT / "results" / "analysis"
 FIG_DIR = CMCC_ROOT / "results" / "figures" / "amplification_propofol"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
@@ -220,24 +222,46 @@ def analyze_subject_dose_response(subject_id):
     }
 
 
-def page_trend_test(ranks_matrix):
+def page_trend_test(ranks_matrix, n_permutations=10000, seed=42):
     """Page's L test for monotonic trend across ordered conditions.
 
     Parameters
     ----------
     ranks_matrix : np.ndarray, shape (n_subjects, k_conditions)
         Ranks within each subject row.
+    n_permutations : int
+        Number of permutations for p-value estimation.
+    seed : int
+        Random seed for reproducibility.
 
     Returns
     -------
-    L : float
-        Page's L statistic.
+    dict with keys:
+        L : float
+            Page's L statistic.
+        p_value : float
+            Permutation-based one-sided p-value (fraction of
+            permuted L >= observed L).
     """
     n, k = ranks_matrix.shape
     weights = np.arange(1, k + 1)
     col_rank_sums = np.sum(ranks_matrix, axis=0)
-    L = float(np.sum(weights * col_rank_sums))
-    return L
+    L_obs = float(np.sum(weights * col_rank_sums))
+
+    rng = np.random.default_rng(seed)
+    n_geq = 0
+    for _ in range(n_permutations):
+        perm = ranks_matrix.copy()
+        for i in range(n):
+            rng.shuffle(perm[i])
+        col_sums_perm = np.sum(perm, axis=0)
+        L_perm = float(np.sum(weights * col_sums_perm))
+        if L_perm >= L_obs:
+            n_geq += 1
+
+    p_value = (n_geq + 1) / (n_permutations + 1)
+
+    return {"L": L_obs, "p_value": p_value}
 
 
 def compute_dose_response_statistics(subjects_data):
@@ -272,7 +296,7 @@ def compute_dose_response_statistics(subjects_data):
     for i in range(n_subj):
         ranks[i] = sp_stats.rankdata(kreiss_matrix[i])
 
-    L = page_trend_test(ranks)
+    page_result = page_trend_test(ranks)
 
     n_monotonic = 0
     for i in range(n_subj):
@@ -285,7 +309,10 @@ def compute_dose_response_statistics(subjects_data):
         delta = kreiss_matrix[:, j] - kreiss_matrix[:, 0]
         t, p = sp_stats.ttest_1samp(delta, 0.0)
         w, pw = sp_stats.wilcoxon(delta)
-        d = float(np.mean(delta) / max(np.std(delta, ddof=1), 1e-30))
+        sd = np.std(delta, ddof=1)
+        if sd < 1e-12:
+            log(f"    WARNING: near-zero SD for {CONDITIONS[j]} Cohen's d")
+        d = float(np.mean(delta) / max(sd, 1e-30))
         pairwise[f"awake_vs_{CONDITIONS[j]}"] = {
             "delta_mean": float(np.mean(delta)),
             "delta_median": float(np.median(delta)),
@@ -330,7 +357,8 @@ def compute_dose_response_statistics(subjects_data):
             }
             for i, c in enumerate(CONDITIONS)
         },
-        "page_L_statistic": L,
+        "page_L_statistic": page_result["L"],
+        "page_L_p_value": page_result["p_value"],
         "n_strictly_monotonic": n_monotonic,
         "fraction_monotonic": float(n_monotonic / len(valid_all)),
         "pairwise_kreiss": pairwise,
@@ -370,7 +398,10 @@ def compute_rho_controlled_statistics(subjects_data):
 
     t, p = sp_stats.ttest_1samp(delta_resid, 0.0)
     w, pw = sp_stats.wilcoxon(delta_resid)
-    d = float(np.mean(delta_resid) / max(np.std(delta_resid, ddof=1), 1e-30))
+    sd = np.std(delta_resid, ddof=1)
+    if sd < 1e-12:
+        log("  WARNING: near-zero SD in rho-controlled Cohen's d")
+    d = float(np.mean(delta_resid) / max(sd, 1e-30))
 
     awake_rho = [s["conditions"]["awake"]["spectral_radius_median"] for s in valid]
     sed_rho = [s["conditions"]["sed_run-1"]["spectral_radius_median"] for s in valid]
@@ -524,7 +555,7 @@ def main():
     ds = dose_stats
     if not ds.get("insufficient_data"):
         log(f"  N with all 4 conditions: {ds['n_subjects_all_runs']}")
-        log(f"  Page L statistic: {ds['page_L_statistic']:.1f}")
+        log(f"  Page L statistic: {ds['page_L_statistic']:.1f}, p={ds['page_L_p_value']:.4f}")
         log(f"  Strictly monotonic: {ds['n_strictly_monotonic']}/{ds['n_subjects_all_runs']}")
         for cond in CONDITIONS:
             ks = ds["kreiss_by_condition"][cond]

@@ -9,7 +9,7 @@ This repository contains the code and results that accompany Peterkin (2026) "Cr
 
 Abstract:
 
-> Criticality-related measures are widely used to summarize near-critical brain dynamics. We asked how these measures relate to eigenvalue- and eigenvector-geometry summaries of sliding-window VAR(1) operators fitted under a fixed preprocessing and dimensionality-reduction pipeline. In intracranial recordings, high-gamma activity was more subcritical than broadband activity (branching ratio sigma_HG = 0.974 vs sigma_BB = 0.991; mixed-effects p < 10^-8). Across subjects, a composite operator-geometry score (combining eigenvalue proximity and eigenvector non-orthogonality) covaried strongly with branching ratio (r = 0.86, p < 10^-5) and inversely with Lempel-Ziv complexity (r = -0.68, p = 0.002). In scalp EEG, minimum eigenvalue spacing (at fixed model dimension) was largely independent of alpha and delta power yet distinguished propofol sedation from wakefulness (d = 0.71) and REM sleep from N3 (d = -2.51); these separations survived shared-subspace estimation and generalized across alternative local-spacing metrics. Phase-randomized surrogates constrained interpretation of sensitivity: absolute spectral sensitivity was not specific to neural temporal structure, so sensitivity results are interpreted comparatively. Together, fitted operator-geometry summaries provide a complementary set of descriptive coordinates for variation across subjects, frequency bands, and states in these datasets.
+> Criticality-related measures are widely used to summarize near-critical brain dynamics, but they do not directly describe the geometry of fitted multivariate operators. Here we relate standard criticality measures to eigenvalue- and eigenvector-geometry summaries extracted from sliding-window VAR(1) operators fit under a fixed preprocessing and dimensionality-reduction pipeline. In human intracranial recordings, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; mixed-effects p < 10^-8). Across subjects, a composite operator-geometry score (eigenvalue crowding plus eigenvector non-orthogonality) covaried strongly with branching ratio (r = 0.86, p < 10^-5) and inversely with Lempel-Ziv complexity (r = -0.68, p = 0.002). In scalp EEG, minimum eigenvalue spacing (at fixed model dimension) was largely independent of alpha and delta power, yet it distinguished propofol sedation from wakefulness (d = 0.71) and REM sleep from N3 (d = -2.51); these separations persisted under shared-subspace estimation and across alternative local-spacing metrics. Phase-randomized surrogates constrain the interpretation of sensitivity magnitudes, so sensitivity results are interpreted comparatively. Overall, fitted operator-geometry summaries provide complementary descriptive coordinates for variation across frequency bands, individuals, and brain states in these datasets.
 
 ## Interpretation Guardrails
 
@@ -20,7 +20,7 @@ Before exploring this repository, please note the following constraints on inter
 3. **Minimum eigenvalue gap is dimension-dependent.** Comparisons are valid only within fixed preprocessing and model dimension (here: 15 PCA components throughout).
 4. **Eigenvector condition numbers and overlaps can be unstable in finite samples.** All metrics should be interpreted comparatively across conditions, not as absolute measurements.
 5. **Spectral sensitivity magnitude is not specific to neural temporal structure** under phase-randomized surrogate controls (group p = 0.23). The sensitivity metric tracks operator geometry but its absolute magnitude may reflect spectral properties shared with surrogates.
-6. **The ds004752 SEEG analysis is an independent replication** using a completely separate dataset (OpenNeuro ds004752, Zurich) from the primary iEEG analysis (Cogitate Consortium). The two datasets differ in source, lab, electrode type, paradigm, and subject population. See `REPLICATION_AND_DATA_PROVENANCE.md` for details.
+6. **The ds004752 SEEG analysis is a secondary cross-dataset generalization test** using a separate dataset (OpenNeuro ds004752, Zurich) from the primary iEEG analysis (Cogitate Consortium). The two datasets differ in source, lab, electrode type, paradigm, and subject population, but both use the same software pipeline, so shared pipeline assumptions remain. See `REPLICATION_AND_DATA_PROVENANCE.md` for details.
 7. **All reported associations are correlational.** No causal claims are made.
 
 > **Legacy label note:** Some repository code, file names, and JSON keys retain the legacy label `ep_score` for backward compatibility. In the manuscript, this quantity is referred to as **ND score**. These labels refer to the same computed composite statistic unless otherwise noted. See `KEY_MIGRATION.md` for a full mapping.
@@ -73,7 +73,7 @@ The full pipeline requires four public datasets. No raw data is included in this
 | Dataset | Subjects | Source | Link / DOI | Used For |
 |---------|----------|--------|------------|----------|
 | COGITATE iEEG Exp. 1 (ECoG) | 18 | Cogitate Consortium | [cogitate-data.ae.mpg.de](https://cogitate-data.ae.mpg.de/) | Primary iEEG analysis |
-| Zurich SEEG (ds004752) | 15 | OpenNeuro | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | Independent replication |
+| Zurich SEEG (ds004752) | 15 | OpenNeuro | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | Secondary cross-dataset analysis |
 | Cambridge Propofol EEG (ds005620) | 20 | OpenNeuro | [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0) | Propofol state contrasts |
 | ANPHY-Sleep polysomnography | 10 | OSF | [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH) | Sleep state contrasts |
 
@@ -118,7 +118,7 @@ bash run_analysis.sh
 
 3. **Broadband comparison**: Run `scripts/run_all_subjects_broadband.py` to repeat the analysis on broadband (unfiltered) data for the HG vs BB comparison.
 
-4. **Independent replication**: Run `scripts/run_ds004752.py` to analyze the 15-subject Zurich SEEG dataset (OpenNeuro ds004752) with the same pipeline. This is a completely separate dataset from the primary Cogitate iEEG analysis, with different subjects, electrodes (SEEG depth vs ECoG surface), paradigm (Sternberg vs visual consciousness), and lab (Zurich vs Cogitate consortium sites).
+4. **Secondary SEEG analysis**: Run `scripts/run_ds004752.py` to analyze the 15-subject Zurich SEEG dataset (OpenNeuro ds004752) with the same pipeline. This is a separate dataset from the primary Cogitate iEEG analysis, with different subjects, electrodes (SEEG depth vs ECoG surface), paradigm (Sternberg vs visual consciousness), and lab (Zurich vs Cogitate consortium sites), but uses the same software pipeline.
 
 5. **Statistical analyses**: Individual analysis scripts in `scripts/analysis/` compute all reported statistics, including band comparisons, operator-geometry correlations, gap-power independence tests, state contrasts, shared-subspace robustness, surrogate controls, jackknife sensitivity, and multi-block sleep robustness.
 
@@ -199,7 +199,7 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 | Surrogate control (200/subject) | real r = 0.076 vs surr r = 0.097, p = 0.23 | Sensitivity not specific to neural structure |
 | Jackknife: sigma vs geometry score | 18/18 drops significant, r in [0.79, 0.89] | No single subject drives the correlation |
 | Multi-block sleep: N3 vs REM | d = 3.03, p = 7.9e-6 (3-block avg) | Gap contrast not driven by block selection |
-| Independent replication (SEEG) | spectral sensitivity p ~ 2.5e-8 | Replicates in separate Zurich dataset |
+| Secondary SEEG analysis | spectral sensitivity p ~ 2.5e-8 | Geometry-dynamics relationships generalize to Zurich SEEG dataset |
 
 ## Figures
 

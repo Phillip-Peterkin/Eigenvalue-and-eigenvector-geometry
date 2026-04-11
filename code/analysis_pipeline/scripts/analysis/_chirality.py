@@ -1,8 +1,7 @@
-import os
 """Chiral phase flux analysis for CMCC iEEG cohort.
 
 Measures the directional (chiral) phase rotation of eigenvalues near
-near-degeneracys. Tests the hypothesis that conscious processing
+exceptional points. Tests the hypothesis that conscious processing
 produces consistent (chiral) eigenvalue phase rotation, while
 noise/unconsciousness produces random phase jitter.
 
@@ -13,6 +12,7 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import sys
 import time
 import warnings
@@ -25,7 +25,9 @@ import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", message=".*toeplitz.*", category=RuntimeWarning)
 
 from cmcc.config import load_config
 from cmcc.preprocess.filter import SITE_LINE_FREQ
@@ -41,7 +43,7 @@ CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
 RESULTS_HG = CMCC_ROOT / "results"
 FIG_DIR = RESULTS_HG / "figures" / "chirality"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
-DATA_ROOT = Path(os.environ.get("IEEG_DATA_ROOT", "./data/Cogitate_IEEG_EXP1"))
+DATA_ROOT = Path(os.environ.get("COGITATE_IEEG_ROOT", r"c:\openneuro\Cogitate_IEEG_EXP1"))
 
 MAX_CHANNELS = 30
 WINDOW_SEC = 0.5

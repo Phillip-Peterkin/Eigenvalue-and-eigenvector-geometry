@@ -206,6 +206,8 @@ def analyze_jacobian_amplification(
         has_hump : np.ndarray, shape (n_windows,), dtype bool
             True if envelope[k] > envelope[0] for any k > 0
             (i.e., transient amplification above initial energy).
+        envelopes : np.ndarray, shape (n_windows, max_horizon + 1)
+            Per-window energy envelopes ||A^k||_2.
     """
     n_windows = jacobians.shape[0]
 

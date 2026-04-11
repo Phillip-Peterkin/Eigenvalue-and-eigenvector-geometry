@@ -39,7 +39,9 @@ import numpy as np
 from scipy import stats as sp_stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", message=".*toeplitz.*", category=RuntimeWarning)
 
 import mne
 from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
@@ -53,7 +55,7 @@ from cmcc.features.transient_amplification import (
 )
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_ROOT = Path(os.environ.get("SLEEP_DATA_ROOT", "./data/ANPHY-Sleep"))
+DATA_ROOT = Path(os.environ.get("ANPHY_SLEEP_ROOT", r"c:\openneuro\ANPHY-Sleep"))
 RESULTS_DIR = CMCC_ROOT / "results" / "analysis"
 FIG_DIR = CMCC_ROOT / "results" / "figures" / "amplification_sleep"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
@@ -65,6 +67,7 @@ N_COMPONENTS = 15
 DOWNSAMPLE_TO = 500.0
 LINE_FREQ = 50.0
 MAX_HORIZON = 50
+SEED = 42
 
 NON_EEG_CHANNELS = [
     "SO1", "SO2", "ZY1", "ZY2",
@@ -163,8 +166,8 @@ def load_and_preprocess_segment(edf_path, start_sec, end_sec, sfreq_target=500.0
 
     raw.set_montage(montage, on_missing="warn")
 
-    raw.load_data()
     raw.crop(tmin=start_sec, tmax=end_sec)
+    raw.load_data()
 
     bad = detect_bad_channels(raw)
     raw.info["bads"] = bad
@@ -553,7 +556,7 @@ def make_sleep_figure(subjects_data, group_stats):
 
     fig.suptitle(
         "Sleep Convergence: Transient Amplification\n"
-        "(Independent replication of propofol finding)",
+        "(Complementary dataset — natural sleep)",
         fontsize=12, fontweight="bold",
     )
     fig.tight_layout(rect=[0, 0, 1, 0.93])
@@ -567,7 +570,7 @@ def make_sleep_figure(subjects_data, group_stats):
 def main():
     log("=" * 60)
     log("SLEEP CONVERGENCE: TRANSIENT AMPLIFICATION")
-    log("Independent replication of propofol Kreiss finding")
+    log("Complementary dataset test of propofol Kreiss finding")
     log("=" * 60)
 
     subjects_data = []
