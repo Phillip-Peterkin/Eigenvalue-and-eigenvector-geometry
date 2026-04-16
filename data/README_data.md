@@ -11,14 +11,14 @@ This repository does not include raw data. All datasets used in this study are p
 - **Reference**: Melloni et al., 2023
 - **Used for**: Primary intracranial criticality and operator-geometry analysis (n=18 ECoG subjects)
 
-### 2. Zurich SEEG (Independent replication)
+### 2. Zurich SEEG (Secondary cross-dataset generalization test)
 
 - **OpenNeuro**: ds004752
 - **DOI**: [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1)
 - **Direct link**: https://openneuro.org/datasets/ds004752
 - **License**: CC0
 - **Reference**: Dimakopoulos et al., eLife 2022
-- **Used for**: Independent replication of operator-geometry analysis (n=15 SEEG subjects)
+- **Used for**: Secondary cross-dataset generalization test of operator-geometry analysis (n=15 SEEG subjects)
 
 ### 3. Cambridge Propofol EEG
 

@@ -1,0 +1,763 @@
+{
+  "analysis": "geometry_brain_state_tests",
+  "parameters": {
+    "seed": 42,
+    "n_bootstrap": 1000,
+    "n_null_permutations": 100,
+    "loso_classifier": "LDA",
+    "geometry_features": [
+      "eigenvalue_gap",
+      "condition_number",
+      "nd_score",
+      "spectral_radius"
+    ],
+    "thresholds": {
+      "sufficiency_auc": 0.8,
+      "incremental_delta_auc": 0.05,
+      "incremental_combined_delta": 0.03,
+      "orthogonality_median_r": 0.2,
+      "orthogonality_residualized_d": 0.5,
+      "structure_mahalanobis": 1.5,
+      "stability_shrinkage": 0.25,
+      "criticality_r": 0.8,
+      "amplification_r": 0.8
+    }
+  },
+  "test_1_sufficiency": {
+    "contrasts": [
+      {
+        "contrast_name": "awake_vs_propofol",
+        "dataset": "propofol",
+        "auc_loso": 0.9125000000000001,
+        "auc_ci_lower": 0.8429752066115702,
+        "auc_ci_upper": 1.0,
+        "accuracy_loso": 0.925,
+        "per_subject_predictions": [
+          {
+            "subject": "1010",
+            "true_label": 0,
+            "predicted_prob": 0.043315872608253675,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1016",
+            "true_label": 0,
+            "predicted_prob": 0.08609429312858262,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1017",
+            "true_label": 0,
+            "predicted_prob": 0.0020458934529338562,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1022",
+            "true_label": 0,
+            "predicted_prob": 0.4607206944775978,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1024",
+            "true_label": 0,
+            "predicted_prob": 3.776387949350208e-05,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1033",
+            "true_label": 0,
+            "predicted_prob": 0.15940927418107426,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1036",
+            "true_label": 0,
+            "predicted_prob": 0.4280654015650296,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1045",
+            "true_label": 0,
+            "predicted_prob": 0.08081079200518225,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1046",
+            "true_label": 0,
+            "predicted_prob": 0.04341307760063094,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1054",
+            "true_label": 0,
+            "predicted_prob": 0.0011864330800895081,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1055",
+            "true_label": 0,
+            "predicted_prob": 0.5929462350361926,
+            "predicted_label": 1,
+            "correct": false
+          },
+          {
+            "subject": "1057",
+            "true_label": 0,
+            "predicted_prob": 0.059115838170781684,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1060",
+            "true_label": 0,
+            "predicted_prob": 0.00022630313744565205,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1061",
+            "true_label": 0,
+            "predicted_prob": 0.08640710597826765,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1062",
+            "true_label": 0,
+            "predicted_prob": 0.1601660262751485,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1064",
+            "true_label": 0,
+            "predicted_prob": 0.0021204833863985788,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1067",
+            "true_label": 0,
+            "predicted_prob": 0.10581781279083485,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1068",
+            "true_label": 0,
+            "predicted_prob": 0.01154533227149294,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1071",
+            "true_label": 0,
+            "predicted_prob": 0.000156819966392356,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "1074",
+            "true_label": 0,
+            "predicted_prob": 0.2306142465736518,
+            "predicted_label": 0,
+            "correct": true
+          }
+        ],
+        "n_subjects": 20,
+        "n_features": 4,
+        "feature_names": [
+          "eigenvalue_gap",
+          "condition_number",
+          "nd_score",
+          "spectral_radius"
+        ],
+        "subject_consistency": 0.95,
+        "null_auc_mean": 0.49072499999999997,
+        "null_auc_std": 0.12054993519284862,
+        "null_auc_p": 0.0,
+        "passes_threshold": true
+      },
+      {
+        "contrast_name": "awake_vs_N3",
+        "dataset": "sleep",
+        "auc_loso": 1.0,
+        "auc_ci_lower": 1.0,
+        "auc_ci_upper": 1.0,
+        "accuracy_loso": 1.0,
+        "per_subject_predictions": [
+          {
+            "subject": "EPCTL01",
+            "true_label": 0,
+            "predicted_prob": 7.1422317179668756e-34,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL03",
+            "true_label": 0,
+            "predicted_prob": 1.6865251761330917e-37,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL05",
+            "true_label": 0,
+            "predicted_prob": 0.0,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL07",
+            "true_label": 0,
+            "predicted_prob": 4.713101242119302e-44,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL10",
+            "true_label": 0,
+            "predicted_prob": 2.5369747997466357e-35,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL14",
+            "true_label": 0,
+            "predicted_prob": 2.957878286731422e-09,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL17",
+            "true_label": 0,
+            "predicted_prob": 3.7934757589755374e-57,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL20",
+            "true_label": 0,
+            "predicted_prob": 1.017575114946154e-34,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL24",
+            "true_label": 0,
+            "predicted_prob": 2.5999599341361246e-52,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL28",
+            "true_label": 0,
+            "predicted_prob": 1.1702173147300956e-34,
+            "predicted_label": 0,
+            "correct": true
+          }
+        ],
+        "n_subjects": 10,
+        "n_features": 4,
+        "feature_names": [
+          "eigenvalue_gap",
+          "condition_number",
+          "nd_score",
+          "spectral_radius"
+        ],
+        "subject_consistency": 1.0,
+        "null_auc_mean": 0.42340000000000005,
+        "null_auc_std": 0.1805503807805456,
+        "null_auc_p": 0.0,
+        "passes_threshold": true
+      },
+      {
+        "contrast_name": "N3_vs_REM",
+        "dataset": "sleep",
+        "auc_loso": 1.0,
+        "auc_ci_lower": 1.0,
+        "auc_ci_upper": 1.0,
+        "accuracy_loso": 1.0,
+        "per_subject_predictions": [
+          {
+            "subject": "EPCTL01",
+            "true_label": 0,
+            "predicted_prob": 1.1214567535912945e-36,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL03",
+            "true_label": 0,
+            "predicted_prob": 2.0489342958642182e-36,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL05",
+            "true_label": 0,
+            "predicted_prob": 1.3694696637816174e-27,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL07",
+            "true_label": 0,
+            "predicted_prob": 2.9876273564747314e-45,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL10",
+            "true_label": 0,
+            "predicted_prob": 6.546219685558795e-26,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL14",
+            "true_label": 0,
+            "predicted_prob": 6.245475668962248e-33,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL17",
+            "true_label": 0,
+            "predicted_prob": 4.8471446643908665e-34,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL20",
+            "true_label": 0,
+            "predicted_prob": 3.8068129977741616e-32,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL24",
+            "true_label": 0,
+            "predicted_prob": 1.121272644224929e-30,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL28",
+            "true_label": 0,
+            "predicted_prob": 5.338943353444068e-44,
+            "predicted_label": 0,
+            "correct": true
+          }
+        ],
+        "n_subjects": 10,
+        "n_features": 4,
+        "feature_names": [
+          "eigenvalue_gap",
+          "condition_number",
+          "nd_score",
+          "spectral_radius"
+        ],
+        "subject_consistency": 1.0,
+        "null_auc_mean": 0.46759999999999996,
+        "null_auc_std": 0.16473688111652474,
+        "null_auc_p": 0.0,
+        "passes_threshold": true
+      },
+      {
+        "contrast_name": "awake_vs_REM",
+        "dataset": "sleep",
+        "auc_loso": 0.9,
+        "auc_ci_lower": 0.8,
+        "auc_ci_upper": 1.0,
+        "accuracy_loso": 0.9,
+        "per_subject_predictions": [
+          {
+            "subject": "EPCTL01",
+            "true_label": 0,
+            "predicted_prob": 0.008733832511377968,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL03",
+            "true_label": 0,
+            "predicted_prob": 0.004534370900386311,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL05",
+            "true_label": 0,
+            "predicted_prob": 0.0,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL07",
+            "true_label": 0,
+            "predicted_prob": 1.122271994102244e-30,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL10",
+            "true_label": 0,
+            "predicted_prob": 6.975377350154845e-05,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL14",
+            "true_label": 0,
+            "predicted_prob": 0.9999999995469757,
+            "predicted_label": 1,
+            "correct": false
+          },
+          {
+            "subject": "EPCTL17",
+            "true_label": 0,
+            "predicted_prob": 0.002087263661736758,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL20",
+            "true_label": 0,
+            "predicted_prob": 0.5020042427409064,
+            "predicted_label": 1,
+            "correct": false
+          },
+          {
+            "subject": "EPCTL24",
+            "true_label": 0,
+            "predicted_prob": 0.0016131620760954548,
+            "predicted_label": 0,
+            "correct": true
+          },
+          {
+            "subject": "EPCTL28",
+            "true_label": 0,
+            "predicted_prob": 0.022558946078622424,
+            "predicted_label": 0,
+            "correct": true
+          }
+        ],
+        "n_subjects": 10,
+        "n_features": 4,
+        "feature_names": [
+          "eigenvalue_gap",
+          "condition_number",
+          "nd_score",
+          "spectral_radius"
+        ],
+        "subject_consistency": 0.8,
+        "null_auc_mean": 0.4354,
+        "null_auc_std": 0.1672328915016421,
+        "null_auc_p": 0.0,
+        "passes_threshold": true
+      }
+    ]
+  },
+  "test_2_incremental": {
+    "auc_geometry_only": 0.9125000000000001,
+    "auc_power_only": 0.5,
+    "auc_combined": 0.89,
+    "delta_auc_vs_power": 0.4125000000000001,
+    "delta_auc_combined_vs_power": 0.39,
+    "bootstrap_ci_delta": [
+      0.30999793388429747,
+      0.5
+    ],
+    "null_auc_geometry": 0.17750000000000002,
+    "null_auc_power": 0.5,
+    "passes_threshold": true
+  },
+  "test_3_orthogonality": {
+    "median_abs_correlation": 0.24152911006197228,
+    "per_feature_correlations": {
+      "eigenvalue_gap": 0.25488506881055256,
+      "condition_number": 0.7015751414562393,
+      "nd_score": -0.228173151313392,
+      "spectral_radius": -0.13562890470022582
+    },
+    "residualized_effect_sizes": {
+      "eigenvalue_gap": 1.1090068026394502,
+      "condition_number": -1.0372720154940658,
+      "nd_score": -0.14718152184580474,
+      "spectral_radius": -2.276045522327393
+    },
+    "passes_threshold": false,
+    "passes_sensitivity_threshold": true,
+    "n_primary_features_passing_d": 3,
+    "interpretation": "Geometry shows partial spectral entanglement (driven by condition number), but state information remains robust after residualization."
+  },
+  "test_4_structure": {
+    "propofol": {
+      "state_centroids": {
+        "awake": [
+          0.012183476276425359,
+          39.76128328986927,
+          82.87630544321974,
+          0.9980465171264028
+        ],
+        "propofol": [
+          0.011398636232000726,
+          56.70714540201251,
+          83.92420639600543,
+          1.0025449644037696
+        ]
+      },
+      "pairwise_mahalanobis": {
+        "awake_vs_propofol": 2.4181260847338986
+      },
+      "state_change_vectors": {
+        "propofol": [
+          -0.0007848400444246332,
+          16.94586211214324,
+          1.0479009527857108,
+          0.0044984472773666965
+        ]
+      },
+      "angular_separations": {},
+      "angular_separation_cis": {},
+      "subject_consistency": {
+        "propofol": 0.85
+      },
+      "passes_threshold": true
+    },
+    "sleep": {
+      "state_centroids": {
+        "N3": [
+          0.012725349589293162,
+          22.270565847227765,
+          71.94285107580423,
+          1.0086532965924488
+        ],
+        "REM": [
+          0.011126618286781357,
+          21.65178539657223,
+          89.56347312239748,
+          1.0009154509662095
+        ],
+        "awake": [
+          0.013245766238019773,
+          24.92653124049533,
+          6814907.822342697,
+          0.9972790072809736
+        ]
+      },
+      "pairwise_mahalanobis": {
+        "N3_vs_REM": 5.359168342759452,
+        "N3_vs_awake": 7.082538004953549,
+        "REM_vs_awake": 2.8743486698131964
+      },
+      "state_change_vectors": {
+        "N3": [
+          -0.0005204166487266114,
+          -2.6559653932675595,
+          -6814835.879491622,
+          0.011374289311475161
+        ],
+        "REM": [
+          -0.002119147951238416,
+          -3.274745843923104,
+          -6814818.2588695735,
+          0.0036364436852357905
+        ]
+      },
+      "angular_separations": {
+        "N3_vs_REM": 0.02585046066464603
+      },
+      "angular_separation_cis": {
+        "N3_vs_REM": [
+          0.0019174975516963741,
+          1.1546800319828665
+        ]
+      },
+      "subject_consistency": {
+        "N3": 0.8,
+        "REM": 0.7
+      },
+      "passes_threshold": true
+    }
+  },
+  "test_5_stability": [
+    {
+      "test_name": "stability_propofol",
+      "metric_name": "shared_subspace_spectral_radius",
+      "value": -1.7196012668103906,
+      "threshold": -1.2478334010655279,
+      "passes": true,
+      "details": {
+        "original_d": -1.6637778680873705,
+        "shared_d": -1.7196012668103906,
+        "shrinkage_fraction": -0.03355219455298619,
+        "same_sign": true
+      }
+    },
+    {
+      "test_name": "stability_propofol",
+      "metric_name": "shared_subspace_min_eigenvalue_gap",
+      "value": 0.783159566861303,
+      "threshold": 0.5297583126812186,
+      "passes": true,
+      "details": {
+        "original_d": 0.7063444169082915,
+        "shared_d": 0.783159566861303,
+        "shrinkage_fraction": -0.10875027552314442,
+        "same_sign": true
+      }
+    },
+    {
+      "test_name": "stability_sleep",
+      "metric_name": "shared_subspace_min_gap_n3_vs_rem",
+      "value": -2.3896287174145727,
+      "threshold": -1.8795116648241188,
+      "passes": true,
+      "details": {
+        "original_d": -2.506015553098825,
+        "shared_d": -2.3896287174145727,
+        "shrinkage_fraction": 0.04644298218354381,
+        "same_sign": true
+      }
+    },
+    {
+      "test_name": "stability_sleep",
+      "metric_name": "shared_subspace_min_gap_awake_vs_rem",
+      "value": -2.033737493522097,
+      "threshold": -1.5954024279441534,
+      "passes": true,
+      "details": {
+        "original_d": -2.1272032372588714,
+        "shared_d": -2.033737493522097,
+        "shrinkage_fraction": 0.04393832338146264,
+        "same_sign": true
+      }
+    }
+  ],
+  "test_6_criticality": [
+    {
+      "test_name": "criticality_coupling",
+      "metric_name": "sigma_vs_nd_score_r",
+      "value": 0.8598461797607891,
+      "threshold": 0.8,
+      "passes": true,
+      "details": {
+        "p": 4.777139253674943e-06,
+        "n": 18
+      }
+    },
+    {
+      "test_name": "criticality_coupling",
+      "metric_name": "sigma_vs_nd_jackknife_stable",
+      "value": 0.7920568704331031,
+      "threshold": 0.7,
+      "passes": true,
+      "details": {
+        "all_significant": true,
+        "r_min": 0.7920568704331031,
+        "r_max": 0.8893417632880317,
+        "most_influential": "CG103"
+      }
+    }
+  ],
+  "test_7_temporal": {
+    "any_metric_passes": true,
+    "best_metric": "N2_to_N3_eigenvalue_gap",
+    "best_slope_p": 0.000628201059977878,
+    "best_consistency": 0.9,
+    "best_early_late_d": 1.343488205414144,
+    "details": {
+      "N2_to_N3_eigenvalue_gap": {
+        "slope_p": 0.000628201059977878,
+        "consistency": 0.9,
+        "early_late_d": 1.343488205414144,
+        "passes": true
+      },
+      "N2_to_N3_condition_number": {
+        "slope_p": 0.8055304228984302,
+        "consistency": 0.6,
+        "early_late_d": 0.07426136997049623,
+        "passes": false
+      },
+      "N2_to_N3_nd_score": {
+        "slope_p": 0.18012896561983577,
+        "consistency": 0.7,
+        "early_late_d": -0.4579959664080489,
+        "passes": false
+      },
+      "N2_to_N3_spectral_radius": {
+        "slope_p": 0.0014311575886753452,
+        "consistency": 0.9,
+        "early_late_d": 1.1924224773075454,
+        "passes": true
+      },
+      "N2_to_R_eigenvalue_gap": {
+        "slope_p": 0.38484164990915015,
+        "consistency": 0.6,
+        "early_late_d": -0.22025200209619078,
+        "passes": false
+      },
+      "N2_to_R_condition_number": {
+        "slope_p": 0.6765336565236668,
+        "consistency": 0.4,
+        "early_late_d": -0.04080272330410825,
+        "passes": false
+      },
+      "N2_to_R_nd_score": {
+        "slope_p": 0.28560079612702033,
+        "consistency": 0.6,
+        "early_late_d": 0.6077431367638517,
+        "passes": false
+      },
+      "N2_to_R_spectral_radius": {
+        "slope_p": 0.4587063676666917,
+        "consistency": 0.5,
+        "early_late_d": -0.26909716112666654,
+        "passes": false
+      }
+    }
+  },
+  "test_8_amplification": [
+    {
+      "test_name": "amplification_link",
+      "metric_name": "condition_number_vs_kreiss_r",
+      "value": 0.912,
+      "threshold": 0.8,
+      "passes": true,
+      "details": {}
+    }
+  ],
+  "validation": {
+    "outlier_sensitivity": {
+      "original_auc": 0.9125000000000001,
+      "trimmed_auc": 0.9052631578947368,
+      "delta": 0.007236842105263319,
+      "stable": true
+    },
+    "cross_dataset_criticality": {
+      "sigma_vs_nd_score_r": 0.8598461797607891,
+      "sigma_vs_nd_jackknife_stable": 0.7920568704331031
+    },
+    "subject_consistency_awake_vs_propofol": 0.95,
+    "subject_consistency_awake_vs_N3": 1.0,
+    "subject_consistency_N3_vs_REM": 1.0,
+    "subject_consistency_awake_vs_REM": 0.8
+  },
+  "verdict": {
+    "n_passed": 7,
+    "n_total": 8,
+    "conclusion": "strong"
+  }
+}

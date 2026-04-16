@@ -9,7 +9,7 @@ This repository contains the code and results that accompany Peterkin (2026) "Cr
 
 Abstract:
 
-> Criticality-related measures are widely used to summarize near-critical brain dynamics, but they do not directly describe the geometry of fitted multivariate operators. Here we relate standard criticality measures to eigenvalue- and eigenvector-geometry summaries extracted from sliding-window VAR(1) operators fit under a fixed preprocessing and dimensionality-reduction pipeline. In human intracranial recordings, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; mixed-effects p < 10^-8). Across subjects, a composite operator-geometry score (eigenvalue crowding plus eigenvector non-orthogonality) covaried strongly with branching ratio (r = 0.86, p < 10^-5) and inversely with Lempel-Ziv complexity (r = -0.68, p = 0.002). In scalp EEG, minimum eigenvalue spacing (at fixed model dimension) was largely independent of alpha and delta power, yet it distinguished propofol sedation from wakefulness (d = 0.71) and REM sleep from N3 (d = -2.51); these separations persisted under shared-subspace estimation and across alternative local-spacing metrics. Phase-randomized surrogates constrain the interpretation of sensitivity magnitudes, so sensitivity results are interpreted comparatively. Overall, fitted operator-geometry summaries provide complementary descriptive coordinates for variation across frequency bands, individuals, and brain states in these datasets.
+> Criticality-related measures summarize proximity to a dynamical regime that balances stability and responsiveness but do not describe the geometry of the fitted multivariate operators that generate those dynamics. Here we ask whether operator-geometry summaries extracted from sliding-window VAR(1) fits add a complementary descriptive coordinate for variation in human electrophysiology, and whether that coordinate is independent of conventional spectral power. In human intracranial recordings from 18 subjects, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; mixed-effects p < 10^-8), with complementary dissociations in complexity and long-range temporal correlations. Across subjects, a composite operator-geometry score combining eigenvalue crowding and eigenvector non-orthogonality (ND score) covaried strongly with branching ratio (r = 0.86, p < 10^-5) and inversely with Lempel-Ziv complexity (r = -0.68, p = 0.002); this cross-subject association was stable under leave-one-subject-out resampling (jackknife r range: 0.792-0.889). In scalp EEG, minimum eigenvalue spacing was largely independent of alpha power (propofol dataset) and delta power (sleep dataset), yet it distinguished propofol sedation from wakefulness (d = 0.71) and N3 from REM sleep (d = -2.51); these separations persisted under shared-subspace estimation and across alternative spacing metrics. Spectral radius also drifted significantly in the 120 s before N2-to-N3 sleep transitions (p = 0.001; 9/10 subjects; d = 1.19), and geometry-based LOSO classification separated states with AUC of 0.91 (propofol) and 1.00 (N3 vs REM). A pre-submission adversarial falsification battery (seven attacks) confirmed robustness across label destruction, subject jackknife, spectral confound residualization, window-parameter sweeps, and model competition. Together, fitted operator-geometry summaries provide complementary descriptive coordinates that are partly orthogonal to, and partly aligned with, criticality measures, adding a second axis for characterizing inter-individual and state-dependent variability in these datasets.
 
 ## Interpretation Guardrails
 
@@ -47,7 +47,7 @@ Alternatively, use conda:
 
 ```bash
 conda env create -f code/environment.yml
-conda activate cmcc
+conda activate operator-geometry
 ```
 
 | Package | Version | Purpose |
@@ -73,7 +73,7 @@ The full pipeline requires four public datasets. No raw data is included in this
 | Dataset | Subjects | Source | Link / DOI | Used For |
 |---------|----------|--------|------------|----------|
 | COGITATE iEEG Exp. 1 (ECoG) | 18 | Cogitate Consortium | [cogitate-data.ae.mpg.de](https://cogitate-data.ae.mpg.de/) | Primary iEEG analysis |
-| Zurich SEEG (ds004752) | 15 | OpenNeuro | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | Secondary cross-dataset analysis |
+| Zurich SEEG (ds004752) | 15 | OpenNeuro | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | Secondary cross-dataset generalization test |
 | Cambridge Propofol EEG (ds005620) | 20 | OpenNeuro | [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0) | Propofol state contrasts |
 | ANPHY-Sleep polysomnography | 10 | OSF | [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH) | Sleep state contrasts |
 
@@ -99,7 +99,7 @@ See `data/README_data.md` for detailed download instructions and `REPLICATION_AN
 
 ### Without External Data
 
-All machine-readable statistical results are provided in `results/json_results/` (20 JSON files). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
+All machine-readable statistical results are provided in `results/json_results/` (27 JSON files including a ds004752 subdirectory). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
 
 ### With External Data
 
@@ -118,9 +118,9 @@ bash run_analysis.sh
 
 3. **Broadband comparison**: Run `scripts/run_all_subjects_broadband.py` to repeat the analysis on broadband (unfiltered) data for the HG vs BB comparison.
 
-4. **Secondary SEEG analysis**: Run `scripts/run_ds004752.py` to analyze the 15-subject Zurich SEEG dataset (OpenNeuro ds004752) with the same pipeline. This is a separate dataset from the primary Cogitate iEEG analysis, with different subjects, electrodes (SEEG depth vs ECoG surface), paradigm (Sternberg vs visual consciousness), and lab (Zurich vs Cogitate consortium sites), but uses the same software pipeline.
+4. **Secondary cross-dataset generalization test**: Run `scripts/run_ds004752.py` to analyze the 15-subject Zurich SEEG dataset (OpenNeuro ds004752) with the same pipeline. This is a separate dataset from the primary Cogitate iEEG analysis, with different subjects, electrodes (SEEG depth vs ECoG surface), paradigm (Sternberg vs visual consciousness), and lab (Zurich vs Cogitate consortium sites), but uses the same software pipeline. See `REPLICATION_AND_DATA_PROVENANCE.md` for details.
 
-5. **Statistical analyses**: Individual analysis scripts in `scripts/analysis/` compute all reported statistics, including band comparisons, operator-geometry correlations, gap-power independence tests, state contrasts, shared-subspace robustness, surrogate controls, jackknife sensitivity, and multi-block sleep robustness.
+5. **Statistical analyses**: Individual analysis scripts in `scripts/analysis/` compute all reported statistics, including band comparisons, operator-geometry correlations, gap-power independence tests, state contrasts, shared-subspace robustness, surrogate controls, jackknife sensitivity, multi-block sleep robustness, temporal precedence of geometry before sleep transitions (`_temporal_precedence.py`), and the pre-submission adversarial falsification battery (`_falsification_battery.py`).
 
 6. **Results**: All outputs are saved as machine-readable JSON files in `results/json_results/`. Key figures are generated in `results/figures/`.
 
@@ -145,7 +145,7 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 +-- manuscript/
 |   +-- main.tex                     # Full manuscript (LaTeX, Elsevier/elsarticle)
 |   +-- references.bib               # BibLaTeX bibliography
-|   +-- figures/                     # All 9 manuscript figures (PNG)
+|   +-- figures/                     # All 13 manuscript figures (PNG)
 |   +-- tables/
 |
 +-- code/
@@ -163,7 +163,7 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 |   +-- run_analysis.sh              # Reproduce everything
 |
 +-- results/
-|   +-- json_results/                # 20 machine-readable JSON output files
+|   +-- json_results/                # 26 machine-readable JSON output files
 |   +-- summary_statistics.csv       # Key headline numbers
 |
 +-- data/
@@ -184,36 +184,54 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 |--------|-------|---------|
 | Branching ratio sigma (HG vs BB) | t = -5.74, p = 8.9e-6 | HG more subcritical than BB |
 | LME band effect on sigma | coef = -0.017, p = 9.3e-9 | Confirmed by mixed-effects model |
-| sigma vs geometry score | r = 0.860, p = 4.8e-6 | Cross-subject geometry-criticality link |
-| LZc vs geometry score | r = -0.684, p = 0.002 | Complexity inversely tracks geometry |
+| sigma vs ND score | r = 0.860, p = 4.8e-6 | Cross-subject geometry-criticality link |
+| LZc vs ND score | r = -0.684, p = 0.002 | Complexity inversely tracks geometry |
 | Propofol: spectral radius shift | d = -1.66, p = 4.8e-7 | Toward instability under sedation |
 | Propofol: eigenvalue gap | d = 0.71, p = 0.005 | Tighter spacing under sedation |
 | Sleep: N3 vs REM gap | d = -2.51, p = 2.4e-5 | REM = tightest spacing |
 | Delta-delta (gap vs sensitivity) | r = -0.683, p = 0.0009 | Survives alpha control (r = -0.676) |
+| Temporal precedence: spectral radius (N2→N3) | slope p = 0.0014, d = 1.19, 9/10 subjects | Geometry drifts before sleep staging boundary |
+| Temporal precedence: eigenvalue gap (N2→N3) | slope p = 0.00063, d = 1.34, 9/10 subjects | Two geometry dimensions pre-transition |
+| Temporal precedence: N2→REM (null) | spectral radius p = 0.46, gap p = 0.38 | Selective to N3 descent, not all transitions |
+| LOSO classification: propofol vs awake | AUC = 0.913, label-shuffle p = 0.000 | Geometry features classify state above null |
+| LOSO classification: N3 vs REM | AUC = 1.000, label-shuffle p = 0.001 | Perfect geometry-based state separation |
 
-### Robustness Checks
+### Robustness and Falsification
 
 | Check | Result | Interpretation |
 |-------|--------|----------------|
 | Shared-subspace PCA (propofol) | d = 0.78 vs 0.71 (per-state) | Effect strengthens under common PCA |
 | Surrogate control (200/subject) | real r = 0.076 vs surr r = 0.097, p = 0.23 | Sensitivity not specific to neural structure |
-| Jackknife: sigma vs geometry score | 18/18 drops significant, r in [0.79, 0.89] | No single subject drives the correlation |
+| Jackknife: sigma vs ND score | 18/18 drops significant, r in [0.79, 0.89] | No single subject drives the correlation |
 | Multi-block sleep: N3 vs REM | d = 3.03, p = 7.9e-6 (3-block avg) | Gap contrast not driven by block selection |
-| Secondary SEEG analysis | spectral sensitivity p ~ 2.5e-8 | Geometry-dynamics relationships generalize to Zurich SEEG dataset |
+| Secondary cross-dataset generalization test (SEEG) | spectral sensitivity p ~ 2.5e-8 | Geometry-dynamics relationships generalize to Zurich SEEG dataset |
+| Adversarial: label destruction | p = 0.000 (propofol), p = 0.001 (sleep) | Results not due to label structure |
+| Adversarial: subject jackknife | propofol AUC [0.903, 0.983]; sleep [1.000, 1.000] | No influential subject drives results |
+| Adversarial: temporal jackknife | sign consistent across all LOO iterations | Pre-transition drift not artefactual |
+| Adversarial: spectral confounds | 3/4 features survive residualization (|d| >= 0.5) | Geometry effects not explained by power |
+| Adversarial: window attacks | slope retains 84% magnitude at 3x decimation | Robust to window-parameter changes |
+| Adversarial: model competition | geometry AUC 0.913 vs alpha-power baseline 0.500 | Geometry not reducible to spectral power |
+| Adversarial: feature ablation | PARTIAL — spectral radius dominates | Biological finding, not methodological flaw |
 
 ## Figures
 
-| Figure | Description |
-|--------|-------------|
-| Figure 1 | Band-specific criticality in intracranial recordings |
-| Figure 2 | Fitted operator-geometry summaries covary with criticality and complexity |
-| Figure 3 | Eigenvalue gap is independent of alpha power in propofol EEG |
-| Figure 4 | Propofol reorganizes eigenvalue geometry of fitted operators |
-| Figure 5 | Gap tightening predicts comparative sensitivity loss under propofol |
-| Figure 6 | Sleep follows a different trajectory from propofol |
-| Figure 7 | Distribution of minimum eigenvalue gap across Wake, N3, and REM |
-| Figure 8 | Chirality and non-Hermitian decomposition |
-| Figure 9 | Phase-amplitude coupling is linked selectively to tau |
+| Figure | File | Description |
+|--------|------|-------------|
+| Figure 1 | `lme_paired_bands.png` | Band-specific criticality in intracranial recordings |
+| Figure 2 | `ep_summary.png` | Fitted operator geometry aligns with criticality and complexity across subjects |
+| Figure 3 | `gap_vs_alpha_discriminating_test.png` | Eigenvalue gap is independent of alpha power in propofol EEG |
+| Figure 4 | `ep_propofol_summary.png` | Propofol reorganizes eigenvalue geometry |
+| Figure 5 | `delta_delta_scatter.png` | Gap tightening predicts comparative sensitivity loss under propofol |
+| Figure 6 | `sleep_dynamics_summary.png` | Sleep follows a different trajectory from propofol |
+| Figure 7 | `pca_scatter_sleep.png` | Geometry state-space across wake, N3, and REM sleep |
+| Figure 8 | `trajectory_N2_to_N3_spectral_radius.png` | Spectral radius drifts upward before N2-to-N3 sleep transitions |
+| Figure 9 | `trajectory_N2_to_N3_eigenvalue_gap.png` | Eigenvalue gap also shows pre-transition drift toward N3 |
+| Figure 10 | `slopes_N2_to_N3_spectral_radius.png` | Per-subject spectral radius pre-transition slopes (N2-to-N3) |
+| Figure 11 | `spectral_confound_map.png` | Geometry features largely survive spectral confound residualization |
+| Figure 12 | `auc_bars.png` | Geometry-based LOSO classification AUC across state contrasts |
+| Figure 13 | `falsification_scorecard.png` | Pre-submission adversarial falsification battery scorecard |
+
+**Supplementary figures** (archived in `results/figures/`, not in the main manuscript): `pac_summary.png` (PAC vs tau), `chirality_summary.png` (chirality and non-Hermitian decomposition).
 
 ## Contributors
 

@@ -1,0 +1,49 @@
+GEOMETRIC TRANSITION COMMITMENT ANALYSIS — KEY STATISTICS
+============================================================
+
+Dataset: ANPHY-Sleep, n=10 subjects
+Raw data available: False
+
+Q1: Extended Drift Window (120-s best-effort)
+  spectral_radius: slope=1.09e-05, p=0.0027, d=1.543
+  eigenvalue_gap: slope=2.86e-06, p=0.0014, d=1.653
+
+Q2: Changepoint Detection (120-s best-effort)
+  spectral_radius: latency=-47.5 s, p=0.0002
+  eigenvalue_gap: latency=-53.5 s, p=0.0001
+
+Q3: N2 Geometry Bistability
+  BC statistic: 0.4802
+  BC p (uniform null — uninformative): 1.0000
+  BC p (Gaussian null): 0.0000
+  Silverman unimodality p: 0.0000
+  GMM BIC delta: -4446.8
+  GMM CV log-lik delta (k=2 minus k=1): 0.9785
+  Cohen's d (spectral_radius, early vs late): 1.543
+  Cohen's d (eigenvalue_gap, early vs late): 1.653
+  Hotelling's T^2 p: 0.0088
+
+Q4: Trajectory Prediction (N3-bound vs REM-bound)
+  LOSO AUC: 0.160
+  LOSO balanced accuracy: 0.300
+  Majority baseline AUC: 0.500
+  Feature scale ratio: 22752.1
+  Convergence failures: 0
+  Permutation p: 0.9350
+  N3-bound subjects: 10, REM-bound: 10
+  spectral_radius d by bin: [0.226, 0.216, 0.67, 1.053, 0.681, 0.764]
+  eigenvalue_gap d by bin: [-0.126, 0.456, 1.052, 0.931, 0.87, -0.153]
+  condition_number d by bin: [0.166, 0.145, -0.129, -0.009, 1.109, 0.526]
+  nd_score d by bin: [-0.047, -0.096, -1.121, -1.227, -0.423, -0.346]
+  Per-bin LOSO AUC: [0.16, 0.33, 0.66, 0.77, 0.75, 0.52]
+
+Q5: Commitment Window
+  Primary onset (d>=0.5): -80.0
+  Commitment window: 80.0
+  Onset 95% CI: [-120.0, -80.0]
+  Onset permutation p: 0.9600
+  Monotonicity fraction: 1.000
+    d>=0.3: onset=-100.0
+    d>=0.5: onset=-80.0
+    d>=0.8: onset=-80.0
+
