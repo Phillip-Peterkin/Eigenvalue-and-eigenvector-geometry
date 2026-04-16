@@ -99,7 +99,7 @@ See `data/README_data.md` for detailed download instructions and `REPLICATION_AN
 
 ### Without External Data
 
-All machine-readable statistical results are provided in `results/json_results/` (27 JSON files including a ds004752 subdirectory). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
+All machine-readable statistical results are provided in `results/json_results/` (28 JSON files including a ds004752 subdirectory). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
 
 ### With External Data
 
