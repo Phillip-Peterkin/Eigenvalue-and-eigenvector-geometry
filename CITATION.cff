@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or data, please cite it as below."
-title: "Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology"
+title: "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions"
 type: software
 authors:
   - family-names: Peterkin
@@ -15,7 +15,7 @@ repository-code: "https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector
 keywords:
   - criticality
   - neuronal avalanches
-  - non-normal dynamics
+  - non-normal operator geometry
   - eigenvalue geometry
   - anesthesia
   - sleep
@@ -23,14 +23,12 @@ keywords:
   - iEEG
   - EEG
 abstract: >-
-  Code and results for a study reporting that criticality-related measures and
-  fitted operator geometry covary across brain states in human electrophysiology.
-  Operator-geometry summaries (eigenvalue spacing, eigenvector non-orthogonality,
-  spectral radius, ND score) extracted from sliding-window VAR(1) fits add
-  complementary descriptive coordinates that are partly orthogonal to, and partly
-  aligned with, criticality measures. Key findings: ND score correlates with
-  branching ratio across subjects (r = 0.86); geometry-based LOSO classification
-  achieves AUC of 0.91 (propofol) and 1.00 (N3 vs REM); spectral radius drifts
-  before N2-to-N3 sleep transitions (p = 0.001; d = 1.19; 9/10 subjects). A
-  pre-submission adversarial falsification battery (seven attacks) confirmed
-  robustness. All results are pipeline-dependent correlational summaries.
+  Code and results for a study showing that fitted operator geometry reveals
+  brain-state structure and sleep transitions. Sliding-window VAR(1) fits
+  summarize eigenvalue crowding and eigenvector geometry across three human
+  electrophysiology datasets. Key findings: ND score tracks branching ratio
+  (r = 0.86); eigenvalue spacing distinguishes propofol sedation (d = 0.71)
+  and REM from N3 (d = -2.51) independently of alpha/delta power; spectral
+  radius shifts before N2-to-N3 transitions (p = 0.0014; non-overlapping
+  validation p = 0.032). All results are conditional on this estimator and
+  pipeline.

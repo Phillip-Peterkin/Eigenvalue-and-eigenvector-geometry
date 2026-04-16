@@ -1,15 +1,15 @@
-# Sample Code for: Criticality-Related Measures and Fitted Operator Geometry Covary Across Brain States in Human Electrophysiology
+# Sample Code for: Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License: CC BY 4.0](https://img.shields.io/badge/Manuscript-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ## Introduction
 
-This repository contains the code and results that accompany Peterkin (2026) "Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
+This repository contains the code and results that accompany Peterkin (2026) "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
 
 Abstract:
 
-> Criticality-related measures summarize proximity to a dynamical regime that balances stability and responsiveness but do not describe the geometry of the fitted multivariate operators that generate those dynamics. Here we ask whether operator-geometry summaries extracted from sliding-window VAR(1) fits add a complementary descriptive coordinate for variation in human electrophysiology, and whether that coordinate is independent of conventional spectral power. In human intracranial recordings from 18 subjects, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; mixed-effects p < 10^-8), with complementary dissociations in complexity and long-range temporal correlations. Across subjects, a composite operator-geometry score combining eigenvalue crowding and eigenvector non-orthogonality (ND score) covaried strongly with branching ratio (r = 0.86, p < 10^-5) and inversely with Lempel-Ziv complexity (r = -0.68, p = 0.002); this cross-subject association was stable under leave-one-subject-out resampling (jackknife r range: 0.792-0.889). In scalp EEG, minimum eigenvalue spacing was largely independent of alpha power (propofol dataset) and delta power (sleep dataset), yet it distinguished propofol sedation from wakefulness (d = 0.71) and N3 from REM sleep (d = -2.51); these separations persisted under shared-subspace estimation and across alternative spacing metrics. Spectral radius also drifted significantly in the 120 s before N2-to-N3 sleep transitions (p = 0.001; 9/10 subjects; d = 1.19), and geometry-based LOSO classification separated states with AUC of 0.91 (propofol) and 1.00 (N3 vs REM). A pre-submission adversarial falsification battery (seven attacks) confirmed robustness across label destruction, subject jackknife, spectral confound residualization, window-parameter sweeps, and model competition. Together, fitted operator-geometry summaries provide complementary descriptive coordinates that are partly orthogonal to, and partly aligned with, criticality measures, adding a second axis for characterizing inter-individual and state-dependent variability in these datasets.
+> Criticality metrics are widely used to summarize near-critical brain dynamics, but they do not describe the multivariate geometry of fitted linear operators. Here we fit sliding-window VAR(1) models under a fixed preprocessing pipeline, summarized eigenvalue crowding and eigenvector geometry, and asked how these features relate to standard criticality statistics across three human electrophysiology datasets. In iEEG, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; p < 10^-8). An operator-geometry score (ND) tracked branching ratio closely (r = 0.86, p < 10^-5) while decreasing with Lempel-Ziv complexity (r = -0.68, p = 0.002). In scalp EEG, minimum eigenvalue spacing was largely independent of alpha and delta power, yet distinguished propofol sedation from wakefulness (d = 0.71) and REM from N3 (d = -2.51). In sleep recordings, spectral radius shifted before N2-to-N3 transitions (p = 0.0014; non-overlapping validation p = 0.032). All results are conditional on this estimator and pipeline; the underlying neural mechanisms are not identifiable from these fits alone.
 
 ## Interpretation Guardrails
 
@@ -145,7 +145,7 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 +-- manuscript/
 |   +-- main.tex                     # Full manuscript (LaTeX, Elsevier/elsarticle)
 |   +-- references.bib               # BibLaTeX bibliography
-|   +-- figures/                     # All 13 manuscript figures (PNG)
+|   +-- figures/                     # 9 manuscript figures + 7 supplementary (PNG)
 |   +-- tables/
 |
 +-- code/
@@ -163,7 +163,7 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 |   +-- run_analysis.sh              # Reproduce everything
 |
 +-- results/
-|   +-- json_results/                # 26 machine-readable JSON output files
+|   +-- json_results/                # 28 machine-readable JSON output files
 |   +-- summary_statistics.csv       # Key headline numbers
 |
 +-- data/
@@ -217,33 +217,28 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 
 | Figure | File | Description |
 |--------|------|-------------|
-| Figure 1 | `lme_paired_bands.png` | Band-specific criticality in intracranial recordings |
-| Figure 2 | `ep_summary.png` | Fitted operator geometry aligns with criticality and complexity across subjects |
+| Figure 1 | `lme_paired_bands.png` | Band-specific criticality measures in intracranial recordings |
+| Figure 2 | `ep_summary.png` | Fitted operator-geometry summaries versus criticality and complexity across subjects |
 | Figure 3 | `gap_vs_alpha_discriminating_test.png` | Eigenvalue gap is independent of alpha power in propofol EEG |
-| Figure 4 | `ep_propofol_summary.png` | Propofol reorganizes eigenvalue geometry |
-| Figure 5 | `delta_delta_scatter.png` | Gap tightening predicts comparative sensitivity loss under propofol |
-| Figure 6 | `sleep_dynamics_summary.png` | Sleep follows a different trajectory from propofol |
-| Figure 7 | `pca_scatter_sleep.png` | Geometry state-space across wake, N3, and REM sleep |
-| Figure 8 | `trajectory_N2_to_N3_spectral_radius.png` | Spectral radius drifts upward before N2-to-N3 sleep transitions |
-| Figure 9 | `trajectory_N2_to_N3_eigenvalue_gap.png` | Eigenvalue gap also shows pre-transition drift toward N3 |
-| Figure 10 | `slopes_N2_to_N3_spectral_radius.png` | Per-subject spectral radius pre-transition slopes (N2-to-N3) |
-| Figure 11 | `spectral_confound_map.png` | Geometry features largely survive spectral confound residualization |
-| Figure 12 | `auc_bars.png` | Geometry-based LOSO classification AUC across state contrasts |
-| Figure 13 | `falsification_scorecard.png` | Pre-submission adversarial falsification battery scorecard |
+| Figure 4 | `ep_propofol_summary.png` | Propofol-induced reorganization of fitted operator geometry in scalp EEG |
+| Figure 5 | `delta_delta_scatter.png` | Relationship between propofol-induced changes in gap and sensitivity |
+| Figure 6 | `sleep_dynamics_summary.png` | Sleep-stage differences in fitted operator geometry |
+| Figure 7 | `pca_scatter_sleep.png` | Geometry-only PCA state-space across wake, N3, and REM sleep |
+| Figure 8 | `pac_summary.png` | Phase-amplitude coupling is linked selectively to tau |
+| Figure 9 | `chirality_summary.png` | Chirality and non-Hermitian decomposition |
 
-**Supplementary figures** (archived in `results/figures/`, not in the main manuscript): `pac_summary.png` (PAC vs tau), `chirality_summary.png` (chirality and non-Hermitian decomposition).
+**Supplementary figures** (archived in `manuscript/figures/`, not referenced in the current manuscript): `trajectory_N2_to_N3_spectral_radius.png`, `trajectory_N2_to_N3_eigenvalue_gap.png`, `slopes_N2_to_N3_spectral_radius.png`, `spectral_confound_map.png`, `auc_bars.png`, `falsification_scorecard.png`, `sleep_gap_histograms.png`.
 
 ## Contributors
 
 * Phillip Peterkin (Independent Researcher)
 
-> Citation: Peterkin, P. (2025). Criticality-related measures and fitted operator geometry covary across brain states in human electrophysiology. *Manuscript submitted for publication*.
+> Citation: Peterkin, P. (2025). Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions. *Manuscript submitted for publication*.
 
 ```bibtex
 @article{Peterkin2025,
   author  = {Peterkin, Phillip},
-  title   = {Criticality-related measures and fitted operator geometry
-             covary across brain states in human electrophysiology},
+  title   = {Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions},
   year    = {2025},
   note    = {Manuscript submitted for publication},
   url     = {https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry}
@@ -254,7 +249,7 @@ See `CITATION.cff` for machine-readable citation metadata.
 
 ## License
 
-"Criticality-related measures and fitted operator geometry" Copyright (c) 2025, Phillip Peterkin. All rights reserved.
+"Fitted Operator Geometry" Copyright (c) 2025, Phillip Peterkin. All rights reserved.
 
 This repository uses a dual license:
 
