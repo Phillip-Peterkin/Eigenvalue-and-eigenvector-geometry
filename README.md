@@ -1,11 +1,16 @@
-# Sample Code for: Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions
+# Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![License: CC BY 4.0](https://img.shields.io/badge/Manuscript-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![CI](https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/actions/workflows/ci.yml/badge.svg)](https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/tests-pytest-green.svg)](tests/)
 
 ## Introduction
 
 This repository contains the code and results that accompany Peterkin (2026) "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the package layout and claim-to-module map.
 
 Abstract:
 
@@ -25,27 +30,30 @@ Before exploring this repository, please note the following constraints on inter
 
 > **Legacy label note:** Some repository code, file names, and JSON keys retain the legacy label `ep_score` for backward compatibility. In the manuscript, this quantity is referred to as **ND score**. These labels refer to the same computed composite statistic unless otherwise noted. See `KEY_MIGRATION.md` for a full mapping.
 
-## Installation (Code)
-
-This repository can be downloaded by entering the following commands:
+## Quick start
 
 ```bash
-cd $target_directory
 git clone https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry.git
+cd Eigenvalue-and-eigenvector-geometry
+pip install -e ".[dev]"
+pytest
 ```
+
+This installs the `cmcc` analysis package and runs the portable test suite (manuscript audit against checked-in JSON results + synthetic unit tests). No private datasets are required for `pytest`.
 
 ## Installation (Dependencies)
 
-The analysis pipeline requires Python >= 3.10. Install all dependencies with:
+The analysis pipeline requires Python >= 3.10. Preferred install:
 
 ```bash
-cd Eigenvalue-and-eigenvector-geometry
-pip install -r code/requirements.txt
+pip install -e ".[dev]"
 ```
 
-Alternatively, use conda:
+Legacy alternatives still work:
 
 ```bash
+pip install -r code/requirements.txt
+# or
 conda env create -f code/environment.yml
 conda activate operator-geometry
 ```
@@ -65,6 +73,7 @@ conda activate operator-geometry
 | seaborn | >= 0.12 | Statistical visualization |
 | h5py | >= 3.9 | HDF5 intermediate storage |
 | PyYAML | >= 6.0 | Pipeline configuration |
+| pytest | >= 7.0 | Test suite (via `.[dev]`) |
 
 ## Installation (Data)
 
@@ -233,13 +242,13 @@ Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`,
 
 * Phillip Peterkin (Independent Researcher)
 
-> Citation: Peterkin, P. (2025). Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions. *Manuscript submitted for publication*.
+> Citation: Peterkin, P. (2026). Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions. *Manuscript submitted for publication*.
 
 ```bibtex
-@article{Peterkin2025,
+@article{Peterkin2026,
   author  = {Peterkin, Phillip},
   title   = {Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions},
-  year    = {2025},
+  year    = {2026},
   note    = {Manuscript submitted for publication},
   url     = {https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry}
 }
@@ -249,7 +258,7 @@ See `CITATION.cff` for machine-readable citation metadata.
 
 ## License
 
-"Fitted Operator Geometry" Copyright (c) 2025, Phillip Peterkin. All rights reserved.
+"Fitted Operator Geometry" Copyright (c) 2026, Phillip Peterkin. All rights reserved.
 
 This repository uses a dual license:
 

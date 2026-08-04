@@ -43,7 +43,7 @@ CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
 RESULTS_HG = CMCC_ROOT / "results"
 FIG_DIR = RESULTS_HG / "figures" / "chirality"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
-DATA_ROOT = Path(os.environ.get("COGITATE_IEEG_ROOT", r"c:\openneuro\Cogitate_IEEG_EXP1"))
+DATA_ROOT = Path(os.environ["COGITATE_IEEG_ROOT"])  # required; no machine-local default
 
 MAX_CHANNELS = 30
 WINDOW_SEC = 0.5

@@ -55,7 +55,7 @@ from cmcc.features.transient_amplification import (
 )
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_ROOT = Path(os.environ.get("ANPHY_SLEEP_ROOT", r"c:\openneuro\ANPHY-Sleep"))
+DATA_ROOT = Path(os.environ["ANPHY_SLEEP_ROOT"])  # required; no machine-local default
 RESULTS_DIR = CMCC_ROOT / "results" / "analysis"
 FIG_DIR = CMCC_ROOT / "results" / "figures" / "amplification_sleep"
 FIG_DIR.mkdir(parents=True, exist_ok=True)

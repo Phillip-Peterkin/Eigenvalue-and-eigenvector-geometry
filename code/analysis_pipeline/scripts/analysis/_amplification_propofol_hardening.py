@@ -58,7 +58,7 @@ from cmcc.features.transient_amplification import (
 )
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_ROOT = Path(os.environ.get("DS005620_ROOT", r"c:\openneuro\ds005620"))
+DATA_ROOT = Path(os.environ["DS005620_ROOT"])  # required; no machine-local default
 RESULTS_DIR = CMCC_ROOT / "results" / "analysis"
 FIG_DIR = CMCC_ROOT / "results" / "figures" / "amplification_propofol"
 FIG_DIR.mkdir(parents=True, exist_ok=True)

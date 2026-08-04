@@ -11,3 +11,4 @@ seaborn>=0.12
 h5py>=3.9
 pyyaml>=6.0
 statsmodels>=0.14
+pytest>=7.0
