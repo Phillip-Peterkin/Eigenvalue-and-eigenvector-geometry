@@ -36,7 +36,6 @@ from pathlib import Path
 from typing import Any
 
 import mne
-import numpy as np
 import pandas as pd
 
 

@@ -11,7 +11,6 @@ Loads trajectory cache from _seizure_stratification.py output.
 from __future__ import annotations
 
 import json
-import sys
 import warnings
 from pathlib import Path
 
@@ -21,7 +20,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 import yaml

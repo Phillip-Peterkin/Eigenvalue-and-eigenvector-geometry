@@ -7,8 +7,9 @@ from typing import Any
 
 import numpy as np
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix as sk_confusion_matrix
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, confusion_matrix as sk_confusion_matrix
 
 
 @dataclass
@@ -139,7 +140,6 @@ def decode_with_channel_subset(
     -------
     DecodingResult
     """
-    n_trials = data.shape[0]
     selected = data[:, channel_indices, :]
 
     unique_blocks = np.unique(block_labels)

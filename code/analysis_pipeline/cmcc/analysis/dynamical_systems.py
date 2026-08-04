@@ -847,7 +847,6 @@ def measure_chirality_epochs(
 # ---------------------------------------------------------------------------
 # Backward-compatible aliases (new cautious names -> old implementations)
 # ---------------------------------------------------------------------------
-import warnings as _warnings
 
 def compute_geometry_proximity_timecourse(*args, **kwargs):
     """Alias for compute_ep_proximity_timecourse.

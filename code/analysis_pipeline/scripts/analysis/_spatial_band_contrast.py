@@ -8,7 +8,6 @@ analysis, uses subject-level metrics with electrode coverage metadata.
 from __future__ import annotations
 
 import json
-import sys
 import warnings
 from pathlib import Path
 
@@ -19,7 +18,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 from cmcc.analysis.spatial import define_posterior_roi

@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import csv
 import json
-import sys
 import warnings
 from pathlib import Path
 
@@ -21,7 +20,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 import yaml

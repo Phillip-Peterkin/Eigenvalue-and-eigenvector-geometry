@@ -7,7 +7,6 @@ and condition number.
 from __future__ import annotations
 
 import gc
-import sys
 import warnings
 from pathlib import Path
 
@@ -16,7 +15,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 import yaml

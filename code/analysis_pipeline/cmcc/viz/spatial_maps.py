@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any
-
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 

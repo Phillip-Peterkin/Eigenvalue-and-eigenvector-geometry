@@ -13,7 +13,6 @@ from __future__ import annotations
 import gc
 import json
 import os
-import sys
 import time
 import warnings
 from pathlib import Path
@@ -24,26 +23,27 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", message=".*toeplitz.*", category=RuntimeWarning)
 
-from cmcc.config import load_config
-from cmcc.preprocess.filter import SITE_LINE_FREQ
 from cmcc.analysis.dynamical_systems import (
     compute_ep_proximity_timecourse,
+    decompose_jacobian_hermiticity,
     detect_exceptional_points,
     measure_chirality,
-    decompose_jacobian_hermiticity,
 )
+from cmcc.config import load_config
+from cmcc.data_roots import require_data_root
+from cmcc.preprocess.filter import SITE_LINE_FREQ
 
-CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
-CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
-RESULTS_HG = CMCC_ROOT / "results"
+REPO_CODE = Path(__file__).resolve().parents[3]  # .../code
+CONFIG_PATH = REPO_CODE / "config.yaml"
+RESULTS_HG = REPO_CODE.parent / "results"
 FIG_DIR = RESULTS_HG / "figures" / "chirality"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
-DATA_ROOT = Path(os.environ["COGITATE_IEEG_ROOT"])  # required; no machine-local default
+
+DATA_ROOT = require_data_root("IEEG_DATA_ROOT")
 
 MAX_CHANNELS = 30
 WINDOW_SEC = 0.5

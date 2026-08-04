@@ -34,7 +34,6 @@ def _bandpass(data: np.ndarray, lo: float, hi: float, sfreq: float, order: int =
 
 def _modulation_index(phase: np.ndarray, amplitude: np.ndarray, n_bins: int = 18) -> tuple[float, np.ndarray]:
     bins = np.linspace(-np.pi, np.pi, n_bins + 1)
-    bin_centers = (bins[:-1] + bins[1:]) / 2
     mean_amp = np.zeros(n_bins)
 
     for i in range(n_bins):

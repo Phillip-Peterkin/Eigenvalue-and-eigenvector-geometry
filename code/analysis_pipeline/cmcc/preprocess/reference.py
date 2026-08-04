@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import numpy as np
 import mne
+import numpy as np
 
 
 def apply_laplace(

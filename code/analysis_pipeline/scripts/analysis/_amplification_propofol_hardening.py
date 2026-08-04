@@ -36,7 +36,6 @@ from __future__ import annotations
 import gc
 import json
 import os
-import sys
 import time
 import warnings
 from pathlib import Path
@@ -44,23 +43,23 @@ from pathlib import Path
 import numpy as np
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", message=".*toeplitz.*", category=RuntimeWarning)
 
-from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 from cmcc.analysis.dynamical_systems import estimate_jacobian
+from cmcc.data_roots import require_data_root
 from cmcc.features.transient_amplification import (
     analyze_jacobian_amplification,
     compute_hump_magnitude,
     compute_residual_kreiss,
 )
+from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 
-CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_ROOT = Path(os.environ["DS005620_ROOT"])  # required; no machine-local default
-RESULTS_DIR = CMCC_ROOT / "results" / "analysis"
-FIG_DIR = CMCC_ROOT / "results" / "figures" / "amplification_propofol"
+REPO_ROOT = Path(__file__).resolve().parents[4]
+DATA_ROOT = require_data_root("PROPOFOL_DATA_ROOT")
+RESULTS_DIR = REPO_ROOT / "results" / "analysis"
+FIG_DIR = REPO_ROOT / "results" / "figures" / "amplification_propofol"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 

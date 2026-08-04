@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import mne
-import numpy as np
-
 
 SITE_LINE_FREQ = {
     "CE": 60.0,

@@ -33,15 +33,15 @@ Assumptions
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
 from scipy.signal import butter, sosfiltfilt
 
 from cmcc.analysis.dynamical_systems import (
-    estimate_jacobian,
     detect_exceptional_points,
+    estimate_jacobian,
 )
 
 
@@ -634,7 +634,7 @@ def partial_correlation_control(
     -------
     dict with keys: r_raw, p_raw, r_partial, p_partial, n_windows, method.
     """
-    from cmcc.analysis.ep_advanced import _effective_n, _adjusted_correlation_p
+    from cmcc.analysis.ep_advanced import _adjusted_correlation_p, _effective_n
 
     if preictal_mask is not None:
         t = time_sec[preictal_mask]

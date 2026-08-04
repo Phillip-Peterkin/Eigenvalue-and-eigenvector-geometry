@@ -58,9 +58,9 @@ from dataclasses import dataclass, field
 import numpy as np
 from scipy import stats as sp_stats
 from sklearn.decomposition import PCA
-from sklearn.mixture import GaussianMixture
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score, balanced_accuracy_score
+from sklearn.metrics import balanced_accuracy_score, roc_auc_score
+from sklearn.mixture import GaussianMixture
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 

@@ -2,15 +2,14 @@
 
 from __future__ import annotations
 
-from typing import Any
-
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from cmcc.features.entropy import MSEResult
 from cmcc.features.dfa import DFAResult
+from cmcc.features.entropy import MSEResult
 
 
 def plot_mse_curves(
@@ -124,8 +123,8 @@ def plot_branching_distribution(
     else:
         fig = ax.figure
 
-    import seaborn as sns
     import pandas as pd
+    import seaborn as sns
 
     all_vals = []
     all_labels = []

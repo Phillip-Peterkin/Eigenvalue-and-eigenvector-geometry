@@ -30,7 +30,6 @@ from __future__ import annotations
 import gc
 import json
 import os
-import sys
 import time
 import warnings
 from pathlib import Path
@@ -38,7 +37,6 @@ from pathlib import Path
 import numpy as np
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg

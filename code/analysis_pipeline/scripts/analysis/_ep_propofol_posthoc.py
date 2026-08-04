@@ -11,7 +11,6 @@ Usage:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import numpy as np
@@ -20,7 +19,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from cmcc.analysis.contrasts import fdr_correction
 

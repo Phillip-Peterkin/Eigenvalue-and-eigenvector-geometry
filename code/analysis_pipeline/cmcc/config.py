@@ -3,12 +3,10 @@
 from __future__ import annotations
 
 import copy
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
 import yaml
-
 
 DEFAULTS: dict[str, Any] = {
     "data": {
@@ -100,8 +98,9 @@ def validate_config(config: dict[str, Any]) -> list[str]:
     data = config.get("data", {})
     if not data.get("root"):
         errors.append("data.root must be a non-empty path")
-    elif not Path(data["root"]).exists():
-        errors.append(f"data.root path does not exist: {data['root']}")
+    # Existence of data.root is checked at run time by loaders / require_data_root.
+    # Validating existence here would make `load_config()` unusable on machines
+    # that only want to inspect parameters or run synthetic unit tests.
 
     if not data.get("subjects"):
         errors.append("data.subjects must be a non-empty list")

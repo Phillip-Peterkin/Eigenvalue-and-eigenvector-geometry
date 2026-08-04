@@ -86,7 +86,7 @@ The full pipeline requires four public datasets. No raw data is included in this
 | Cambridge Propofol EEG (ds005620) | 20 | OpenNeuro | [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0) | Propofol state contrasts |
 | ANPHY-Sleep polysomnography | 10 | OSF | [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH) | Sleep state contrasts |
 
-After downloading, set environment variables pointing to your local copies:
+After downloading, set environment variables pointing to your local copies. These names are the canonical contract (resolved by `cmcc.data_roots`):
 
 ```bash
 # Linux / macOS
@@ -95,11 +95,11 @@ export DS004752_DATA_ROOT=/path/to/ds004752
 export PROPOFOL_DATA_ROOT=/path/to/ds005620
 export SLEEP_DATA_ROOT=/path/to/ANPHY-Sleep
 
-# Windows
-set IEEG_DATA_ROOT=C:\path\to\Cogitate_IEEG_EXP1
-set DS004752_DATA_ROOT=C:\path\to\ds004752
-set PROPOFOL_DATA_ROOT=C:\path\to\ds005620
-set SLEEP_DATA_ROOT=C:\path\to\ANPHY-Sleep
+# Windows PowerShell
+$env:IEEG_DATA_ROOT = "C:\path\to\Cogitate_IEEG_EXP1"
+$env:DS004752_DATA_ROOT = "C:\path\to\ds004752"
+$env:PROPOFOL_DATA_ROOT = "C:\path\to\ds005620"
+$env:SLEEP_DATA_ROOT = "C:\path\to\ANPHY-Sleep"
 ```
 
 See `data/README_data.md` for detailed download instructions and `REPLICATION_AND_DATA_PROVENANCE.md` for dataset provenance.

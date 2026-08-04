@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import gc
 import json
-import sys
 import time
 import warnings
 from pathlib import Path
@@ -34,7 +33,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 from cmcc.config import load_config

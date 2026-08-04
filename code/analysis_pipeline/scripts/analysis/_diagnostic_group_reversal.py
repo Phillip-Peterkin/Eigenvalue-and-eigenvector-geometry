@@ -6,13 +6,11 @@ and reports whether each seizure shows narrowing or widening.
 from __future__ import annotations
 
 import gc
-import sys
 import warnings
 from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 import yaml

@@ -31,5 +31,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
+      - name: Ruff lint (package + tests)
+        run: ruff check code/analysis_pipeline/cmcc tests
+
       - name: Run test suite
         run: python -m pytest -q --tb=short

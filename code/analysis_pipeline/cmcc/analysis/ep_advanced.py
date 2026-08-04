@@ -50,8 +50,8 @@ from cmcc.analysis.contrasts import ContrastResult, condition_contrast, fdr_corr
 from cmcc.analysis.dynamical_systems import (
     ExceptionalPointResult,
     JacobianResult,
-    estimate_jacobian,
     detect_exceptional_points,
+    estimate_jacobian,
 )
 
 
@@ -844,7 +844,6 @@ def compute_petermann_noise_surrogate(
     window_samples = int(window_sec * sfreq)
     step_samples = int(step_sec * sfreq)
 
-    ch_use = min(n_ch, max_channels)
     if n_ch > max_channels:
         data_sub = data[:max_channels]
     else:

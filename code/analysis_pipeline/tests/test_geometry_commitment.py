@@ -12,10 +12,8 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from cmcc.analysis.temporal_precedence import TransitionTimecourse
 from cmcc.analysis.geometry_commitment import (
@@ -726,8 +724,20 @@ class TestGeometryCommitmentIntegration:
     @pytest.mark.skipif(not TP_JSON.exists(), reason="temporal_precedence.json not available")
     def test_q3_q4_with_real_data(self):
         """Integration: run Q3 and Q4 on actual temporal_precedence.json data."""
-        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts" / "analysis"))
-        from _geometry_commitment import load_json_timecourses, extract_bistability_windows
+        import importlib.util
+
+        script_path = (
+            Path(__file__).resolve().parent.parent
+            / "scripts"
+            / "analysis"
+            / "_geometry_commitment.py"
+        )
+        spec = importlib.util.spec_from_file_location("_geometry_commitment", script_path)
+        assert spec is not None and spec.loader is not None
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        load_json_timecourses = module.load_json_timecourses
+        extract_bistability_windows = module.extract_bistability_windows
 
         n3_by_subj, rem_by_subj = load_json_timecourses(TP_JSON)
         assert len(n3_by_subj) >= 1

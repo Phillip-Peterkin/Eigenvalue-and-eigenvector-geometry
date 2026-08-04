@@ -14,7 +14,6 @@ Produces three figures:
 from __future__ import annotations
 
 import json
-import sys
 import warnings
 from pathlib import Path
 
@@ -26,7 +25,6 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 from sklearn.metrics import roc_curve
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 import yaml

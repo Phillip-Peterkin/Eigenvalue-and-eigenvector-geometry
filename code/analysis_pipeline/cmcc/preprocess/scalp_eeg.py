@@ -45,10 +45,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import mne
+import numpy as np
 from sklearn.decomposition import PCA
-
 
 DS005620_NON_EEG = ["VEOG", "HEOG", "EMG"]
 

@@ -28,7 +28,6 @@ serve as a methodological control: AUC should be near 0.5.
 from __future__ import annotations
 
 import json
-import sys
 import warnings
 from pathlib import Path
 
@@ -42,7 +41,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 warnings.filterwarnings("ignore")
 
 import yaml

@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import gc
 import json
-import sys
 import time
 import traceback
 import warnings
@@ -18,7 +17,6 @@ import numpy as np
 import pandas as pd
 import mne
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -26,7 +24,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 from cmcc.config import load_config
 from cmcc.preprocess.filter import SITE_LINE_FREQ
 
-CONFIG_PATH = Path(__file__).resolve().parent.parent / "configs" / "default.yaml"
+CONFIG_PATH = Path(__file__).resolve().parents[2] / "config.yaml"  # code/config.yaml
 RUNS = ["DurR1", "DurR2", "DurR3", "DurR4", "DurR5"]
 
 

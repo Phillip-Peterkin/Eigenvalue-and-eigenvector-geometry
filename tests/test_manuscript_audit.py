@@ -5,8 +5,9 @@ entry in the saved JSON result artifacts. This prevents manuscript drift
 from computed results.
 """
 import json
-import pytest
 from pathlib import Path
+
+import pytest
 
 RESULTS_DIR = Path(__file__).resolve().parent.parent / "results" / "json_results"
 

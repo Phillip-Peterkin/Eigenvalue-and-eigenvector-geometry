@@ -38,8 +38,8 @@ from __future__ import annotations
 
 from typing import Any
 
-import numpy as np
 import mne
+import numpy as np
 from scipy.stats import kurtosis as sp_kurtosis
 from sklearn.decomposition import PCA
 
