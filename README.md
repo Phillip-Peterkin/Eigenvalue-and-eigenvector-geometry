@@ -12,6 +12,10 @@ This repository contains the code and results that accompany Peterkin (2026) "Fi
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the package layout and claim-to-module map.
 
+**Anti-leakage / confirmatory contract (reviewer entry points):**
+- [AGENTS.md](AGENTS.md) — scientific integrity, data contracts, leakage prevention, testing rules
+- [preregistration_spec.json](preregistration_spec.json) — frozen pipeline parameters, primary predictions, and explicit non-claims locked to `results/json_results/`
+
 Abstract:
 
 > Criticality metrics are widely used to summarize near-critical brain dynamics, but they do not describe the multivariate geometry of fitted linear operators. Here we fit sliding-window VAR(1) models under a fixed preprocessing pipeline, summarized eigenvalue crowding and eigenvector geometry, and asked how these features relate to standard criticality statistics across three human electrophysiology datasets. In iEEG, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; p < 10^-8). An operator-geometry score (ND) tracked branching ratio closely (r = 0.86, p < 10^-5) while decreasing with Lempel-Ziv complexity (r = -0.68, p = 0.002). In scalp EEG, minimum eigenvalue spacing was largely independent of alpha and delta power, yet distinguished propofol sedation from wakefulness (d = 0.71) and REM from N3 (d = -2.51). In sleep recordings, spectral radius shifted before N2-to-N3 transitions (p = 0.0014; non-overlapping validation p = 0.032). All results are conditional on this estimator and pipeline; the underlying neural mechanisms are not identifiable from these fits alone.

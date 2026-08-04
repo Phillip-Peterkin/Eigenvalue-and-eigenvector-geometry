@@ -30,3 +30,8 @@ def test_cmcc_package_imports() -> None:
     import cmcc
 
     assert cmcc.__version__
+
+
+def test_anti_leakage_artifacts_exist() -> None:
+    assert (REPO_ROOT / "AGENTS.md").is_file()
+    assert (REPO_ROOT / "preregistration_spec.json").is_file()

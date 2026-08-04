@@ -10,6 +10,8 @@ Companion code for:
 |------|------|
 | `code/analysis_pipeline/cmcc/` | Installable analysis package (`pip install -e ".[dev]"`) |
 | `code/config.yaml` | Canonical versioned pipeline parameters |
+| `AGENTS.md` | Anti-leakage and scientific integrity rules for contributors/agents |
+| `preregistration_spec.json` | Frozen confirmatory analysis contract + primary predictions |
 | `code/analysis_pipeline/scripts/` | End-to-end runners (need local datasets) |
 | `tests/` | Manuscript-to-JSON audit + citation/repo/unit hygiene |
 | `code/analysis_pipeline/tests/` | Unit tests for geometry / falsification / amplification |

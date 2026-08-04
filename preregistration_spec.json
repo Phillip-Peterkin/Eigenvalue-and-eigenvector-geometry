@@ -1,0 +1,93 @@
+{
+  "study_title": "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions",
+  "citation_key": "Peterkin2026",
+  "status": "locked_post_hoc_repository_spec",
+  "status_note": "This file freezes the confirmatory analysis contract for the public repository. It is not a claim that every analysis was registered on an external registry before any data were seen. Exploratory analyses must remain labeled exploratory in manuscript and code.",
+  "pipeline_name": "Fitted Operator Geometry (VAR(1) sliding-window geometry)",
+  "canonical_config": "code/config.yaml",
+  "frozen_parameters": {
+    "operator_model": "VAR(1) on sliding windows after current-source density and principal component analysis",
+    "pca_components": 15,
+    "var_window_ms": 500,
+    "var_step_ms": 100,
+    "high_gamma_passband_hz": [70, 150],
+    "broadband_passband_hz": [1, 200],
+    "random_seed": 42,
+    "n_permutations_default": 5000,
+    "alpha": 0.05,
+    "multiple_comparison_correction": "fdr_bh",
+    "nd_score_definition": "Within-subject composite of z-scored -log10(minimum eigenvalue gap) and z-scored log10(eigenvector condition number); legacy code key ep_score",
+    "primary_geometry_metrics": [
+      "spectral_radius",
+      "minimum_eigenvalue_gap",
+      "eigenvector_condition_number",
+      "nd_score"
+    ],
+    "subject_boundary_rule": "All confirmatory contrasts and cross-validation preserve subject identity; no subject appears in both train and test folds",
+    "shared_subspace_control": "Confirmatory state contrasts are also reported under PCA fit once per subject on pooled states, then applied to each state"
+  },
+  "datasets": {
+    "primary_ieeg": {
+      "name": "Cogitate iEEG Experiment 1",
+      "role": "primary",
+      "env_var": "IEEG_DATA_ROOT"
+    },
+    "propofol_eeg": {
+      "name": "Cambridge propofol EEG (OpenNeuro ds005620)",
+      "role": "confirmatory_state_contrast",
+      "env_var": "PROPOFOL_DATA_ROOT"
+    },
+    "sleep_eeg": {
+      "name": "ANPHY-Sleep polysomnography",
+      "role": "confirmatory_state_contrast_and_temporal_precedence",
+      "env_var": "SLEEP_DATA_ROOT"
+    },
+    "zurich_seeg": {
+      "name": "Zurich SEEG (OpenNeuro ds004752)",
+      "role": "exploratory_cross_dataset_generalization",
+      "env_var": "DS004752_DATA_ROOT",
+      "label": "exploratory"
+    }
+  },
+  "primary_predictions": [
+    {
+      "id": "P1_band_sigma",
+      "statement": "High-gamma branching ratio is lower (more subcritical) than broadband branching ratio in primary intracranial electroencephalography subjects.",
+      "adjudication_artifact": "results/json_results/broadband_comparison.json"
+    },
+    {
+      "id": "P2_nd_tracks_sigma",
+      "statement": "Near-degeneracy (ND) score positively correlates with branching ratio across primary subjects.",
+      "adjudication_artifact": "results/json_results/exceptional_points.json"
+    },
+    {
+      "id": "P3_propofol_spacing",
+      "statement": "Minimum eigenvalue spacing distinguishes propofol sedation from wakefulness with a nonzero paired effect under the frozen pipeline.",
+      "adjudication_artifact": "results/json_results/ep_propofol_eeg.json"
+    },
+    {
+      "id": "P4_sleep_spacing",
+      "statement": "Minimum eigenvalue spacing distinguishes rapid-eye-movement sleep from N3 under the frozen pipeline.",
+      "adjudication_artifact": "results/json_results/ep_sleep_dynamics.json"
+    },
+    {
+      "id": "P5_pre_n3_radius",
+      "statement": "Spectral radius shows a pre-transition shift before N2-to-N3 onset that survives non-overlapping-window validation.",
+      "adjudication_artifact": "results/json_results/temporal_precedence.json"
+    }
+  ],
+  "secondary_predictions": [
+    "Spacing effects are largely independent of alpha power (propofol) and delta power (sleep) under the frozen pipeline.",
+    "Shared-subspace principal component analysis preserves the direction of confirmatory propofol and sleep spacing contrasts.",
+    "Phase-randomized surrogate controls constrain interpretation of absolute spectral-sensitivity magnitude."
+  ],
+  "explicit_non_claims": [
+    "No claim of mathematically exact exceptional points in neural tissue.",
+    "No causal claim that operator geometry generates conscious state.",
+    "ds004752 task-condition geometry contrasts are exploratory generalization checks, not primary replications."
+  ],
+  "leakage_policy": {
+    "file": "AGENTS.md",
+    "summary": "Subject-preserving splits, causal temporal features for future targets, no silent averaging, confirmatory tuning frozen away from evaluation labels."
+  }
+}
