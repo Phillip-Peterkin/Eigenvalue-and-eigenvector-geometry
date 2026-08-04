@@ -53,4 +53,5 @@ Primary runners load `code/config.yaml`. Some exploratory seizure scripts still 
 
 - Geometry metrics summarize **fitted VAR(1) operators**, not ground-truth neural generators.
 - Manuscript audit tests lock quantitative claims to checked-in JSON; they are confirmatory bookkeeping, not a substitute for synthetic unit tests of the estimators.
+- Synthetic science unit tests live in `tests/unit/test_operator_geometry.py` and cover spectral radius, minimum eigenvalue gap, eigenvector overlap, legacy proximity score (`ep_score`), manuscript near-degeneracy (ND) score, participation ratio / effective rank, and branching ratio on constructed inputs.
 - No silent averaging helpers are part of the public package API; aggregation rules are explicit in analysis scripts.

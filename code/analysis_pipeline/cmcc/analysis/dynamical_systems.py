@@ -49,6 +49,13 @@ from dataclasses import dataclass, field
 import numpy as np
 from scipy import linalg
 
+from cmcc.features.operator_geometry import (
+    PROXIMITY_SCORE_EPSILON,
+    eigenvector_overlap,
+    geometry_proximity_score,
+    minimum_eigenvalue_gap,
+)
+
 
 @dataclass
 class JacobianResult:
@@ -384,27 +391,11 @@ def detect_exceptional_points(
         evals = jac_result.eigenvalues[w]
         evecs = jac_result.eigenvectors[w]
 
-        best_gap = np.inf
-        best_i, best_j = 0, 1
-
-        for ii in range(min(n_ch, 20)):
-            for jj in range(ii + 1, min(n_ch, 20)):
-                gap = abs(evals[ii] - evals[jj])
-                if gap < best_gap:
-                    best_gap = gap
-                    best_i, best_j = ii, jj
-
+        best_gap, best_i, best_j = minimum_eigenvalue_gap(evals, max_modes=min(n_ch, 20))
         min_gaps[w] = best_gap
         gap_pairs[w] = [best_i, best_j]
 
-        v_i = evecs[:, best_i]
-        v_j = evecs[:, best_j]
-        norm_i = np.linalg.norm(v_i)
-        norm_j = np.linalg.norm(v_j)
-        if norm_i > 0 and norm_j > 0:
-            overlap = abs(np.dot(np.conj(v_i), v_j)) / (norm_i * norm_j)
-        else:
-            overlap = 0.0
+        overlap = eigenvector_overlap(evecs[:, best_i], evecs[:, best_j])
         overlaps[w] = overlap
 
         try:
@@ -421,8 +412,9 @@ def detect_exceptional_points(
         except Exception:
             petermann[w] = np.nan
 
-        epsilon = 1e-10
-        ep_scores[w] = overlap / (best_gap + epsilon)
+        ep_scores[w] = geometry_proximity_score(
+            overlap, best_gap, epsilon=PROXIMITY_SCORE_EPSILON
+        )
 
     candidates = []
     for w in range(n_windows):

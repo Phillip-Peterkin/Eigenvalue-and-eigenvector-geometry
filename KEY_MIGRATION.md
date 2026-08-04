@@ -10,7 +10,7 @@ The JSON result files in `results/json_results/` use key names that include "EP"
 
 | JSON Key | Cautious Interpretation |
 |----------|----------------------|
-| `ep_score_mean` | Mean geometry score (composite of eigenvalue proximity and eigenvector non-orthogonality) |
+| `ep_score_mean` | Mean legacy proximity score: mean of `overlap / (gap + 1e-10)` per window (not the manuscript z-scored ND composite; see `compute_nd_score`) |
 | `min_eigenvalue_gap_mean` | Mean minimum nearest-neighbor eigenvalue spacing |
 | `sigma_vs_ep_score` | Branching ratio vs geometry score correlation |
 | `lzc_vs_ep_score` | Lempel-Ziv complexity vs geometry score correlation |

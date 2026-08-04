@@ -53,6 +53,7 @@ from cmcc.analysis.dynamical_systems import (
     detect_exceptional_points,
     estimate_jacobian,
 )
+from cmcc.features.operator_geometry import effective_rank, participation_ratio
 
 
 def _effective_n(x: np.ndarray, y: np.ndarray | None = None) -> int:
@@ -579,19 +580,9 @@ def compute_svd_dimension(
 
     for w in range(n_windows):
         J = jac_result.jacobians[w]
-        sigma = np.linalg.svd(J, compute_uv=False)
-        sigma = np.abs(sigma)
-
-        s_sum = sigma.sum()
-        s_sq_sum = (sigma ** 2).sum()
-        pr[w] = (s_sum ** 2) / s_sq_sum if s_sq_sum > 0 else 0.0
-
-        if s_sum > 0:
-            p = sigma / s_sum
-            p = p[p > 0]
-            erank[w] = np.exp(-np.sum(p * np.log(p)))
-        else:
-            erank[w] = 0.0
+        sigma = np.abs(np.linalg.svd(J, compute_uv=False))
+        pr[w] = participation_ratio(sigma)
+        erank[w] = effective_rank(sigma)
 
     ep_scores = ep_result.ep_scores
 

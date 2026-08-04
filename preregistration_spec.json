@@ -16,7 +16,8 @@
     "n_permutations_default": 5000,
     "alpha": 0.05,
     "multiple_comparison_correction": "fdr_bh",
-    "nd_score_definition": "Within-subject composite of z-scored -log10(minimum eigenvalue gap) and z-scored log10(eigenvector condition number); legacy code key ep_score",
+    "legacy_ep_score_definition": "Per-window proximity score used in checked-in JSON keys ep_score / ep_score_mean: eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10). Implemented by cmcc.features.operator_geometry.geometry_proximity_score and detect_exceptional_points.",
+    "manuscript_nd_score_definition": "Within-subject composite ND = 0.5 * [z(-log10(gap + 1e-12)) + z(log10(condition_number + 1e-12))]. Implemented by cmcc.features.operator_geometry.compute_nd_score. Distinct from legacy ep_score; both summarize crowding and non-orthogonality.",
     "primary_geometry_metrics": [
       "spectral_radius",
       "minimum_eigenvalue_gap",
