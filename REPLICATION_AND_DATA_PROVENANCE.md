@@ -2,77 +2,63 @@
 
 ## Overview
 
-This document clarifies which datasets, subject subsets, recording modalities, and experimental paradigms are used in each analysis reported in the manuscript and this repository.
+This document records which datasets, subject groups, recording modalities, and analysis roles are used in the public repository. The term "replication" is reserved for analyses that actually reproduce the same target effect under an appropriately independent design. Cross-dataset consistency or generalization checks are labeled as such.
 
 ## Datasets
 
-All analyses use publicly available data from four separate sources:
+| Dataset | Source | Recording | Approximate public analysis sample | Paradigm | Repository role |
+|---|---|---|---:|---|---|
+| COGITATE intracranial electroencephalography Experiment 1 | COGITATE Consortium | Electrocorticography and intracranial recordings | analysis-dependent | Visual consciousness paradigm | Primary intracranial analysis |
+| Zurich ds004752 | OpenNeuro | Stereoelectroencephalography | 15 | Verbal working memory | Secondary cross-dataset consistency/generalization check |
+| Cambridge ds005620 | OpenNeuro | Scalp electroencephalography | 20 analyzed in principal state contrast | Resting state under Propofol sedation | Propofol state analysis |
+| ANPHY-Sleep | Open Science Framework | Polysomnography / scalp electroencephalography | 10 | Overnight sleep | Sleep state and pre-transition analysis |
 
-| Dataset | Source | Recording | Subjects | Paradigm | Used In |
-|---------|--------|-----------|----------|----------|---------|
-| COGITATE iEEG Exp. 1 | [Cogitate Consortium](https://cogitate-data.ae.mpg.de/) | ECoG grids/strips (intracranial) | 18 (CE, CF, CG sites) | Visual consciousness (face/object/letter/false-font) | Primary iEEG analysis |
-| Zurich SEEG (ds004752) | [OpenNeuro](https://openneuro.org/datasets/ds004752) | SEEG depth electrodes | 15 (sub-01 through sub-15) | Verbal working memory (Sternberg task) | Secondary cross-dataset generalization test |
-| Cambridge Propofol (ds005620) | [OpenNeuro](https://openneuro.org/datasets/ds005620) | 65-channel scalp EEG | 20 (1 excluded: sub-1037) | Resting state under graded propofol sedation | Propofol state-contrast analysis |
-| ANPHY-Sleep | [OSF](https://osf.io/r26fh/) | 93-channel scalp EEG (10-20/10-05) | 10 | Overnight polysomnography | Sleep state-contrast analysis |
+Exact subject inclusion can differ by feature availability and analysis. The manuscript and machine-readable outputs should be consulted for the sample size attached to each result.
 
-## Provenance Note: Primary iEEG vs Secondary SEEG
+## Primary intracranial versus Zurich stereoelectroencephalography
 
-The primary iEEG analysis and the replication SEEG analysis use **completely separate datasets** from **different sources**.
+The COGITATE and Zurich datasets are genuinely separate datasets with different participants, acquisition environments, electrode modalities, tasks, and laboratories. That makes the Zurich analysis useful as a cross-dataset stress test of parts of the analysis framework.
 
-### What differs between the two analyses:
+It does **not** make every Zurich result a replication of the COGITATE findings.
 
-| Property | Primary (Cogitate ECoG) | Replication (Zurich SEEG) |
-|----------|------------------------|---------------------------|
-| Dataset source | Cogitate Consortium data portal | OpenNeuro ds004752 |
-| Subjects | 18 subjects (CE103, CE110, CF102, CF103, CF104, CF106, CG100, CG101, CG103, CG105, CG107, CG108, CG109, CG110, CG111, CG113, CG114, CG115) | 15 subjects (sub-01 through sub-15) |
-| Electrode type | ECoG surface grids and strips | SEEG depth electrodes |
-| Recording sites | Lateral cortex (primarily posterior) | Hippocampal / temporal depth |
-| Paradigm | Visual consciousness (category perception, task relevance) | Verbal working memory (Sternberg set-size 4/6/8) |
-| Condition contrasts | Face vs object vs letter, task-relevant vs irrelevant | Set size (4/6/8), match (IN/OUT) |
-| Lab / geography | Cogitate consortium (North American and European sites) | Schweizerische Epilepsie-Klinik, Zurich |
-| Line noise | 60 Hz (North American sites) | 50 Hz (European site, Zurich) |
-| Sampling rates | 1024-2048 Hz | 2000 or 4096 Hz |
-| Re-referencing | Laplacian (surface grid geometry) | None (SEEG geometry precludes surface Laplacian) |
-| Sessions used | DurR1 through DurR5 runs | ses-01 only |
-| Reference | Melloni et al., 2023 (COGITATE) | Dimakopoulos et al., eLife 2022 |
+In particular, task-condition contrasts did not transfer under the current pipeline. The public manuscript therefore treats Zurich as a secondary consistency/generalization analysis. Geometry-dynamics relationships that show similar direction across the two datasets are supportive, but they share software and analysis assumptions and are not presented as independent preregistered replication.
 
-### Correct characterization
+## Analysis-to-dataset map
 
-The Zurich SEEG analysis constitutes a **secondary cross-dataset generalization test** of the operator-geometry pipeline on a separate dataset. The two datasets:
-- Come from different data sources (Cogitate Consortium vs OpenNeuro)
-- Were collected by different labs
-- Use different electrode types (ECoG vs SEEG)
-- Test different paradigms (visual consciousness vs verbal working memory)
-- Include entirely different patient populations
+| Analysis | Dataset | Role | Main machine-readable output |
+|---|---|---|---|
+| High-gamma versus broadband criticality-related summaries | COGITATE intracranial data | Primary | `broadband_comparison.json` |
+| Historical geometry-proximity versus criticality analysis | COGITATE intracranial data | Historical primary analysis retained for provenance | `exceptional_points.json` |
+| Leave-one-subject-out sensitivity of historical geometry association | COGITATE intracranial data | Robustness | `jackknife_sensitivity.json` |
+| Minimum-gap versus alpha-power control | Cambridge Propofol | Control | `gap_vs_alpha_test.json` |
+| Propofol fitted-geometry state contrasts | Cambridge Propofol | Primary state contrast | `ep_propofol_eeg.json` |
+| Phase-randomized sensitivity controls | Cambridge Propofol subset | Falsification / limitation | `ep_robustness_checks.json` |
+| Shared-subspace Propofol analysis | Cambridge Propofol | Robustness | `ep_shared_subspace_propofol.json` |
+| Sleep fitted-geometry state contrasts | ANPHY-Sleep | Primary state contrast | `ep_sleep_dynamics.json` |
+| Pre-transition sleep analysis | ANPHY-Sleep | Small-sample temporal analysis | `temporal_precedence.json` |
+| Multi-block sleep analysis | ANPHY-Sleep | Robustness | `sleep_multiblock_robustness.json` |
+| Shared-subspace sleep analysis | ANPHY-Sleep | Robustness | `ep_shared_subspace_sleep.json` |
+| Adversarial falsification battery | Propofol + ANPHY-Sleep | Stress test | `falsification_battery.json` |
+| Zurich cross-dataset analysis | OpenNeuro ds004752 | Secondary consistency/generalization | `ep_advanced_ds004752.json` |
+| Chirality-style trajectory summaries | COGITATE intracranial data | Exploratory | `chirality.json` |
+| Phase-amplitude coupling analysis | COGITATE intracranial data | Exploratory / secondary | `cross_frequency.json` |
 
-This is a secondary generalization test using the same software pipeline on a separate dataset.
+## Interpretation constraints
 
-## Analysis-Dataset Mapping
+1. **Separate dataset is not synonymous with replication.** The Zurich analysis uses independent data but tests a different task and recording modality. Results are described as cross-dataset consistency/generalization unless they reproduce the same prespecified target effect.
 
-| Analysis | Dataset | Subjects | Key Output |
-|----------|---------|----------|------------|
-| Band-specific criticality (Table 1, Fig 1) | Cogitate iEEG (ECoG) | 18 | broadband_comparison.json |
-| Operator geometry vs criticality (Fig 2) | Cogitate iEEG (ECoG) | 18 | exceptional_points.json |
-| Jackknife sensitivity | Cogitate iEEG (ECoG) | 18 | jackknife_sensitivity.json |
-| Gap vs alpha independence (Fig 3) | ds005620 (Propofol) | 20 | gap_vs_alpha_test.json |
-| Propofol state contrasts (Figs 4-5) | ds005620 (Propofol) | 20 | ep_propofol_eeg.json |
-| Phase-randomized surrogates | ds005620 (Propofol) | 5 subset | ep_robustness_checks.json |
-| Shared-subspace PCA (Propofol) | ds005620 (Propofol) | 20 | ep_shared_subspace_propofol.json |
-| Sleep state contrasts (Figs 6-7) | ANPHY-Sleep (OSF) | 10 | ep_sleep_dynamics.json |
-| Temporal precedence — geometry drift before sleep transitions (Figs 8-10) | ANPHY-Sleep (OSF) | 10 | temporal_precedence.json |
-| Multi-block sleep robustness | ANPHY-Sleep (OSF) | 10 | sleep_multiblock_robustness.json |
-| Shared-subspace PCA (Sleep) | ANPHY-Sleep (OSF) | 10 | ep_shared_subspace_sleep.json |
-| Pre-submission adversarial falsification battery (Figs 11-13) | ds005620 (Propofol) + ANPHY-Sleep | 20 + 10 | falsification_battery.json |
-| Secondary cross-dataset generalization test | ds004752 (Zurich SEEG) | 15 | ep_advanced_ds004752.json |
-| Chirality analysis (supplementary) | Cogitate iEEG (ECoG) | 18 | chirality.json |
-| PAC analysis (supplementary) | Cogitate iEEG (ECoG) | 18 | cross_frequency.json |
+2. **Shared pipeline assumptions remain.** Applying the same software to multiple datasets is useful for testing portability, but common preprocessing and estimator choices can create common biases.
 
-## Implications for Interpretation
+3. **Propofol and sleep are different observables from intracranial high-gamma.** Scalp electroencephalography analyses use a different acquisition scale and preprocessing pathway. Their value is cross-state and cross-modality consistency, not literal measurement equivalence.
 
-1. The secondary cross-dataset generalization test in ds004752 supports the claim that operator-geometry signatures are not artifacts of a specific electrode type, paradigm, lab, or dataset. The same pipeline applied to an entirely separate dataset with different electrode modality and cognitive task yields consistent geometry-dynamics relationships.
+4. **Sleep results are small-sample.** The ANPHY-Sleep cohort contains 10 participants. Classification values, especially an area under the curve of 1.00, are treated as within-cohort descriptive upper bounds rather than prospective generalization estimates.
 
-2. All within-dataset robustness analyses (jackknife, expanded surrogates, multi-block sleep) address analysis-level robustness within their respective primary datasets.
+5. **Temporal precedence is not causal control.** The pre-N3 spectral-radius result is a pre-boundary association under scored sleep-stage transitions. It is not evidence that the fitted operator metric causes the transition.
 
-3. The temporal precedence analysis (temporal_precedence.json) uses only the ANPHY-Sleep dataset. All 10 subjects contributed N2-to-N3 and N2-to-REM transition timecourses. PCA was refitted per transition segment to prevent leakage across staging boundaries.
+6. **Historical metric names remain in outputs.** Files beginning with `ep_` and keys such as `ep_score` are retained for provenance. See `KEY_MIGRATION.md` before interpreting them.
 
-4. The adversarial falsification battery (falsification_battery.json) draws on results from both the propofol (ds005620) and sleep (ANPHY-Sleep) analyses. All seven attack verdicts were determined by pre-specified criteria before examining outcomes. The battery is documented in `scripts/analysis/_falsification_battery.py`.
+## Reproduction notes
+
+Raw data are not redistributed by this repository. Dataset source links and acquisition instructions are maintained in `data/README_data.md`. Canonical local data roots are configured through environment variables documented in the main README.
+
+For public manuscript review, `PUBLIC_AUDIT.md` should be read alongside this file. It records the remaining metric-alignment and broadband-reproduction items that require explicit resolution or continued disclosure.
