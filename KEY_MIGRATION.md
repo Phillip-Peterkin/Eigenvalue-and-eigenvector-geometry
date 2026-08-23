@@ -25,7 +25,8 @@ The current manuscript defines a distinct score from:
 - eigenvalue crowding, `c = -log10(gap + epsilon)`;
 - eigenvector non-orthogonality, `k = log10(condition_number + epsilon)`;
 - within-condition standardization;
-- projection onto the first principal component of the two-feature covariance, with sign normalized so both loadings are positive.
+- projection onto the first principal component of the two-feature covariance;
+- a sign convention requiring crowding and non-orthogonality to load in the same positive direction.
 
 The historical proximity score and the current ND score are conceptually related but mathematically different. They must not be described as the same computed statistic.
 
@@ -91,14 +92,17 @@ A simple subject mean of a within-subject z-scored ND time series is not an acce
 
 ## Function names
 
-Historical function names remain callable for backward compatibility, but new code should prefer descriptive names.
+Historical function names remain callable for backward compatibility. Naming does not change the statistic they compute.
 
-| Historical name | Preferred name |
+| Function | Status and interpretation |
 |---|---|
-| `compute_ep_proximity_timecourse()` | `compute_geometry_proximity_timecourse()` |
-| `detect_exceptional_points()` | `detect_near_degeneracies()` |
+| `compute_ep_proximity_timecourse()` | Historical name for the proximity-score pipeline. New code should prefer `compute_geometry_proximity_timecourse()`. |
+| `compute_geometry_proximity_timecourse()` | Preferred descriptive name for the historical proximity-score pipeline. It does not compute the manuscript ND score. |
+| `detect_exceptional_points()` | Historical detector name. It returns candidates based on the historical proximity score. |
+| `detect_near_degeneracies()` | Backward-compatible alias for `detect_exceptional_points()`. Despite its name, it still returns the historical proximity-score result and must not be described as the manuscript ND implementation. |
+| `compute_nd_score()` | Current manuscript window-level ND construction from eigenvalue crowding and eigenvector condition number. |
 
-Backward compatibility does not imply conceptual equivalence between the old proximity score and the current manuscript ND definition.
+No detector function is currently designated as a preferred ND-candidate detector. Reserve that terminology for a future implementation whose selection rule is explicitly based on the final ND construction.
 
 ## Future migration rule
 
