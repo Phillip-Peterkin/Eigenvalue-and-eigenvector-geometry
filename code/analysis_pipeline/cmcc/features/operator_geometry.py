@@ -106,18 +106,23 @@ def compute_nd_score(
 ) -> np.ndarray:
     """Compute the current manuscript window-level Near-Degeneracy score.
 
-    For each window, define eigenvalue crowding and eigenvector
+    For each valid window, define eigenvalue crowding and eigenvector
     non-orthogonality as::
 
         c = -log10(gap + epsilon)
         k =  log10(condition_number + epsilon)
 
-    The two feature series are z-scored within the supplied analysis unit,
-    stacked as an ``n_windows x 2`` matrix, and projected onto the first
-    principal component of their covariance. The sign of the loading vector is
-    normalized so that its summed loading is positive. When both loadings can
-    be made positive, this is equivalent to orienting the component toward
-    greater crowding and greater non-orthogonality.
+    Negative or non-finite metric inputs are invalid and remain ``NaN``. The two
+    valid feature series are z-scored within the supplied analysis unit, stacked
+    as an ``n_windows x 2`` matrix, and projected onto the first principal
+    component of their covariance.
+
+    The manuscript ND construct assumes a common direction in which greater
+    crowding and greater non-orthogonality load positively. Principal-component
+    sign is arbitrary, so same-sign loadings are oriented positive. If the
+    first component has opposite-sign or zero loadings, no global sign flip can
+    satisfy that scientific definition and this function fails loudly rather
+    than silently redefining ND.
 
     This implementation intentionally differs from the historical `ep_score`
     ratio. It also means the mean score within the same standardized analysis
@@ -136,8 +141,14 @@ def compute_nd_score(
     if gap_arr.ndim != 1:
         raise ValueError("gaps and condition_numbers must be one-dimensional window series")
 
-    crowding = -np.log10(np.maximum(gap_arr, 0.0) + epsilon)
-    nonorthogonality = np.log10(np.maximum(kappa_arr, 0.0) + epsilon)
+    crowding = np.full(gap_arr.shape, np.nan, dtype=float)
+    nonorthogonality = np.full(kappa_arr.shape, np.nan, dtype=float)
+
+    valid_gap = np.isfinite(gap_arr) & (gap_arr >= 0.0)
+    valid_kappa = np.isfinite(kappa_arr) & (kappa_arr >= 0.0)
+    crowding[valid_gap] = -np.log10(gap_arr[valid_gap] + epsilon)
+    nonorthogonality[valid_kappa] = np.log10(kappa_arr[valid_kappa] + epsilon)
+
     z_c = _nan_zscore(crowding)
     z_k = _nan_zscore(nonorthogonality)
 
@@ -155,11 +166,11 @@ def compute_nd_score(
     eigenvalues, eigenvectors = np.linalg.eigh(covariance)
     loading = np.asarray(eigenvectors[:, int(np.argmax(eigenvalues))], dtype=float)
 
-    # Principal-component sign is arbitrary. Orient the component toward the
-    # positive crowding/non-orthogonality direction without using outcome labels.
-    if float(np.sum(loading)) < 0:
-        loading = -loading
-    if loading[0] < 0 and loading[1] < 0:
+    if loading[0] * loading[1] <= 0.0:
+        raise ValueError(
+            "Near-Degeneracy PC1 loadings must share a nonzero sign so both can be oriented positive"
+        )
+    if np.all(loading < 0.0):
         loading = -loading
 
     scores[finite] = x @ loading
