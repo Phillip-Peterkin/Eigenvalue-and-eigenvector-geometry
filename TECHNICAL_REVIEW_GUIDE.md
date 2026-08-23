@@ -91,12 +91,16 @@ The surrogate result that weakens interpretation of absolute spectral sensitivit
 
 Continuous Integration is defined in `.github/workflows/ci.yml`. It installs from a clean runner, checks package dependency consistency, runs Ruff, builds the distributable wheel on the reference Python job, and executes the full portable test suite across supported Python versions.
 
-Local verification:
+Local verification mirrors the CI scope:
 
 ```bash
 python -m pip install -e ".[dev]"
 python -m pip check
-ruff check code/analysis_pipeline/cmcc tests
+ruff check \
+  code/analysis_pipeline/cmcc \
+  tests \
+  code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py \
+  code/analysis_pipeline/scripts/analysis/_geometry_brain_states.py
 python -m pytest -q
 python -m pip wheel . --no-deps -w dist
 ```
