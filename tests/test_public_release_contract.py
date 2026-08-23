@@ -1,4 +1,4 @@
-"""Public-release regression checks for scientific documentation contracts."""
+"""Public-release regression checks for scientific and engineering contracts."""
 from __future__ import annotations
 
 import json
@@ -7,6 +7,10 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+CURRENT_TITLE = (
+    "Fitted-Operator Geometry as a Complementary Descriptive Axis for "
+    "Brain-State Discrimination in Human iEEG and Scalp EEG"
+)
 
 
 def _canonical_broadband_source() -> str:
@@ -76,8 +80,80 @@ def test_historical_geometry_correlation_is_marked_as_legacy_metric() -> None:
     assert prediction["status"] == "legacy_metric_requires_final_nd_recomputation"
 
 
+def test_current_title_is_consistent_across_public_surfaces() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    citation = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
+    manuscript = (ROOT / "manuscript" / "main.tex").read_text(encoding="utf-8")
+    assert CURRENT_TITLE in readme
+    assert CURRENT_TITLE in citation
+    assert CURRENT_TITLE in manuscript
+    assert "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions" not in manuscript
+
+
+def test_current_manuscript_labels_historical_r086_as_legacy() -> None:
+    manuscript = (ROOT / "manuscript" / "main.tex").read_text(encoding="utf-8")
+    assert "historical proximity" in manuscript.lower()
+    assert "r=0.860" in manuscript
+    assert "not" in manuscript.lower() and "current nd" in manuscript.lower()
+    assert "The ND score covaried strongly with branching ratio" not in manuscript
+    assert "association between $\\sigma$ and ND score" not in manuscript
+
+
+def test_current_manuscript_uses_pc1_nd_definition() -> None:
+    manuscript = (ROOT / "manuscript" / "main.tex").read_text(encoding="utf-8")
+    assert "first principal component" in manuscript
+    assert "ND_t = w_c" in manuscript
+    assert "approximately zero by construction" in manuscript
+
+
+def test_current_geometry_embedding_surface_exposes_schema_debt() -> None:
+    source = (
+        ROOT / "code" / "analysis_pipeline" / "cmcc" / "analysis" / "geometry_embedding.py"
+    ).read_text(encoding="utf-8")
+    assert "EP score = ND score" not in source
+    assert "HISTORICAL_SCHEMA_KEY = \"nd_score\"" in source
+    assert "HISTORICAL_SCHEMA_SEMANTICS = \"legacy_proximity_score\"" in source
+    assert "extract_propofol_features_semantic" in source
+    assert (
+        ROOT
+        / "code"
+        / "analysis_pipeline"
+        / "cmcc"
+        / "analysis"
+        / "geometry_embedding_legacy.py"
+    ).exists()
+
+
+def test_historical_state_classifier_schema_is_documented() -> None:
+    notes = (ROOT / "results" / "RESULT_SCHEMA_NOTES.md").read_text(encoding="utf-8")
+    assert "geometry_brain_states.json" in notes
+    assert "legacy proximity" in notes.lower()
+    assert "mean_ep_score" in notes
+
+
+def test_readme_removes_unmapped_auc_headlines() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "AUC about 0.948" not in readme
+    assert "AUC about 0.957" not in readme
+    assert "LOSO AUC = 0.9125" in readme
+
+
+def test_technical_review_guide_exists_and_points_to_integrity_controls() -> None:
+    guide = (ROOT / "TECHNICAL_REVIEW_GUIDE.md").read_text(encoding="utf-8")
+    assert "Leave-one-subject-out" in guide
+    assert "PUBLIC_AUDIT.md" in guide
+    assert "SCIENTIFIC_INTEGRITY.md" in guide
+    assert "python -m pytest -q" in guide
+
+
 def test_public_audit_exposes_open_alignment_items() -> None:
     audit = (ROOT / "PUBLIC_AUDIT.md").read_text(encoding="utf-8")
-    assert "Legacy `ep_score` versus current Near-Degeneracy score" in audit
-    assert "Broadband versus high-gamma configuration" in audit
-    assert "Public-release gate" in audit
+    assert "Subject-level current-ND correlation" in audit
+    assert "Broadband vs high-gamma configuration" in audit
+    assert "Public release gate" in audit
+
+
+def test_archived_pre_alignment_manuscript_is_explicitly_noncanonical() -> None:
+    status = (ROOT / "manuscript" / "README.md").read_text(encoding="utf-8")
+    assert "archive/main_pre_alignment_2026-08-23.tex" in status
+    assert "not the current scientific contract" in status

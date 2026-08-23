@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "operator-geometry"
 version = "1.0.0"
-description = "Fitted operator geometry analysis for brain-state structure and sleep transitions"
+description = "Reproducible fitted-operator geometry analysis for human iEEG and scalp EEG brain-state discrimination"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -14,12 +14,14 @@ authors = [
 ]
 keywords = [
   "neuroscience",
-  "criticality",
+  "operator-geometry",
+  "vector-autoregression",
   "eigenvalue-geometry",
   "iEEG",
   "EEG",
   "sleep",
   "anesthesia",
+  "reproducibility",
 ]
 dependencies = [
   "mne>=1.6",
@@ -47,6 +49,7 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry"
 Repository = "https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry"
+Documentation = "https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/blob/main/TECHNICAL_REVIEW_GUIDE.md"
 
 [tool.setuptools.packages.find]
 where = ["code/analysis_pipeline"]
