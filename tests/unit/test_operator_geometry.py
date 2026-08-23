@@ -8,7 +8,11 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from cmcc.analysis.dynamical_systems import JacobianResult, detect_exceptional_points, estimate_jacobian
+from cmcc.analysis.dynamical_systems import (
+    JacobianResult,
+    detect_exceptional_points,
+    estimate_jacobian,
+)
 from cmcc.features.branching import compute_branching_ratio
 from cmcc.features.operator_geometry import (
     PROXIMITY_SCORE_EPSILON,
