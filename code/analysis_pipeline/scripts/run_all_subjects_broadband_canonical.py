@@ -19,13 +19,12 @@ import traceback
 from pathlib import Path
 
 import numpy as np
+from run_all_subjects_broadband import RUNS, run_single_subject
 
 from cmcc.config import load_config
 from cmcc.data_roots import require_data_root, resolve_data_root
 from cmcc.io.loader import load_edf
 from cmcc.provenance import save_summary_json
-
-from run_all_subjects_broadband import RUNS, run_single_subject
 
 CONFIG_PATH = Path(__file__).resolve().parents[2] / "config.yaml"
 ANALYSIS_TYPE = "canonical_broadband"

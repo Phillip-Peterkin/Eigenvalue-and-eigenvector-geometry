@@ -1,76 +1,86 @@
 # Public Repository Audit
 
-This document records issues discovered during the August 2026 public-hardening review of the repository. The purpose is to make the scientific state of the public codebase explicit rather than to hide historical changes behind renamed variables or rewritten prose.
-
-## Audit principle
-
-The current manuscript is the interpretive source of truth. Historical code and result artifacts are retained when they are necessary for provenance, but historical labels are not silently promoted into current manuscript quantities.
+This audit records the scientific and engineering state of the public repository after the August 2026 hardening reviews. The goal is not to erase historical mistakes. It is to make the boundary between current definitions, historical artifacts, verified controls, and open raw-data gates explicit.
 
 ## Status summary
 
 | Item | Status | Public interpretation |
 |---|---|---|
-| Legacy `ep_score` versus current Near-Degeneracy score | Open scientific alignment item | Distinct quantities; do not treat them as algebraically identical |
-| Historical `r ~= 0.86` geometry-criticality correlation | Preserved with qualification | Currently tied to the legacy proximity-score artifact unless recomputed under the final Near-Degeneracy definition |
-| Exceptional-point terminology | Resolved in interpretation | Historical naming only; no claim of exact exceptional points in neural tissue |
-| Zurich ds004752 analysis | Resolved in interpretation | Secondary cross-dataset consistency/generalization check, not an independent replication |
+| Manuscript title and metric semantics | Resolved in current source | `README.md`, `CITATION.cff`, and `manuscript/main.tex` use the same title and distinguish legacy proximity from current ND |
+| Pre-alignment manuscript source | Archived for provenance | `manuscript/archive/main_pre_alignment_2026-08-23.tex`; not the current scientific contract |
+| Legacy `ep_score` vs current Near-Degeneracy score | Resolved semantically | Distinct mathematical quantities; no algebraic equivalence claim |
+| Historical `r ~= 0.86` geometry-criticality correlation | Preserved with qualification | Belongs to the legacy proximity statistic |
+| Historical state-classifier `nd_score` field | Documented schema debt | Numerical field is legacy `mean_ep_score`; see `results/RESULT_SCHEMA_NOTES.md` |
+| Historical classifier uncertainty | Corrected for new runs | Historical point LOSO AUC retained; old bootstrap/null uncertainty is provenance-only because duplicate subject draws were collapsed and finite null p-values lacked +1 correction |
+| Current ND window-level implementation | Implemented and synthetically tested | PC1-based paired-valid-window construct with explicit orientation/validity rules |
+| Subject-level current-ND correlation | Open scientific item | Requires a prospective aggregation/normalization rule and a new result artifact |
+| Broadband vs high-gamma configuration | Code path corrected | Canonical config and runner are explicit; raw-data end-to-end reproduction remains open |
+| Exceptional-point terminology | Resolved in interpretation | Historical naming only; no exact exceptional-point claim |
+| Zurich ds004752 analysis | Resolved in interpretation | Secondary consistency/generalization analysis, not independent replication |
 | Spectral-sensitivity surrogate result | Resolved in interpretation | Absolute magnitude is not treated as a standalone neural marker |
-| Sleep area under the curve = 1.00 | Resolved in interpretation | Small-sample within-cohort upper bound, not an out-of-cohort generalization estimate |
+| Sleep AUC = 1.00 | Resolved in interpretation | Small-sample within-cohort result, not external generalization |
 | Pre-N3 spectral-radius drift | Retained with limitation | Small-sample, pipeline-conditional pre-boundary association |
-| Pre-N3 minimum-gap drift | Supporting only | Should not be promoted to a primary validated pre-transition result without the same non-overlapping-window support |
+| Pre-N3 minimum-gap drift | Supporting only | Not promoted without the non-overlap support achieved by spectral radius |
+| README AUC 0.948 / 0.957 claims | Removed | A clean matching checked-in result artifact was not identified during review |
 
-## 1. Legacy proximity score and current Near-Degeneracy score
+## 1. Historical proximity and current ND
 
-The repository contains a historical per-window proximity score:
+Historical result files store:
 
 ```text
 ep_score = eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10)
 ```
 
-The current manuscript instead defines a Near-Degeneracy score from eigenvalue crowding and eigenvector conditioning. The current manuscript form uses transformed, standardized geometry features and data-derived first-principal-component loadings.
+The current Near-Degeneracy (ND) implementation instead transforms minimum gap and eigenvector condition number, standardizes paired valid windows within the declared analysis unit, and projects onto the first principal component. Same-sign PC1 loadings are oriented positive. Ambiguous opposite-sign loadings fail loudly.
 
-These are related only at the level of scientific intent. They are not the same mathematical statistic.
+These statistics share a scientific motivation but are not the same mathematical object.
 
-Accordingly:
+## 2. Why subject-mean ND cannot replace the historical subject statistic
 
-- checked-in JSON keys such as `ep_score` and `ep_score_mean` are preserved for provenance;
-- documentation must identify them as legacy proximity quantities;
-- the historical cross-subject correlation near `r = 0.86` must not be relabeled as the final manuscript Near-Degeneracy score without recomputation;
-- any future recomputation must write a new result artifact rather than overwriting the historical file in place.
+Within-unit standardization makes the mean of each standardized ND component approximately zero within that same unit. Consequently, a simple subject mean of current within-subject ND is also approximately zero by construction and is not a meaningful drop-in replacement for the historical subject-level proximity score.
 
-## 2. Mean-of-standardized-score warning
+Any future subject-level current-ND analysis must freeze an aggregation rule before evaluating the target association. Suitable approaches might include a common cohort-level normalization/loading rule, a raw-scale subject statistic, or another prospectively specified summary. The selected rule must be justified and written to a new machine-readable artifact.
 
-A within-subject z-scored quantity has an approximately zero within-subject mean by construction. Therefore, a cross-subject analysis based on the simple mean of a within-subject standardized Near-Degeneracy score is not a meaningful replacement for the historical subject-level proximity score.
+## 3. Historical state-classification schema and uncertainty
 
-A valid final subject-level Near-Degeneracy analysis must define its aggregation explicitly. Suitable options include a common loading/normalization learned across the analysis cohort under a frozen rule, a raw-scale subject summary, or another prospectively specified subject-level statistic. The choice must be justified before the historical result is relabeled.
+`results/json_results/geometry_brain_states.json` contains a feature label `nd_score`, but the historical extraction code populated that column from `mean_ep_score`. The numerical values are therefore legacy proximity values.
 
-## 3. Broadband versus high-gamma configuration
+The original implementation is retained as `code/analysis_pipeline/cmcc/analysis/geometry_embedding_legacy.py`. The current `geometry_embedding.py` documents the semantics and provides explicit semantic-label adapters for new code. The historical JSON is not silently rewritten because doing so would alter a locked result artifact without recomputation.
 
-The public manuscript distinguishes high-gamma and broadband observables. The canonical public configuration must therefore expose both passbands explicitly, and the broadband runner must consume the broadband setting rather than reusing the high-gamma key.
+A second historical issue was found in the classifier uncertainty code. Subject IDs were sampled with replacement for bootstrap confidence intervals, but an `np.isin` membership mask then collapsed repeated subject draws. The historical finite-permutation p-value also used an uncorrected exceedance fraction. These issues do not alter the stored leave-one-subject-out point AUC. They do mean the historical classifier confidence intervals and finite-null p-values are retained as provenance rather than preferred current inference.
 
-Until this is verified end to end on raw data, users should treat the checked-in broadband result artifact as the historical analysis output and should inspect the runner/configuration before attempting a fresh raw-data reproduction.
+The current public execution path corrects both issues: repeated sampled subjects contribute repeated subject observation blocks, and finite permutation p-values use `(exceedances + 1) / (B + 1)`. Regression tests enforce both behaviors. Fresh results must be written to a new artifact instead of overwriting the historical JSON.
 
-## 4. Branching statistic interpretation
+## 4. Broadband reproduction
 
-The repository uses a branching-related statistic derived from thresholded neural activity. Public text should describe this as a criticality-related summary under the declared estimator. It should not be treated as a direct, estimator-independent measurement of the latent neuronal branching parameter.
+The public configuration now declares separate high-gamma `[70, 150]` Hz and broadband `[1, 200]` Hz passbands. The canonical broadband runner validates the effective passband after Nyquist adjustment, uses the documented data-root contract, records band provenance, and fails if no subject succeeds.
 
-## 5. Sleep transition interpretation
+The remaining gate is empirical: rerun the canonical corrected path on the source data and compare the resulting subject-level and group-level values with the historical `broadband_comparison.json` artifact. Until that is completed, the checked-in comparison is a historical result rather than proof that the corrected runner reproduces it bit-for-bit.
 
-The sleep analysis is based on scored stage boundaries and a small cohort. The spectral-radius pre-N3 effect survives the documented non-overlapping-window validation and is retained as a pipeline-conditional pre-boundary association. Temporal precedence alone is not treated as evidence of causal control of the transition.
+## 5. Branching-statistic interpretation
 
-## 6. Public-release gate
+The repository uses a threshold-derived branching-related statistic. Public text describes it as criticality-related under the declared estimator. It is not promoted as a direct, estimator-independent measurement of a latent neuronal branching parameter.
 
-Before a tagged public release intended for manuscript submission, the following checks should pass:
+## 6. Sleep-transition interpretation
 
-1. `pytest` passes from a clean environment.
-2. Continuous Integration is visibly green on the release commit.
-3. `README.md`, `CITATION.cff`, manuscript title, and repository description use the same study title.
-4. The final Near-Degeneracy implementation matches the manuscript definition exactly.
-5. The historical `r ~= 0.86` claim is either recomputed under that final definition or labeled everywhere as a legacy-proximity result.
-6. The broadband runner reads an explicit broadband configuration and reproduces the checked-in band comparison from raw data.
-7. Machine-readable result artifacts record configuration, subject set, random seed, and software/version metadata sufficient to identify the run.
-8. No exploratory dataset is described as an independent replication unless it actually satisfies that design standard.
+The spectral-radius pre-N3 effect survives the documented non-overlapping-window validation and is retained as a pipeline-conditional pre-boundary association. Temporal precedence alone is not evidence of causal control. The minimum-gap pre-transition result is treated as supportive because it did not survive the same stricter non-overlap gate.
+
+## 7. Public release gate
+
+Before a tagged manuscript release intended to represent a fully rerunnable raw-data analysis, all of the following should be true:
+
+1. `python -m pytest -q` passes from a clean environment.
+2. CI is green across the supported Python matrix.
+3. package dependency consistency passes with `python -m pip check`.
+4. a wheel builds successfully from `pyproject.toml`.
+5. README, citation metadata, and current manuscript use the same title.
+6. current manuscript claims map to machine-readable result artifacts.
+7. historical proximity and current ND are never silently equated.
+8. any new subject-level current-ND claim uses a prospectively frozen aggregation rule.
+9. new classifier uncertainty uses multiplicity-preserving subject bootstrap and finite-permutation +1 correction.
+10. the canonical broadband runner is rerun against source data and its output is reconciled with the historical artifact.
+11. exploratory datasets are not described as independent replications unless they satisfy that design standard.
 
 ## Why this file exists
 
-A public research repository should make uncertainty and historical changes inspectable. This audit file is therefore part of the reproducibility record. Resolving an item should update its status here and point to the commit or new result artifact that resolved it.
+A research repository is more credible when corrections are inspectable. This file therefore remains part of the reproducibility record even as items are resolved.
