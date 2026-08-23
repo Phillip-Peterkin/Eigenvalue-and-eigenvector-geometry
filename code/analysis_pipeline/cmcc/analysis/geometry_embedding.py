@@ -18,6 +18,8 @@ wrapped circular differences.
 """
 from __future__ import annotations
 
+from dataclasses import replace
+
 import numpy as np
 
 from . import geometry_embedding_legacy as _legacy
@@ -36,21 +38,26 @@ HISTORICAL_SCHEMA_SEMANTICS = "legacy_proximity_score"
 def _semantic_feature_names(
     table: _legacy.GeometryFeatureTable,
 ) -> _legacy.GeometryFeatureTable:
-    """Return the historical table with its legacy proximity column named honestly.
+    """Return a copied table with the historical proximity column named honestly.
 
-    Numerical values, row order, subject identifiers, and conditions are left
-    unchanged. Only the historical ``nd_score`` feature-name string is replaced.
+    Numerical arrays, row order, subject identifiers, and conditions are left
+    unchanged. The input object itself is never mutated. Reapplying the adapter
+    to an already-corrected table is safe and returns another independent table.
     """
     names = list(table.feature_names)
     if HISTORICAL_SCHEMA_KEY not in names:
-        raise RuntimeError(
+        if HISTORICAL_SCHEMA_SEMANTICS in names:
+            return replace(table, feature_names=names.copy())
+        raise ValueError(
             "Historical geometry table does not contain the expected nd_score schema key"
         )
-    table.feature_names = [
-        HISTORICAL_SCHEMA_SEMANTICS if name == HISTORICAL_SCHEMA_KEY else name
-        for name in names
-    ]
-    return table
+    return replace(
+        table,
+        feature_names=[
+            HISTORICAL_SCHEMA_SEMANTICS if name == HISTORICAL_SCHEMA_KEY else name
+            for name in names
+        ],
+    )
 
 
 def extract_propofol_features_semantic(
@@ -280,8 +287,9 @@ def compare_geometry_vs_power(
     subject_ids: np.ndarray,
     seed: int = 42,
     n_bootstrap: int = 1000,
+    n_null_permutations: int = 100,
 ) -> _legacy.IncrementalValueResult:
-    """Compare LOSO feature families with multiplicity-preserving subject CI."""
+    """Compare LOSO feature families with corrected uncertainty and null baselines."""
     from sklearn.metrics import roc_auc_score
 
     geometry_features = np.asarray(geometry_features, dtype=float)
@@ -333,32 +341,40 @@ def compare_geometry_vs_power(
     else:
         ci = (float("nan"), float("nan"))
 
-    perm_rng = np.random.default_rng(seed + 999)
-    null_labels = labels.copy()
-    for subject in np.unique(subject_ids):
-        rows = np.flatnonzero(subject_ids == subject)
-        shuffled = null_labels[rows].copy()
-        perm_rng.shuffle(shuffled)
-        null_labels[rows] = shuffled
-    null_geometry_probs, _, null_geometry_scored = _loso_predictions(
-        geometry_features,
-        null_labels,
-        subject_ids,
-    )
-    null_power_probs, _, null_power_scored = _loso_predictions(
-        power_features,
-        null_labels,
-        subject_ids,
-    )
-    null_common = null_geometry_scored & null_power_scored
-    if null_common.any() and len(np.unique(null_labels[null_common])) >= 2:
-        null_geometry = float(
-            roc_auc_score(null_labels[null_common], null_geometry_probs[null_common])
+    null_geometry_aucs: list[float] = []
+    null_power_aucs: list[float] = []
+    unique_subjects = np.unique(subject_ids)
+    for permutation_index in range(n_null_permutations):
+        perm_rng = np.random.default_rng(seed + 999 + permutation_index)
+        null_labels = labels.copy()
+        for subject in unique_subjects:
+            rows = np.flatnonzero(subject_ids == subject)
+            shuffled = null_labels[rows].copy()
+            perm_rng.shuffle(shuffled)
+            null_labels[rows] = shuffled
+
+        null_geometry_probs, _, null_geometry_scored = _loso_predictions(
+            geometry_features,
+            null_labels,
+            subject_ids,
         )
-        null_power = float(roc_auc_score(null_labels[null_common], null_power_probs[null_common]))
-    else:
-        null_geometry = 0.5
-        null_power = 0.5
+        null_power_probs, _, null_power_scored = _loso_predictions(
+            power_features,
+            null_labels,
+            subject_ids,
+        )
+        null_common = null_geometry_scored & null_power_scored
+        if not null_common.any() or len(np.unique(null_labels[null_common])) < 2:
+            continue
+        null_geometry_aucs.append(
+            float(roc_auc_score(null_labels[null_common], null_geometry_probs[null_common]))
+        )
+        null_power_aucs.append(
+            float(roc_auc_score(null_labels[null_common], null_power_probs[null_common]))
+        )
+
+    null_geometry = float(np.mean(null_geometry_aucs)) if null_geometry_aucs else 0.5
+    null_power = float(np.mean(null_power_aucs)) if null_power_aucs else 0.5
 
     delta = auc_geometry - auc_power
     delta_combined = auc_combined - auc_power
