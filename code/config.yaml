@@ -6,6 +6,7 @@ data:
 preprocessing:
   line_freq: 60.0
   high_gamma_passband: [70, 150]
+  broadband_passband: [1, 200]
   epoch_tmin: -0.5
   epoch_tmax: 2.0
   baseline: [-0.5, 0.0]
