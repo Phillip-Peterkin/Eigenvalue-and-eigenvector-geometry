@@ -11,6 +11,7 @@ This audit records the scientific and engineering state of the public repository
 | Legacy `ep_score` vs current Near-Degeneracy score | Resolved semantically | Distinct mathematical quantities; no algebraic equivalence claim |
 | Historical `r ~= 0.86` geometry-criticality correlation | Preserved with qualification | Belongs to the legacy proximity statistic |
 | Historical state-classifier `nd_score` field | Documented schema debt | Numerical field is legacy `mean_ep_score`; see `results/RESULT_SCHEMA_NOTES.md` |
+| Historical classifier uncertainty | Corrected for new runs | Historical point LOSO AUC retained; old bootstrap/null uncertainty is provenance-only because duplicate subject draws were collapsed and finite null p-values lacked +1 correction |
 | Current ND window-level implementation | Implemented and synthetically tested | PC1-based paired-valid-window construct with explicit orientation/validity rules |
 | Subject-level current-ND correlation | Open scientific item | Requires a prospective aggregation/normalization rule and a new result artifact |
 | Broadband vs high-gamma configuration | Code path corrected | Canonical config and runner are explicit; raw-data end-to-end reproduction remains open |
@@ -40,11 +41,15 @@ Within-unit standardization makes the mean of each standardized ND component app
 
 Any future subject-level current-ND analysis must freeze an aggregation rule before evaluating the target association. Suitable approaches might include a common cohort-level normalization/loading rule, a raw-scale subject statistic, or another prospectively specified summary. The selected rule must be justified and written to a new machine-readable artifact.
 
-## 3. Historical state-classification schema
+## 3. Historical state-classification schema and uncertainty
 
 `results/json_results/geometry_brain_states.json` contains a feature label `nd_score`, but the historical extraction code populated that column from `mean_ep_score`. The numerical values are therefore legacy proximity values.
 
-The original implementation is retained as `code/analysis_pipeline/cmcc/analysis/geometry_embedding_legacy.py`. The current `geometry_embedding.py` is a compatibility surface that documents the semantics and provides explicit semantic-label adapters for new code. The historical JSON is not silently rewritten because doing so would alter a locked result artifact without recomputation.
+The original implementation is retained as `code/analysis_pipeline/cmcc/analysis/geometry_embedding_legacy.py`. The current `geometry_embedding.py` documents the semantics and provides explicit semantic-label adapters for new code. The historical JSON is not silently rewritten because doing so would alter a locked result artifact without recomputation.
+
+A second historical issue was found in the classifier uncertainty code. Subject IDs were sampled with replacement for bootstrap confidence intervals, but an `np.isin` membership mask then collapsed repeated subject draws. The historical finite-permutation p-value also used an uncorrected exceedance fraction. These issues do not alter the stored leave-one-subject-out point AUC. They do mean the historical classifier confidence intervals and finite-null p-values are retained as provenance rather than preferred current inference.
+
+The current public execution path corrects both issues: repeated sampled subjects contribute repeated subject observation blocks, and finite permutation p-values use `(exceedances + 1) / (B + 1)`. Regression tests enforce both behaviors. Fresh results must be written to a new artifact instead of overwriting the historical JSON.
 
 ## 4. Broadband reproduction
 
@@ -72,8 +77,9 @@ Before a tagged manuscript release intended to represent a fully rerunnable raw-
 6. current manuscript claims map to machine-readable result artifacts.
 7. historical proximity and current ND are never silently equated.
 8. any new subject-level current-ND claim uses a prospectively frozen aggregation rule.
-9. the canonical broadband runner is rerun against source data and its output is reconciled with the historical artifact.
-10. exploratory datasets are not described as independent replications unless they satisfy that design standard.
+9. new classifier uncertainty uses multiplicity-preserving subject bootstrap and finite-permutation +1 correction.
+10. the canonical broadband runner is rerun against source data and its output is reconciled with the historical artifact.
+11. exploratory datasets are not described as independent replications unless they satisfy that design standard.
 
 ## Why this file exists
 
