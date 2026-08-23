@@ -105,7 +105,10 @@ def test_current_manuscript_labels_historical_r086_as_legacy() -> None:
     manuscript = (ROOT / "manuscript" / "main.tex").read_text(encoding="utf-8")
     assert "historical proximity" in manuscript.lower()
     assert "r=0.860" in manuscript
-    assert "not" in manuscript.lower() and "current nd" in manuscript.lower()
+    assert (
+        "They are \\emph{not} relabeled as empirical results of the current ND construction."
+        in manuscript
+    )
     assert "The ND score covaried strongly with branching ratio" not in manuscript
     assert "association between $\\sigma$ and ND score" not in manuscript
 
@@ -127,6 +130,7 @@ def test_current_geometry_embedding_surface_exposes_schema_debt() -> None:
     assert "extract_propofol_features_semantic" in source
     assert "_rows_for_sampled_subjects" in source
     assert "(exceedances + 1) / (len(null_aucs) + 1)" in source
+    assert "wrapped = (angle - mean_angle + np.pi) % (2 * np.pi) - np.pi" in source
     assert (
         ROOT
         / "code"
@@ -151,6 +155,9 @@ def test_public_state_runner_uses_corrected_semantics_and_inference() -> None:
     assert "extract_sleep_features_semantic" in runner
     assert "classify_states_loso" in runner
     assert "compare_geometry_vs_power" in runner
+    assert "analyze_geometric_structure" in runner
+    assert "_load_repository_amplification_r" in runner
+    assert 'AMPLIFICATION_ARTIFACT = "transient_amplification.json"' in runner
     assert "legacy_proximity_score" in runner
     assert (
         ROOT
@@ -191,8 +198,8 @@ def test_historical_classifier_headline_maps_to_checked_in_artifact() -> None:
 
 def test_readme_removes_unmapped_auc_headlines() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "AUC about 0.948" not in readme
-    assert "AUC about 0.957" not in readme
+    assert "0.948" not in readme
+    assert "0.957" not in readme
     assert "LOSO AUC = 0.9125" in readme
 
 
