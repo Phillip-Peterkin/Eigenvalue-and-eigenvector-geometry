@@ -63,7 +63,7 @@ The checked-in artifacts support the following descriptive results under the dec
 
 The historical sleep classifier reaches AUC = 1.00 for N3 vs REM in the ten-subject cohort. It is reported as a within-cohort upper bound, not an out-of-cohort generalization estimate.
 
-Numbers previously shown in this README as iEEG geometry-only AUC about 0.948 and combined AUC about 0.957 were removed during the August 2026 engineering review because a clean matching checked-in result artifact could not be identified. Public headline numbers must have an inspectable artifact path.
+During the August 2026 engineering review, two earlier classification headlines were removed because no clean matching checked-in result artifact could be identified. Public headline numbers must have an inspectable artifact path.
 
 ## Quick start
 
@@ -146,7 +146,7 @@ A technical reviewer can assess the project quickly in this order:
 
 ## Citation
 
-Citation metadata are in `CITATION.cff`. Software is licensed under the Massachusetts Institute of Technology (MIT) License. Manuscript text and figures are licensed under Creative Commons Attribution 4.0.
+Citation metadata are provided in `CITATION.cff`. Software is licensed under the Massachusetts Institute of Technology (MIT) License. Manuscript text and figures are licensed under Creative Commons Attribution 4.0.
 
 ## Contact
 
