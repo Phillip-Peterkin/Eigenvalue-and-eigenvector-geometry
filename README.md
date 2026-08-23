@@ -81,10 +81,10 @@ Detailed provenance, subject counts, exclusions, modalities, and source links ar
 Canonical environment variables:
 
 ```bash
-IEEG_DATA_ROOT=/path/to/Cogitate_IEEG_EXP1
-DS004752_DATA_ROOT=/path/to/ds004752
-PROPOFOL_DATA_ROOT=/path/to/ds005620
-SLEEP_DATA_ROOT=/path/to/ANPHY-Sleep
+export IEEG_DATA_ROOT=/path/to/Cogitate_IEEG_EXP1
+export DS004752_DATA_ROOT=/path/to/ds004752
+export PROPOFOL_DATA_ROOT=/path/to/ds005620
+export SLEEP_DATA_ROOT=/path/to/ANPHY-Sleep
 ```
 
 ## Reproducibility
