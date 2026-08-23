@@ -173,8 +173,13 @@ def test_public_state_runner_cannot_overwrite_locked_historical_artifact() -> No
     runner = _public_state_runner_source()
     assert 'HISTORICAL_ARTIFACT = "geometry_brain_states.json"' in runner
     assert "geometry_brain_states_legacy_proximity_corrected_inference.json" in runner
+    assert 'LOCK_ARTIFACT = ".geometry_brain_states_public.lock"' in runner
+    assert "os.O_CREAT | os.O_EXCL | os.O_WRONLY" in runner
     assert "original_bytes = historical_path.read_bytes()" in runner
     assert "historical_path.write_bytes(original_bytes)" in runner
+    assert 'with corrected_path.open("x", encoding="utf-8")' in runner
+    assert '"concurrency_guard": "exclusive_lock_file_and_exclusive_output_create"' in runner
+    assert "lock_path.unlink()" in runner
     assert "Refusing to overwrite" in runner
 
 
