@@ -1,13 +1,13 @@
 {
-  "study_title": "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions",
+  "study_title": "Fitted-Operator Geometry as a Complementary Descriptive Axis for Brain-State Discrimination in Human iEEG and Scalp EEG",
   "citation_key": "Peterkin2026",
   "status": "locked_post_hoc_repository_spec",
-  "status_note": "This file freezes the confirmatory analysis contract for the public repository. It is not a claim that every analysis was registered on an external registry before any data were seen. Exploratory analyses must remain labeled exploratory in manuscript and code.",
-  "pipeline_name": "Fitted Operator Geometry (VAR(1) sliding-window geometry)",
+  "status_note": "This file freezes the public repository analysis contract. It is not a claim that every analysis was externally preregistered before data inspection. Exploratory analyses must remain labeled exploratory.",
+  "pipeline_name": "Fitted operator geometry using sliding-window VAR(1) models",
   "canonical_config": "code/config.yaml",
   "frozen_parameters": {
-    "operator_model": "VAR(1) on sliding windows after current-source density and principal component analysis",
-    "pca_components": 15,
+    "operator_model": "Sliding-window first-order vector autoregressive model; preprocessing differs by recording modality as documented in the manuscript and provenance file",
+    "scalp_pca_components": 15,
     "var_window_ms": 500,
     "var_step_ms": 100,
     "high_gamma_passband_hz": [70, 150],
@@ -16,36 +16,36 @@
     "n_permutations_default": 5000,
     "alpha": 0.05,
     "multiple_comparison_correction": "fdr_bh",
-    "legacy_ep_score_definition": "Per-window proximity score used in checked-in JSON keys ep_score / ep_score_mean: eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10). Implemented by cmcc.features.operator_geometry.geometry_proximity_score and detect_exceptional_points.",
-    "manuscript_nd_score_definition": "Within-subject composite ND = 0.5 * [z(-log10(gap + 1e-12)) + z(log10(condition_number + 1e-12))]. Implemented by cmcc.features.operator_geometry.compute_nd_score. Distinct from legacy ep_score; both summarize crowding and non-orthogonality.",
+    "legacy_ep_score_definition": "Historical per-window proximity score stored in legacy result keys: eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10).",
+    "current_manuscript_nd_definition": "Near-Degeneracy score constructed from eigenvalue crowding c=-log10(gap+epsilon) and eigenvector non-orthogonality k=log10(condition_number+epsilon), standardized within the declared analysis unit and projected onto the first principal component with sign normalized to positive loadings.",
+    "metric_equivalence_warning": "The legacy ep_score and final manuscript ND score are not the same statistic and must not be relabeled as equivalent.",
     "primary_geometry_metrics": [
       "spectral_radius",
       "minimum_eigenvalue_gap",
-      "eigenvector_condition_number",
-      "nd_score"
+      "eigenvector_condition_number"
     ],
-    "subject_boundary_rule": "All confirmatory contrasts and cross-validation preserve subject identity; no subject appears in both train and test folds",
-    "shared_subspace_control": "Confirmatory state contrasts are also reported under PCA fit once per subject on pooled states, then applied to each state"
+    "subject_boundary_rule": "All predictive cross-validation preserves subject identity; no subject appears in both training and evaluation folds",
+    "shared_subspace_control": "State contrasts are accompanied by shared-subspace controls where documented"
   },
   "datasets": {
     "primary_ieeg": {
-      "name": "Cogitate iEEG Experiment 1",
-      "role": "primary",
+      "name": "COGITATE iEEG Experiment 1",
+      "role": "primary_intracranial_analysis",
       "env_var": "IEEG_DATA_ROOT"
     },
     "propofol_eeg": {
-      "name": "Cambridge propofol EEG (OpenNeuro ds005620)",
-      "role": "confirmatory_state_contrast",
+      "name": "Cambridge Propofol EEG, OpenNeuro ds005620",
+      "role": "state_contrast",
       "env_var": "PROPOFOL_DATA_ROOT"
     },
     "sleep_eeg": {
       "name": "ANPHY-Sleep polysomnography",
-      "role": "confirmatory_state_contrast_and_temporal_precedence",
+      "role": "state_contrast_and_temporal_precedence",
       "env_var": "SLEEP_DATA_ROOT"
     },
     "zurich_seeg": {
-      "name": "Zurich SEEG (OpenNeuro ds004752)",
-      "role": "exploratory_cross_dataset_generalization",
+      "name": "Zurich SEEG, OpenNeuro ds004752",
+      "role": "secondary_cross_dataset_consistency_generalization",
       "env_var": "DS004752_DATA_ROOT",
       "label": "exploratory"
     }
@@ -53,42 +53,50 @@
   "primary_predictions": [
     {
       "id": "P1_band_sigma",
-      "statement": "High-gamma branching ratio is lower (more subcritical) than broadband branching ratio in primary intracranial electroencephalography subjects.",
+      "statement": "The high-gamma and broadband observables differ in the branching-related statistic under the declared intracranial analysis pipeline.",
       "adjudication_artifact": "results/json_results/broadband_comparison.json"
     },
     {
-      "id": "P2_nd_tracks_sigma",
-      "statement": "Near-degeneracy (ND) score positively correlates with branching ratio across primary subjects.",
-      "adjudication_artifact": "results/json_results/exceptional_points.json"
+      "id": "P2_legacy_geometry_sigma",
+      "statement": "The historical proximity-score analysis shows a cross-subject association with the branching-related statistic. This artifact is retained for provenance and must not be relabeled as the final manuscript ND score without recomputation.",
+      "adjudication_artifact": "results/json_results/exceptional_points.json",
+      "status": "legacy_metric_requires_final_nd_recomputation"
     },
     {
       "id": "P3_propofol_spacing",
-      "statement": "Minimum eigenvalue spacing distinguishes propofol sedation from wakefulness with a nonzero paired effect under the frozen pipeline.",
+      "statement": "Minimum eigenvalue spacing differs between Propofol sedation and wakefulness under the declared fitted-operator pipeline.",
       "adjudication_artifact": "results/json_results/ep_propofol_eeg.json"
     },
     {
       "id": "P4_sleep_spacing",
-      "statement": "Minimum eigenvalue spacing distinguishes rapid-eye-movement sleep from N3 under the frozen pipeline.",
+      "statement": "Minimum eigenvalue spacing differs between rapid-eye-movement sleep and N3 within the ANPHY-Sleep cohort under the declared pipeline.",
       "adjudication_artifact": "results/json_results/ep_sleep_dynamics.json"
     },
     {
       "id": "P5_pre_n3_radius",
-      "statement": "Spectral radius shows a pre-transition shift before N2-to-N3 onset that survives non-overlapping-window validation.",
+      "statement": "Spectral radius shows a pre-boundary shift before N2-to-N3 onset that survives the documented non-overlapping-window validation.",
       "adjudication_artifact": "results/json_results/temporal_precedence.json"
     }
   ],
   "secondary_predictions": [
-    "Spacing effects are largely independent of alpha power (propofol) and delta power (sleep) under the frozen pipeline.",
-    "Shared-subspace principal component analysis preserves the direction of confirmatory propofol and sleep spacing contrasts.",
-    "Phase-randomized surrogate controls constrain interpretation of absolute spectral-sensitivity magnitude."
+    "Minimum eigenvalue spacing shows weak within-state association with alpha power in Propofol and delta power in sleep under the declared controls.",
+    "Shared-subspace Principal Component Analysis preserves the direction of the principal state-spacing contrasts.",
+    "Phase-randomized surrogate controls constrain interpretation of absolute spectral-sensitivity magnitude.",
+    "Geometry and conventional feature families can provide complementary within-cohort discrimination under nested leave-one-subject-out evaluation."
   ],
   "explicit_non_claims": [
     "No claim of mathematically exact exceptional points in neural tissue.",
-    "No causal claim that operator geometry generates conscious state.",
-    "ds004752 task-condition geometry contrasts are exploratory generalization checks, not primary replications."
+    "No claim that fitted operators identify the true neural dynamical generator.",
+    "No causal claim that fitted geometry controls conscious state or sleep transitions.",
+    "No claim that the Zurich ds004752 task contrasts independently replicate the primary state effects.",
+    "No claim that a within-cohort area under the curve of 1.00 in n=10 sleep subjects is an out-of-cohort generalization estimate."
+  ],
+  "open_alignment_items": [
+    "Recompute the final manuscript ND subject-level analysis under an explicitly defined aggregation rule before attaching the historical r approximately 0.86 result to ND.",
+    "Verify end-to-end that the broadband runner consumes an explicit broadband passband and reproduces the historical broadband comparison from raw data."
   ],
   "leakage_policy": {
-    "file": "AGENTS.md",
-    "summary": "Subject-preserving splits, causal temporal features for future targets, no silent averaging, confirmatory tuning frozen away from evaluation labels."
+    "file": "SCIENTIFIC_INTEGRITY.md",
+    "summary": "Subject-preserving predictive splits, explicit aggregation, causal temporal features for future targets, frozen evaluation rules, and transparent exploratory labels."
   }
 }
