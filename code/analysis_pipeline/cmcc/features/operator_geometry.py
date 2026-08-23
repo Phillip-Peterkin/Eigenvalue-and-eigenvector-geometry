@@ -112,10 +112,12 @@ def compute_nd_score(
         c = -log10(gap + epsilon)
         k =  log10(condition_number + epsilon)
 
-    Negative or non-finite metric inputs are invalid and remain ``NaN``. The two
-    valid feature series are z-scored within the supplied analysis unit, stacked
-    as an ``n_windows x 2`` matrix, and projected onto the first principal
-    component of their covariance.
+    A window contributes to the analysis only when both metric inputs are
+    finite and non-negative. Unpaired or invalid windows remain ``NaN`` and are
+    excluded before either feature is standardized, so they cannot influence
+    valid-window scores indirectly. The paired feature series are z-scored
+    within the supplied analysis unit, stacked as an ``n_windows x 2`` matrix,
+    and projected onto the first principal component of their covariance.
 
     The manuscript ND construct assumes a common direction in which greater
     crowding and greater non-orthogonality load positively. Principal-component
@@ -144,10 +146,14 @@ def compute_nd_score(
     crowding = np.full(gap_arr.shape, np.nan, dtype=float)
     nonorthogonality = np.full(kappa_arr.shape, np.nan, dtype=float)
 
-    valid_gap = np.isfinite(gap_arr) & (gap_arr >= 0.0)
-    valid_kappa = np.isfinite(kappa_arr) & (kappa_arr >= 0.0)
-    crowding[valid_gap] = -np.log10(gap_arr[valid_gap] + epsilon)
-    nonorthogonality[valid_kappa] = np.log10(kappa_arr[valid_kappa] + epsilon)
+    valid_pair = (
+        np.isfinite(gap_arr)
+        & (gap_arr >= 0.0)
+        & np.isfinite(kappa_arr)
+        & (kappa_arr >= 0.0)
+    )
+    crowding[valid_pair] = -np.log10(gap_arr[valid_pair] + epsilon)
+    nonorthogonality[valid_pair] = np.log10(kappa_arr[valid_pair] + epsilon)
 
     z_c = _nan_zscore(crowding)
     z_k = _nan_zscore(nonorthogonality)
