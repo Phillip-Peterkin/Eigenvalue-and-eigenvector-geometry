@@ -5,10 +5,32 @@ import numpy as np
 import pytest
 
 from cmcc.analysis.geometry_embedding import (
+    GeometryFeatureTable,
     _rows_for_sampled_subjects,
+    _semantic_feature_names,
     analyze_geometric_structure,
     classify_states_loso,
+    compare_geometry_vs_power,
 )
+
+
+def test_semantic_adapter_is_pure_and_idempotent() -> None:
+    original = GeometryFeatureTable(
+        subjects=["s1"],
+        conditions=["awake"],
+        features=np.array([[1.0, 2.0]]),
+        feature_names=["nd_score", "spectral_radius"],
+        dataset="propofol",
+    )
+
+    corrected = _semantic_feature_names(original)
+    corrected_again = _semantic_feature_names(corrected)
+
+    assert original.feature_names == ["nd_score", "spectral_radius"]
+    assert corrected is not original
+    assert corrected.feature_names == ["legacy_proximity_score", "spectral_radius"]
+    assert corrected_again is not corrected
+    assert corrected_again.feature_names == corrected.feature_names
 
 
 def test_subject_bootstrap_preserves_duplicate_blocks() -> None:
@@ -69,6 +91,44 @@ def test_subject_block_bootstrap_produces_finite_interval() -> None:
     assert np.isfinite(result.auc_ci_lower)
     assert np.isfinite(result.auc_ci_upper)
     assert 0.0 <= result.auc_ci_lower <= result.auc_ci_upper <= 1.0
+
+
+def test_geometry_vs_power_null_baseline_averages_deterministic_permutations() -> None:
+    rng = np.random.default_rng(31)
+    n_subjects = 10
+    labels = np.array([0] * n_subjects + [1] * n_subjects)
+    subjects = np.array(
+        [f"s{index}" for index in range(n_subjects)]
+        + [f"s{index}" for index in range(n_subjects)]
+    )
+    geometry = np.vstack(
+        [rng.normal(0.0, 0.5, (n_subjects, 2)), rng.normal(1.0, 0.5, (n_subjects, 2))]
+    )
+    power = rng.normal(0.0, 1.0, (2 * n_subjects, 1))
+
+    first = compare_geometry_vs_power(
+        geometry,
+        power,
+        labels,
+        subjects,
+        seed=37,
+        n_bootstrap=20,
+        n_null_permutations=7,
+    )
+    second = compare_geometry_vs_power(
+        geometry,
+        power,
+        labels,
+        subjects,
+        seed=37,
+        n_bootstrap=20,
+        n_null_permutations=7,
+    )
+
+    assert 0.0 <= first.null_auc_geometry <= 1.0
+    assert 0.0 <= first.null_auc_power <= 1.0
+    assert first.null_auc_geometry == pytest.approx(second.null_auc_geometry)
+    assert first.null_auc_power == pytest.approx(second.null_auc_power)
 
 
 def test_unscorable_loso_design_fails_instead_of_scoring_default_predictions() -> None:
