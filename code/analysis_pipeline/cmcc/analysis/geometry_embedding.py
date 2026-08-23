@@ -29,7 +29,9 @@ HISTORICAL_SCHEMA_KEY = "nd_score"
 HISTORICAL_SCHEMA_SEMANTICS = "legacy_proximity_score"
 
 
-def _semantic_feature_names(table: GeometryFeatureTable) -> GeometryFeatureTable:
+def _semantic_feature_names(
+    table: _legacy.GeometryFeatureTable,
+) -> _legacy.GeometryFeatureTable:
     """Return the historical table with its legacy proximity column named honestly.
 
     Numerical values, row order, subject identifiers, and conditions are left
@@ -50,7 +52,7 @@ def _semantic_feature_names(table: GeometryFeatureTable) -> GeometryFeatureTable
 def extract_propofol_features_semantic(
     ep_data: dict,
     amplification_data: dict,
-) -> GeometryFeatureTable:
+) -> _legacy.GeometryFeatureTable:
     """Extract propofol historical features with corrected semantic labels."""
     return _semantic_feature_names(_legacy.extract_propofol_features(ep_data, amplification_data))
 
@@ -58,7 +60,7 @@ def extract_propofol_features_semantic(
 def extract_sleep_features_semantic(
     sleep_ep_data: dict,
     sleep_amplification_data: dict,
-) -> GeometryFeatureTable:
+) -> _legacy.GeometryFeatureTable:
     """Extract sleep historical features with corrected semantic labels."""
     return _semantic_feature_names(
         _legacy.extract_sleep_features(sleep_ep_data, sleep_amplification_data)
