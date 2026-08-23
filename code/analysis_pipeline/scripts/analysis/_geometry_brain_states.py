@@ -6,10 +6,11 @@ for computational provenance. That historical runner populated its feature named
 legacy overlap/gap proximity statistic, not the current PC1-based
 Near-Degeneracy (ND) score.
 
-This entry point preserves the historical computations while replacing only the
-feature-name metadata through the semantic extraction adapters. A fresh run
-therefore writes ``legacy_proximity_score`` in the output schema instead of
-recreating the misleading historical ``nd_score`` label.
+This entry point preserves the historical point computations while patching in
+current semantic extraction adapters and corrected subject-level uncertainty
+routines. A fresh run therefore writes ``legacy_proximity_score`` in the output
+schema, preserves subject multiplicity in bootstrap confidence intervals, and
+uses finite-permutation +1 correction for classifier null p-values.
 """
 from __future__ import annotations
 
@@ -23,15 +24,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 import _geometry_brain_states_legacy as _legacy  # noqa: E402
 
 from cmcc.analysis.geometry_embedding import (  # noqa: E402
+    classify_states_loso,
+    compare_geometry_vs_power,
     extract_propofol_features_semantic,
     extract_sleep_features_semantic,
 )
 
 
 def main() -> None:
-    """Run the historical battery with corrected feature-name semantics."""
+    """Run the battery with corrected public semantics and uncertainty routines."""
     _legacy.extract_propofol_features = extract_propofol_features_semantic
     _legacy.extract_sleep_features = extract_sleep_features_semantic
+    _legacy.classify_states_loso = classify_states_loso
+    _legacy.compare_geometry_vs_power = compare_geometry_vs_power
     _legacy.main()
 
 
