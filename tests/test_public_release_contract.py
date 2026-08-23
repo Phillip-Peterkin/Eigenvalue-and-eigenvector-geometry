@@ -23,6 +23,17 @@ def _canonical_broadband_source() -> str:
     ).read_text(encoding="utf-8")
 
 
+def _public_state_runner_source() -> str:
+    return (
+        ROOT
+        / "code"
+        / "analysis_pipeline"
+        / "scripts"
+        / "analysis"
+        / "_geometry_brain_states.py"
+    ).read_text(encoding="utf-8")
+
+
 def test_canonical_config_declares_distinct_band_passbands() -> None:
     config = yaml.safe_load((ROOT / "code" / "config.yaml").read_text(encoding="utf-8"))
     preprocessing = config["preprocessing"]
@@ -114,6 +125,8 @@ def test_current_geometry_embedding_surface_exposes_schema_debt() -> None:
     assert "HISTORICAL_SCHEMA_KEY = \"nd_score\"" in source
     assert "HISTORICAL_SCHEMA_SEMANTICS = \"legacy_proximity_score\"" in source
     assert "extract_propofol_features_semantic" in source
+    assert "_rows_for_sampled_subjects" in source
+    assert "(exceedances + 1) / (len(null_aucs) + 1)" in source
     assert (
         ROOT
         / "code"
@@ -129,19 +142,15 @@ def test_historical_state_classifier_schema_is_documented() -> None:
     assert "geometry_brain_states.json" in notes
     assert "legacy proximity" in notes.lower()
     assert "mean_ep_score" in notes
+    assert "preserves multiplicity" in notes
 
 
-def test_public_state_runner_uses_semantic_extractors() -> None:
-    runner = (
-        ROOT
-        / "code"
-        / "analysis_pipeline"
-        / "scripts"
-        / "analysis"
-        / "_geometry_brain_states.py"
-    ).read_text(encoding="utf-8")
+def test_public_state_runner_uses_corrected_semantics_and_inference() -> None:
+    runner = _public_state_runner_source()
     assert "extract_propofol_features_semantic" in runner
     assert "extract_sleep_features_semantic" in runner
+    assert "classify_states_loso" in runner
+    assert "compare_geometry_vs_power" in runner
     assert "legacy_proximity_score" in runner
     assert (
         ROOT
@@ -151,6 +160,33 @@ def test_public_state_runner_uses_semantic_extractors() -> None:
         / "analysis"
         / "_geometry_brain_states_legacy.py"
     ).exists()
+
+
+def test_public_state_runner_cannot_overwrite_locked_historical_artifact() -> None:
+    runner = _public_state_runner_source()
+    assert 'HISTORICAL_ARTIFACT = "geometry_brain_states.json"' in runner
+    assert "geometry_brain_states_legacy_proximity_corrected_inference.json" in runner
+    assert "original_bytes = historical_path.read_bytes()" in runner
+    assert "historical_path.write_bytes(original_bytes)" in runner
+    assert "Refusing to overwrite" in runner
+
+
+def test_historical_classifier_headline_maps_to_checked_in_artifact() -> None:
+    payload = json.loads(
+        (ROOT / "results" / "json_results" / "geometry_brain_states.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    contrast = next(
+        item
+        for item in payload["test_1_sufficiency"]["contrasts"]
+        if item["contrast_name"] == "awake_vs_propofol"
+    )
+    assert abs(contrast["auc_loso"] - 0.9125) < 1e-12
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    manuscript = (ROOT / "manuscript" / "main.tex").read_text(encoding="utf-8")
+    assert "LOSO AUC = 0.9125" in readme
+    assert "AUC $=0.9125$" in manuscript
 
 
 def test_readme_removes_unmapped_auc_headlines() -> None:
@@ -172,6 +208,7 @@ def test_public_audit_exposes_open_alignment_items() -> None:
     audit = (ROOT / "PUBLIC_AUDIT.md").read_text(encoding="utf-8")
     assert "Subject-level current-ND correlation" in audit
     assert "Broadband vs high-gamma configuration" in audit
+    assert "Historical classifier uncertainty" in audit
     assert "Public release gate" in audit
 
 
