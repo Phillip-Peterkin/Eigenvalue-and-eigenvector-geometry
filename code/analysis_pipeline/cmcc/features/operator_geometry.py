@@ -3,20 +3,20 @@
 Scientific rationale
 --------------------
 Fitted first-order vector autoregressive (VAR(1)) operators yield eigenvalues
-and eigenvectors. The manuscript summarizes those spectra with:
+and eigenvectors. The public analysis summarizes those spectra with:
 
-1. Spectral radius (maximum absolute eigenvalue) — a stability-margin summary.
-2. Minimum eigenvalue gap — how crowded the spectrum is.
-3. Eigenvector overlap of the closest pair — non-orthogonality of that pair.
-4. Legacy proximity score (`ep_score` in JSON): overlap / (gap + epsilon).
-5. Manuscript near-degeneracy (ND) score: within-subject average of
-   z-scored -log10(gap) and z-scored log10(eigenvector condition number).
-6. Singular-value concentration summaries (participation ratio and effective
-   rank), which behave like inequality / concentration indices on the singular
-   spectrum (high when energy is concentrated in few modes).
+1. Spectral radius (maximum absolute eigenvalue), a stability-margin summary.
+2. Minimum eigenvalue gap, describing local spectral crowding.
+3. Eigenvector overlap of the closest pair, describing pairwise non-orthogonality.
+4. Historical proximity score (`ep_score` in JSON): overlap / (gap + epsilon).
+5. Current manuscript Near-Degeneracy (ND) score: first-principal-component
+   projection of within-array standardized eigenvalue crowding and log
+   eigenvector condition number, with sign normalized to positive loadings.
+6. Singular-value concentration summaries such as participation ratio and
+   effective rank.
 
-These helpers are intentionally free of input/output and dataset loading so
-unit tests can verify the math on synthetic inputs with known answers.
+The historical proximity score and current manuscript ND score are distinct
+statistics. Backward-compatible names do not imply mathematical equivalence.
 """
 from __future__ import annotations
 
@@ -27,18 +27,7 @@ ND_SCORE_EPSILON = 1e-12
 
 
 def spectral_radius_from_eigenvalues(eigenvalues: np.ndarray) -> float:
-    """Return max |lambda| for a one-window eigenvalue vector.
-
-    Parameters
-    ----------
-    eigenvalues : np.ndarray, shape (n_modes,)
-        Complex or real eigenvalues. Units: dimensionless (VAR(1) map).
-
-    Returns
-    -------
-    float
-        Spectral radius. Failure mode: empty input raises ValueError.
-    """
+    """Return the maximum absolute eigenvalue for one fitted window."""
     evals = np.asarray(eigenvalues)
     if evals.size == 0:
         raise ValueError("eigenvalues must be non-empty")
@@ -49,27 +38,7 @@ def minimum_eigenvalue_gap(
     eigenvalues: np.ndarray,
     max_modes: int = 20,
 ) -> tuple[float, int, int]:
-    """Return the smallest pairwise |lambda_i - lambda_j| among leading modes.
-
-    Parameters
-    ----------
-    eigenvalues : np.ndarray, shape (n_modes,)
-        Eigenvalues for one window (any order).
-    max_modes : int
-        Cap on how many leading modes (by current array order) are compared.
-        Matches ``detect_exceptional_points`` in ``dynamical_systems``.
-
-    Returns
-    -------
-    gap : float
-        Minimum absolute pairwise difference. Units: dimensionless.
-    index_i, index_j : int
-        Indices of the closest pair in the supplied array.
-
-    Failure modes
-    -------------
-    Fewer than two modes raises ValueError.
-    """
+    """Return the smallest pairwise eigenvalue spacing among leading modes."""
     evals = np.asarray(eigenvalues)
     n_modes = int(evals.shape[0])
     if n_modes < 2:
@@ -88,18 +57,7 @@ def minimum_eigenvalue_gap(
 
 
 def eigenvector_overlap(vector_i: np.ndarray, vector_j: np.ndarray) -> float:
-    """Return absolute cosine similarity |<v_i|v_j>| / (||v_i|| ||v_j||).
-
-    Parameters
-    ----------
-    vector_i, vector_j : np.ndarray, shape (n_modes,)
-        Right eigenvectors (may be complex). Units: dimensionless.
-
-    Returns
-    -------
-    float
-        Overlap in [0, 1]. Zero-norm vectors return 0.0.
-    """
+    """Return absolute cosine similarity between two real or complex vectors."""
     v_i = np.asarray(vector_i)
     v_j = np.asarray(vector_j)
     norm_i = np.linalg.norm(v_i)
@@ -114,24 +72,11 @@ def geometry_proximity_score(
     gap: float,
     epsilon: float = PROXIMITY_SCORE_EPSILON,
 ) -> float:
-    """Legacy per-window proximity score stored as ``ep_score`` in JSON.
+    """Return the historical proximity score stored as `ep_score` in JSON.
 
-    Definition used by ``detect_exceptional_points``:
-    score = overlap / (gap + epsilon).
+    score = overlap / (gap + epsilon)
 
-    Parameters
-    ----------
-    overlap : float
-        Eigenvector overlap in [0, 1].
-    gap : float
-        Minimum eigenvalue gap (non-negative).
-    epsilon : float
-        Numerical floor preventing division by zero.
-
-    Returns
-    -------
-    float
-        Proximity score in [0, inf). Larger means closer to coalescence.
+    This is retained for provenance. It is not the current manuscript ND score.
     """
     if epsilon <= 0:
         raise ValueError("epsilon must be positive")
@@ -139,7 +84,8 @@ def geometry_proximity_score(
 
 
 def _nan_zscore(values: np.ndarray) -> np.ndarray:
-    """Within-vector z-score ignoring non-finite entries."""
+    """Within-vector z-score while preserving non-finite entries as NaN."""
+    values = np.asarray(values, dtype=float)
     out = np.full(values.shape, np.nan, dtype=float)
     finite = np.isfinite(values)
     if finite.sum() == 0:
@@ -158,81 +104,85 @@ def compute_nd_score(
     condition_numbers: np.ndarray,
     epsilon: float = ND_SCORE_EPSILON,
 ) -> np.ndarray:
-    """Manuscript near-degeneracy (ND) score (Methods composite).
+    """Compute the current manuscript window-level Near-Degeneracy score.
 
-    ND = 0.5 * [ z(-log10(gap + eps)) + z(log10(kappa + eps)) ]
+    For each window, define eigenvalue crowding and eigenvector
+    non-orthogonality as::
 
-    where z is a within-subject (within-array) z-score. This matches the
-    manuscript equation; it is distinct from the legacy JSON ``ep_score``
-    proximity ratio ``overlap / (gap + eps)``.
+        c = -log10(gap + epsilon)
+        k =  log10(condition_number + epsilon)
 
-    Parameters
-    ----------
-    gaps : np.ndarray, shape (n_windows,)
-        Minimum eigenvalue gaps. Units: dimensionless.
-    condition_numbers : np.ndarray, shape (n_windows,)
-        Eigenvector-matrix condition numbers kappa(V). Dimensionless.
-    epsilon : float
-        Numerical floor inside the logarithms (manuscript uses 1e-12).
+    The two feature series are z-scored within the supplied analysis unit,
+    stacked as an ``n_windows x 2`` matrix, and projected onto the first
+    principal component of their covariance. The sign of the loading vector is
+    normalized so that its summed loading is positive. When both loadings can
+    be made positive, this is equivalent to orienting the component toward
+    greater crowding and greater non-orthogonality.
 
-    Returns
-    -------
-    np.ndarray, shape (n_windows,)
-        Window-level ND scores. Non-finite inputs propagate as NaN.
-
-    Failure modes
-    -------------
-    Length mismatch raises ValueError. epsilon <= 0 raises ValueError.
+    This implementation intentionally differs from the historical `ep_score`
+    ratio. It also means the mean score within the same standardized analysis
+    unit is approximately zero by construction, which is important when
+    designing subject-level aggregation.
     """
     if epsilon <= 0:
         raise ValueError("epsilon must be positive")
+
     gap_arr = np.asarray(gaps, dtype=float)
     kappa_arr = np.asarray(condition_numbers, dtype=float)
     if gap_arr.shape != kappa_arr.shape:
         raise ValueError(
             f"gaps and condition_numbers must share shape; got {gap_arr.shape} vs {kappa_arr.shape}"
         )
+    if gap_arr.ndim != 1:
+        raise ValueError("gaps and condition_numbers must be one-dimensional window series")
 
     crowding = -np.log10(np.maximum(gap_arr, 0.0) + epsilon)
     nonorthogonality = np.log10(np.maximum(kappa_arr, 0.0) + epsilon)
-    return 0.5 * (_nan_zscore(crowding) + _nan_zscore(nonorthogonality))
+    z_c = _nan_zscore(crowding)
+    z_k = _nan_zscore(nonorthogonality)
+
+    scores = np.full(gap_arr.shape, np.nan, dtype=float)
+    finite = np.isfinite(z_c) & np.isfinite(z_k)
+    if finite.sum() == 0:
+        return scores
+
+    x = np.column_stack([z_c[finite], z_k[finite]])
+    if x.shape[0] == 1 or np.allclose(x, 0.0):
+        scores[finite] = 0.0
+        return scores
+
+    covariance = np.cov(x, rowvar=False, bias=True)
+    eigenvalues, eigenvectors = np.linalg.eigh(covariance)
+    loading = np.asarray(eigenvectors[:, int(np.argmax(eigenvalues))], dtype=float)
+
+    # Principal-component sign is arbitrary. Orient the component toward the
+    # positive crowding/non-orthogonality direction without using outcome labels.
+    if float(np.sum(loading)) < 0:
+        loading = -loading
+    if loading[0] < 0 and loading[1] < 0:
+        loading = -loading
+
+    scores[finite] = x @ loading
+    return scores
 
 
 def participation_ratio(singular_values: np.ndarray) -> float:
-    """Participation ratio (concentration index) of a singular spectrum.
+    """Return the participation ratio of a singular-value spectrum.
 
-    PR = (sum sigma_i)^2 / sum(sigma_i^2)
-
-    Behavior (analogous to an inverse-concentration / anti-Gini summary):
-    - Uniform spectrum over k equal singular values -> PR = k (delocalized).
-    - Single nonzero singular value -> PR = 1 (fully concentrated).
-
-    Parameters
-    ----------
-    singular_values : np.ndarray, shape (n_modes,)
-        Non-negative singular values preferred; absolutes are taken.
-
-    Returns
-    -------
-    float
-        Participation ratio in [1, n_modes] for nonzero spectra; 0 if all zero.
+    ``PR = (sum sigma_i)^2 / sum(sigma_i^2)``.
+    Uniform nonzero spectra approach the number of modes; a rank-one spectrum
+    returns one.
     """
     sigma = np.abs(np.asarray(singular_values, dtype=float))
     s_sum = float(sigma.sum())
-    s_sq_sum = float((sigma ** 2).sum())
+    s_sq_sum = float((sigma**2).sum())
     if s_sq_sum <= 0.0:
         return 0.0
-    return (s_sum ** 2) / s_sq_sum
+    return (s_sum**2) / s_sq_sum
 
 
 def effective_rank(singular_values: np.ndarray) -> float:
-    """Shannon effective rank of a singular spectrum.
-
-    erank = exp(-sum p_i log p_i) with p_i = sigma_i / sum(sigma).
-
-    Uniform spectrum over k modes -> erank = k.
-    Single nonzero mode -> erank = 1.
-    """
+    """Return Shannon effective rank of a singular-value spectrum."""
     sigma = np.abs(np.asarray(singular_values, dtype=float))
     s_sum = float(sigma.sum())
     if s_sum <= 0.0:
