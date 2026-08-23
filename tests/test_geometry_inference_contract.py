@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from cmcc.analysis.geometry_embedding import (
     _rows_for_sampled_subjects,
+    analyze_geometric_structure,
     classify_states_loso,
 )
 
@@ -67,3 +69,52 @@ def test_subject_block_bootstrap_produces_finite_interval() -> None:
     assert np.isfinite(result.auc_ci_lower)
     assert np.isfinite(result.auc_ci_upper)
     assert 0.0 <= result.auc_ci_lower <= result.auc_ci_upper <= 1.0
+
+
+def test_unscorable_loso_design_fails_instead_of_scoring_default_predictions() -> None:
+    features = np.array(
+        [
+            [0.0, 0.0],
+            [2.0, 2.0],
+            [0.1, 0.0],
+            [0.0, 0.1],
+        ]
+    )
+    labels = np.array([0, 1, 0, 0])
+    subjects = np.array(["s1", "s1", "s2", "s3"])
+
+    with pytest.raises(ValueError, match="insufficient fitted folds"):
+        classify_states_loso(
+            features,
+            labels,
+            subjects,
+            n_bootstrap=10,
+            n_null_permutations=2,
+        )
+
+
+def test_subject_consistency_wraps_across_plus_minus_pi_boundary() -> None:
+    small_angle = np.deg2rad(1.0)
+    features = np.array(
+        [
+            [0.0, 0.0],
+            [-1.0, small_angle],
+            [0.0, 0.0],
+            [-1.0, -small_angle],
+            [0.0, 0.0],
+            [-1.0, 0.0],
+        ]
+    )
+    labels = np.array(["awake", "state", "awake", "state", "awake", "state"])
+    subjects = np.array(["s1", "s1", "s2", "s2", "s3", "s3"])
+
+    result = analyze_geometric_structure(
+        features,
+        labels,
+        subjects,
+        feature_names=["x", "y"],
+        seed=3,
+        n_bootstrap=10,
+    )
+
+    assert result.subject_consistency["state"] == pytest.approx(1.0)
