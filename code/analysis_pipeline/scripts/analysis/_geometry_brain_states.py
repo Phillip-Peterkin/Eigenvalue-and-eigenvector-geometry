@@ -8,11 +8,13 @@ statistic, not the current PC1-based Near-Degeneracy (ND) score.
 This entry point delegates the historical analysis while overlaying current
 public contracts: semantic feature labels, corrected subject-level uncertainty,
 wrapped angular consistency, repository-only amplification provenance, stable
-progress labels, and no-overwrite protection for the locked historical JSON.
+progress labels, serialized execution, and no-overwrite protection for the
+locked historical JSON.
 """
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -33,6 +35,7 @@ from cmcc.analysis.geometry_embedding import (  # noqa: E402
 HISTORICAL_ARTIFACT = "geometry_brain_states.json"
 CORRECTED_ARTIFACT = "geometry_brain_states_legacy_proximity_corrected_inference.json"
 AMPLIFICATION_ARTIFACT = "transient_amplification.json"
+LOCK_ARTIFACT = ".geometry_brain_states_public.lock"
 _historical_log = _legacy.log
 
 
@@ -62,43 +65,80 @@ def _load_repository_amplification_r() -> float | None:
 
 
 def _run_preserving_historical_artifact() -> Path:
-    """Run the delegated battery without allowing it to overwrite locked history."""
+    """Run the delegated battery under an exclusive process-safe file lock.
+
+    The lock covers the full delegated run because the historical implementation
+    temporarily writes the locked historical result path before this wrapper
+    restores it. A stale lock can remain after a hard process termination; that
+    condition fails loudly and requires explicit operator removal rather than an
+    unsafe automatic takeover.
+    """
     historical_path = _legacy.RESULTS_JSON / HISTORICAL_ARTIFACT
     corrected_path = _legacy.RESULTS_JSON / CORRECTED_ARTIFACT
-    if corrected_path.exists():
-        raise FileExistsError(
-            f"Refusing to overwrite {corrected_path}. Archive or remove it explicitly first."
-        )
+    lock_path = _legacy.RESULTS_JSON / LOCK_ARTIFACT
 
-    original_bytes = historical_path.read_bytes() if historical_path.exists() else None
+    lock_fd: int | None = None
+    lock_acquired = False
     try:
-        _legacy.main()
-        if not historical_path.exists():
+        try:
+            lock_fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+        except FileExistsError as exc:
             raise RuntimeError(
-                "Delegated geometry-state runner completed without producing its expected JSON"
-            )
-        payload = json.loads(historical_path.read_text(encoding="utf-8"))
-        payload["public_rerun_contract"] = {
-            "feature_semantics": "legacy_proximity_score",
-            "historical_artifact_preserved": HISTORICAL_ARTIFACT,
-            "bootstrap": "subject_block_with_replacement_preserving_multiplicity",
-            "finite_permutation_p": "(exceedances + 1) / (B + 1)",
-            "unscorable_loso_folds": "excluded_from_point_metrics",
-            "angular_consistency": "wrapped_to_minus_pi_plus_pi",
-            "amplification_source": str(
-                (_legacy.RESULTS_JSON / AMPLIFICATION_ARTIFACT).resolve()
-            ),
-            "current_nd_validation": False,
-        }
-        corrected_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    finally:
-        if original_bytes is None:
-            if historical_path.exists():
-                historical_path.unlink()
-        else:
-            historical_path.write_bytes(original_bytes)
+                f"Another public geometry-state rerun appears active: {lock_path}. "
+                "If no process is active, remove the stale lock explicitly."
+            ) from exc
 
-    return corrected_path
+        lock_acquired = True
+        os.write(lock_fd, f"pid={os.getpid()}\n".encode("utf-8"))
+        os.close(lock_fd)
+        lock_fd = None
+
+        if corrected_path.exists():
+            raise FileExistsError(
+                f"Refusing to overwrite {corrected_path}. "
+                "Archive or remove it explicitly first."
+            )
+
+        original_bytes = historical_path.read_bytes() if historical_path.exists() else None
+        try:
+            _legacy.main()
+            if not historical_path.exists():
+                raise RuntimeError(
+                    "Delegated geometry-state runner completed without producing its expected JSON"
+                )
+            payload = json.loads(historical_path.read_text(encoding="utf-8"))
+            payload["public_rerun_contract"] = {
+                "feature_semantics": "legacy_proximity_score",
+                "historical_artifact_preserved": HISTORICAL_ARTIFACT,
+                "bootstrap": "subject_block_with_replacement_preserving_multiplicity",
+                "finite_permutation_p": "(exceedances + 1) / (B + 1)",
+                "unscorable_loso_folds": "excluded_from_point_metrics",
+                "angular_consistency": "wrapped_to_minus_pi_plus_pi",
+                "amplification_source": str(
+                    (_legacy.RESULTS_JSON / AMPLIFICATION_ARTIFACT).resolve()
+                ),
+                "concurrency_guard": "exclusive_lock_file_and_exclusive_output_create",
+                "current_nd_validation": False,
+            }
+            with corrected_path.open("x", encoding="utf-8") as handle:
+                json.dump(payload, handle, indent=2)
+                handle.write("\n")
+        finally:
+            if original_bytes is None:
+                if historical_path.exists():
+                    historical_path.unlink()
+            else:
+                historical_path.write_bytes(original_bytes)
+
+        return corrected_path
+    finally:
+        if lock_fd is not None:
+            os.close(lock_fd)
+        if lock_acquired:
+            try:
+                lock_path.unlink()
+            except FileNotFoundError:
+                pass
 
 
 def main() -> None:
