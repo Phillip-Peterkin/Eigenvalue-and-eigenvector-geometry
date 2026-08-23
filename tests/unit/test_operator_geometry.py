@@ -124,6 +124,18 @@ class TestManuscriptNdScore:
         assert np.isfinite(nd[2])
         assert np.isnan(nd[3])
 
+    def test_unpaired_outlier_does_not_change_paired_window_scores(self) -> None:
+        paired_gaps = np.array([0.2, 0.08, 0.03, 0.01])
+        paired_kappas = np.array([2.0, 3.0, 5.0, 12.0])
+        expected = compute_nd_score(paired_gaps, paired_kappas)
+
+        augmented_gaps = np.append(paired_gaps, -1.0)
+        augmented_kappas = np.append(paired_kappas, 1e12)
+        got = compute_nd_score(augmented_gaps, augmented_kappas)
+
+        assert got[:-1] == pytest.approx(expected)
+        assert np.isnan(got[-1])
+
     def test_opposite_sign_pc1_loadings_raise(self) -> None:
         gaps = np.array([0.1, 0.01, 0.001, 0.0001])
         kappas = np.array([1000.0, 100.0, 10.0, 1.0])
