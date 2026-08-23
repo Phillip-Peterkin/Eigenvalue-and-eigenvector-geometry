@@ -1,19 +1,20 @@
 """Compatibility and corrected execution surface for geometry state-space analysis.
 
-The original implementation is retained unchanged in
-``geometry_embedding_legacy.py`` for computational provenance. That historical
-implementation reads ``mean_ep_score`` from result JSON files. Despite an older
-``nd_score`` column label, those values are the legacy proximity statistic
+The original implementation is retained in ``geometry_embedding_legacy.py`` for
+computational provenance. That historical implementation reads ``mean_ep_score``
+from result JSON files. Despite an older ``nd_score`` column label, those values
+are the legacy proximity statistic
 
     eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10)
 
 and are NOT the current manuscript PC1-based Near-Degeneracy (ND) score.
 
-Most historical public functions are re-exported unchanged. New execution uses
-semantic extraction adapters and corrected subject-level uncertainty routines:
-subject bootstrap samples preserve multiplicity and finite permutation p-values
-use the conventional +1 correction. Historical checked-in artifacts are not
-silently recomputed or overwritten by these corrections.
+Most historical public functions are re-exported. Current execution overlays
+scientifically safer behavior without rewriting locked result artifacts:
+semantic feature labels are corrected, subject bootstrap samples preserve
+multiplicity, finite permutation p-values use +1 correction, unscorable LOSO
+folds are excluded from point scoring, and angular consistency is computed with
+wrapped circular differences.
 """
 from __future__ import annotations
 
@@ -26,6 +27,7 @@ from .geometry_embedding_legacy import *  # noqa: F401,F403
 # underscore-prefixed names and the historical unit tests exercise these helpers.
 _angle_between_2d = _legacy._angle_between_2d
 _cohens_d = _legacy._cohens_d
+_legacy_analyze_geometric_structure = _legacy.analyze_geometric_structure
 
 HISTORICAL_SCHEMA_KEY = "nd_score"
 HISTORICAL_SCHEMA_SEMANTICS = "legacy_proximity_score"
@@ -91,15 +93,22 @@ def _loso_predictions(
     features: np.ndarray,
     labels: np.ndarray,
     subject_ids: np.ndarray,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Return fold-internal-standardized LOSO probabilities and predictions."""
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Return LOSO probabilities, predictions, and a fitted-fold row mask.
+
+    Training-fold standardization is fitted only on training rows. If removing a
+    subject leaves a one-class training set, no classifier can be fit honestly;
+    its test rows receive a neutral 0.5 probability, prediction -1, and are
+    marked unscored so they cannot silently bias AUC or accuracy.
+    """
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
     features = np.asarray(features, dtype=float)
     labels = np.asarray(labels)
     subject_ids = np.asarray(subject_ids)
-    all_probs = np.zeros(len(labels), dtype=float)
-    all_preds = np.zeros(len(labels), dtype=int)
+    all_probs = np.full(len(labels), 0.5, dtype=float)
+    all_preds = np.full(len(labels), -1, dtype=int)
+    scored_mask = np.zeros(len(labels), dtype=bool)
 
     for held_out in np.unique(subject_ids):
         test_mask = subject_ids == held_out
@@ -108,7 +117,6 @@ def _loso_predictions(
         y_train = labels[train_mask]
         x_test = features[test_mask]
         if len(np.unique(y_train)) < 2:
-            all_probs[test_mask] = 0.5
             continue
 
         train_mean = x_train.mean(axis=0)
@@ -121,8 +129,9 @@ def _loso_predictions(
         classifier.fit(x_train_z, y_train)
         all_probs[test_mask] = classifier.predict_proba(x_test_z)[:, 1]
         all_preds[test_mask] = classifier.predict(x_test_z)
+        scored_mask[test_mask] = True
 
-    return all_probs, all_preds
+    return all_probs, all_preds, scored_mask
 
 
 def classify_states_loso(
@@ -138,12 +147,11 @@ def classify_states_loso(
 ) -> _legacy.SufficiencyResult:
     """Run subject-preserving LOSO classification with corrected uncertainty.
 
-    The point prediction procedure matches the historical analysis: each subject
-    is held out as a block and z-scoring is fitted only on the training fold.
-    The confidence interval is corrected to a genuine subject-block bootstrap:
-    duplicate sampled subjects contribute duplicate observation blocks. The
-    finite permutation p-value uses ``(exceedances + 1) / (B + 1)`` so it cannot
-    report an impossible zero probability from a finite null sample.
+    Each subject is held out as a block and z-scoring is fitted only on the
+    training fold. Point metrics exclude folds for which training contains only
+    one class. Confidence intervals bootstrap fixed held-out predictions at the
+    subject-block level while preserving duplicate subject draws. Finite
+    permutation p-values use ``(exceedances + 1) / (B + 1)``.
     """
     from sklearn.metrics import roc_auc_score
 
@@ -156,13 +164,17 @@ def classify_states_loso(
     if len(np.unique(labels)) < 2:
         raise ValueError("Labels must contain at least 2 classes.")
 
-    all_probs, all_preds = _loso_predictions(features, labels, subject_ids)
-    auc = float(roc_auc_score(labels, all_probs))
-    accuracy = float(np.mean(all_preds == labels))
+    all_probs, all_preds, scored_mask = _loso_predictions(features, labels, subject_ids)
+    if not scored_mask.any() or len(np.unique(labels[scored_mask])) < 2:
+        raise ValueError("LOSO produced insufficient fitted folds to score both classes.")
+    auc = float(roc_auc_score(labels[scored_mask], all_probs[scored_mask]))
+    accuracy = float(np.mean(all_preds[scored_mask] == labels[scored_mask]))
 
     per_subject: list[dict] = []
     for subject in unique_subjects:
-        rows = np.flatnonzero(subject_ids == subject)
+        rows = np.flatnonzero((subject_ids == subject) & scored_mask)
+        if rows.size == 0:
+            continue
         row_correct = all_preds[rows] == labels[rows]
         per_subject.append(
             {
@@ -174,17 +186,23 @@ def classify_states_loso(
                 "correct": bool(np.all(row_correct)),
             }
         )
-    subject_consistency = float(np.mean([item["correct"] for item in per_subject]))
+    subject_consistency = (
+        float(np.mean([item["correct"] for item in per_subject]))
+        if per_subject
+        else float("nan")
+    )
 
+    scored_subjects = np.unique(subject_ids[scored_mask])
     rng = np.random.default_rng(seed)
     bootstrap_aucs: list[float] = []
     for _ in range(n_bootstrap):
         sampled_subjects = rng.choice(
-            unique_subjects,
-            size=len(unique_subjects),
+            scored_subjects,
+            size=len(scored_subjects),
             replace=True,
         )
         rows = _rows_for_sampled_subjects(subject_ids, sampled_subjects)
+        rows = rows[scored_mask[rows]]
         if rows.size == 0 or len(np.unique(labels[rows])) < 2:
             continue
         bootstrap_aucs.append(float(roc_auc_score(labels[rows], all_probs[rows])))
@@ -206,8 +224,23 @@ def classify_states_loso(
             perm_rng.shuffle(shuffled)
             permuted_labels[rows] = shuffled
         try:
-            permuted_probs, _ = _loso_predictions(features, permuted_labels, subject_ids)
-            null_aucs.append(float(roc_auc_score(permuted_labels, permuted_probs)))
+            permuted_probs, _, permuted_scored = _loso_predictions(
+                features,
+                permuted_labels,
+                subject_ids,
+            )
+            if (
+                permuted_scored.any()
+                and len(np.unique(permuted_labels[permuted_scored])) >= 2
+            ):
+                null_aucs.append(
+                    float(
+                        roc_auc_score(
+                            permuted_labels[permuted_scored],
+                            permuted_probs[permuted_scored],
+                        )
+                    )
+                )
         except (ValueError, np.linalg.LinAlgError):
             continue
 
@@ -248,7 +281,7 @@ def compare_geometry_vs_power(
     seed: int = 42,
     n_bootstrap: int = 1000,
 ) -> _legacy.IncrementalValueResult:
-    """Compare LOSO feature families with a multiplicity-preserving subject CI."""
+    """Compare LOSO feature families with multiplicity-preserving subject CI."""
     from sklearn.metrics import roc_auc_score
 
     geometry_features = np.asarray(geometry_features, dtype=float)
@@ -257,23 +290,32 @@ def compare_geometry_vs_power(
     subject_ids = np.asarray(subject_ids)
     combined = np.hstack([geometry_features, power_features])
 
-    geometry_probs, _ = _loso_predictions(geometry_features, labels, subject_ids)
-    power_probs, _ = _loso_predictions(power_features, labels, subject_ids)
-    combined_probs, _ = _loso_predictions(combined, labels, subject_ids)
-    auc_geometry = float(roc_auc_score(labels, geometry_probs))
-    auc_power = float(roc_auc_score(labels, power_probs))
-    auc_combined = float(roc_auc_score(labels, combined_probs))
+    geometry_probs, _, geometry_scored = _loso_predictions(
+        geometry_features,
+        labels,
+        subject_ids,
+    )
+    power_probs, _, power_scored = _loso_predictions(power_features, labels, subject_ids)
+    combined_probs, _, combined_scored = _loso_predictions(combined, labels, subject_ids)
+    common_scored = geometry_scored & power_scored & combined_scored
+    if not common_scored.any() or len(np.unique(labels[common_scored])) < 2:
+        raise ValueError("Insufficient common LOSO folds to compare feature families.")
 
-    unique_subjects = np.unique(subject_ids)
+    auc_geometry = float(roc_auc_score(labels[common_scored], geometry_probs[common_scored]))
+    auc_power = float(roc_auc_score(labels[common_scored], power_probs[common_scored]))
+    auc_combined = float(roc_auc_score(labels[common_scored], combined_probs[common_scored]))
+
+    scored_subjects = np.unique(subject_ids[common_scored])
     rng = np.random.default_rng(seed)
     bootstrap_deltas: list[float] = []
     for _ in range(n_bootstrap):
         sampled_subjects = rng.choice(
-            unique_subjects,
-            size=len(unique_subjects),
+            scored_subjects,
+            size=len(scored_subjects),
             replace=True,
         )
         rows = _rows_for_sampled_subjects(subject_ids, sampled_subjects)
+        rows = rows[common_scored[rows]]
         if rows.size == 0 or len(np.unique(labels[rows])) < 2:
             continue
         bootstrap_deltas.append(
@@ -293,19 +335,30 @@ def compare_geometry_vs_power(
 
     perm_rng = np.random.default_rng(seed + 999)
     null_labels = labels.copy()
-    for subject in unique_subjects:
+    for subject in np.unique(subject_ids):
         rows = np.flatnonzero(subject_ids == subject)
         shuffled = null_labels[rows].copy()
         perm_rng.shuffle(shuffled)
         null_labels[rows] = shuffled
-    null_geometry_probs, _ = _loso_predictions(
+    null_geometry_probs, _, null_geometry_scored = _loso_predictions(
         geometry_features,
         null_labels,
         subject_ids,
     )
-    null_power_probs, _ = _loso_predictions(power_features, null_labels, subject_ids)
-    null_geometry = float(roc_auc_score(null_labels, null_geometry_probs))
-    null_power = float(roc_auc_score(null_labels, null_power_probs))
+    null_power_probs, _, null_power_scored = _loso_predictions(
+        power_features,
+        null_labels,
+        subject_ids,
+    )
+    null_common = null_geometry_scored & null_power_scored
+    if null_common.any() and len(np.unique(null_labels[null_common])) >= 2:
+        null_geometry = float(
+            roc_auc_score(null_labels[null_common], null_geometry_probs[null_common])
+        )
+        null_power = float(roc_auc_score(null_labels[null_common], null_power_probs[null_common]))
+    else:
+        null_geometry = 0.5
+        null_power = 0.5
 
     delta = auc_geometry - auc_power
     delta_combined = auc_combined - auc_power
@@ -320,3 +373,66 @@ def compare_geometry_vs_power(
         null_auc_power=null_power,
         passes_threshold=(delta >= 0.05) or (delta_combined >= 0.03),
     )
+
+
+def analyze_geometric_structure(
+    features: np.ndarray,
+    labels: np.ndarray,
+    subject_ids: np.ndarray,
+    feature_names: list[str],
+    seed: int = 42,
+    n_bootstrap: int = 5000,
+) -> _legacy.StructureResult:
+    """Run historical structure analysis with corrected circular consistency.
+
+    All historical distance, centroid, change-vector, and bootstrap calculations
+    are retained. The per-state subject-consistency field is recomputed using a
+    wrapped angle difference in ``[-pi, pi]`` so vectors around +179 and -179
+    degrees are correctly recognized as nearby rather than nearly 360 degrees
+    apart.
+    """
+    features = np.asarray(features, dtype=float)
+    labels = np.asarray(labels)
+    subject_ids = np.asarray(subject_ids)
+    result = _legacy_analyze_geometric_structure(
+        features,
+        labels,
+        subject_ids,
+        feature_names,
+        seed=seed,
+        n_bootstrap=n_bootstrap,
+    )
+    if features.ndim != 2 or features.shape[1] < 2:
+        return result
+
+    unique_states = sorted(np.unique(labels))
+    awake_label = next((candidate for candidate in ("awake", "W") if candidate in unique_states), None)
+    if awake_label is None:
+        return result
+
+    corrected: dict[str, float] = {}
+    for state in (item for item in unique_states if item != awake_label):
+        deltas: list[np.ndarray] = []
+        for subject in np.unique(subject_ids):
+            subject_mask = subject_ids == subject
+            awake_mask = subject_mask & (labels == awake_label)
+            state_mask = subject_mask & (labels == state)
+            if not np.any(awake_mask) or not np.any(state_mask):
+                continue
+            awake_feature = features[awake_mask].mean(axis=0)
+            state_feature = features[state_mask].mean(axis=0)
+            deltas.append(state_feature - awake_feature)
+        if not deltas:
+            continue
+        mean_delta = np.asarray(deltas).mean(axis=0)
+        mean_angle = np.arctan2(mean_delta[1], mean_delta[0])
+        same_quadrant = 0
+        for delta in deltas:
+            angle = np.arctan2(delta[1], delta[0])
+            wrapped = (angle - mean_angle + np.pi) % (2 * np.pi) - np.pi
+            if abs(wrapped) < np.pi / 2:
+                same_quadrant += 1
+        corrected[state] = float(same_quadrant / len(deltas))
+
+    result.subject_consistency = corrected
+    return result
