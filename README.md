@@ -1,38 +1,58 @@
-# Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions
+# Fitted-Operator Geometry as a Complementary Descriptive Axis for Brain-State Discrimination in Human iEEG and Scalp EEG
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![License: CC BY 4.0](https://img.shields.io/badge/Manuscript-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License: MIT](https://img.shields.io/badge/Code-MIT-yellow.svg)](LICENSE)
+[![Manuscript: CC BY 4.0](https://img.shields.io/badge/Manuscript-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![CI](https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/actions/workflows/ci.yml/badge.svg)](https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-pytest-green.svg)](tests/)
 
-## Introduction
+This repository contains the analysis code, machine-readable results, robustness checks, tests, and manuscript sources for a descriptive study of fitted linear-operator geometry across human intracranial electroencephalography (iEEG) and scalp electroencephalography (EEG) datasets.
 
-This repository contains the code and results that accompany Peterkin (2026) "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions." The purpose of the code in this repository is to provide full reproducibility of all analyses reported in the manuscript, and to serve as a reference implementation for operator-geometry analysis of neural time series.
+The central object is a sliding-window first-order vector autoregressive model, written as VAR(1). From each fitted coefficient matrix, the analysis extracts quantities such as spectral radius, minimum eigenvalue spacing, eigenvector conditioning, and related geometry summaries. These are treated as properties of fitted local linearizations, not as direct measurements of the brain's true dynamical generator.
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for the package layout and claim-to-module map.
+## Scientific scope
 
-**Anti-leakage / confirmatory contract (reviewer entry points):**
-- [AGENTS.md](AGENTS.md) — scientific integrity, data contracts, leakage prevention, testing rules
-- [preregistration_spec.json](preregistration_spec.json) — frozen pipeline parameters, primary predictions, and explicit non-claims locked to `results/json_results/`
+The public repository is intentionally conservative about what the analyses establish.
 
-Abstract:
+- Fitted-operator geometry is descriptive and pipeline-dependent.
+- No causal claim is made that operator geometry generates conscious state, anesthesia state, or sleep stage.
+- No claim is made that mathematically exact exceptional points are detected in neural tissue.
+- Minimum eigenvalue spacing is dimension-dependent and is interpreted only under fixed model and preprocessing settings.
+- The Zurich stereoelectroencephalography dataset is a secondary cross-dataset consistency/generalization check, not an independent preregistered replication.
+- Surrogate analyses show that some absolute spectral-sensitivity magnitudes can arise from autoregressive fitting to autocorrelated signals. Those quantities are therefore interpreted comparatively, not as standalone neural markers.
 
-> Criticality metrics are widely used to summarize near-critical brain dynamics, but they do not describe the multivariate geometry of fitted linear operators. Here we fit sliding-window VAR(1) models under a fixed preprocessing pipeline, summarized eigenvalue crowding and eigenvector geometry, and asked how these features relate to standard criticality statistics across three human electrophysiology datasets. In iEEG, high-gamma activity was more subcritical than broadband activity (sigma_HG = 0.9735 vs sigma_BB = 0.9908; p < 10^-8). An operator-geometry score (ND) tracked branching ratio closely (r = 0.86, p < 10^-5) while decreasing with Lempel-Ziv complexity (r = -0.68, p = 0.002). In scalp EEG, minimum eigenvalue spacing was largely independent of alpha and delta power, yet distinguished propofol sedation from wakefulness (d = 0.71) and REM from N3 (d = -2.51). In sleep recordings, spectral radius shifted before N2-to-N3 transitions (p = 0.0014; non-overlapping validation p = 0.032). All results are conditional on this estimator and pipeline; the underlying neural mechanisms are not identifiable from these fits alone.
+See `SCIENTIFIC_INTEGRITY.md`, `REPLICATION_AND_DATA_PROVENANCE.md`, and `ARCHITECTURE.md` for the detailed public audit trail.
 
-## Interpretation Guardrails
+## Important metric-status note
 
-Before exploring this repository, please note the following constraints on interpretation:
+Earlier versions of this project used an `ep_score` quantity defined as:
 
-1. **All geometry metrics are derived from fitted VAR(1) operators** applied to sliding windows of neural data. They are descriptive summaries of local linear dynamics, not mechanistic generative models.
-2. **The term "EP" (exceptional point) is used as shorthand** for a composite of eigenvalue proximity and eigenvector non-orthogonality in fitted operators. This study does not claim detection of mathematically exact exceptional points in brain data.
-3. **Minimum eigenvalue gap is dimension-dependent.** Comparisons are valid only within fixed preprocessing and model dimension (here: 15 PCA components throughout).
-4. **Eigenvector condition numbers and overlaps can be unstable in finite samples.** All metrics should be interpreted comparatively across conditions, not as absolute measurements.
-5. **Spectral sensitivity magnitude is not specific to neural temporal structure** under phase-randomized surrogate controls (group p = 0.23). The sensitivity metric tracks operator geometry but its absolute magnitude may reflect spectral properties shared with surrogates.
-6. **The ds004752 SEEG analysis is a secondary cross-dataset generalization test** using a separate dataset (OpenNeuro ds004752, Zurich) from the primary iEEG analysis (Cogitate Consortium). The two datasets differ in source, lab, electrode type, paradigm, and subject population, but both use the same software pipeline, so shared pipeline assumptions remain. See `REPLICATION_AND_DATA_PROVENANCE.md` for details.
-7. **All reported associations are correlational.** No causal claims are made.
+```text
+legacy proximity score = eigenvector overlap / (minimum eigenvalue gap + 1e-10)
+```
 
-> **Legacy label note:** Some repository code, file names, and JSON keys retain the legacy label `ep_score` for backward compatibility. In the manuscript, this quantity is referred to as **ND score**. These labels refer to the same computed composite statistic unless otherwise noted. See `KEY_MIGRATION.md` for a full mapping.
+Some checked-in result files retain `ep_score` and `ep_score_mean` keys for provenance and backward compatibility.
+
+The current manuscript uses a distinct Near-Degeneracy (ND) construction based on eigenvalue crowding and eigenvector conditioning. These two quantities must not be treated as algebraically identical. The current repository therefore labels the historical cross-subject `r = 0.86` result as belonging to the legacy proximity-score analysis unless and until it is recomputed and re-audited under the final manuscript ND definition.
+
+This distinction is documented in `KEY_MIGRATION.md` and `PUBLIC_AUDIT.md`. It is preserved deliberately rather than hidden so that the computational history remains inspectable.
+
+## Main empirical results
+
+The checked-in artifacts support the following descriptive results under the declared pipeline:
+
+| Analysis | Result | Interpretation |
+|---|---:|---|
+| High-gamma versus broadband branching statistic | paired t(17) = -5.74, p = 8.9e-6 | High-gamma and broadband occupy different criticality-related regimes under this estimator |
+| Mixed-effects band contrast | coefficient about -0.0173, p = 9.3e-9 | Band difference is also present in the mixed-effects model |
+| Legacy geometry-proximity score versus branching statistic | r about 0.86 | Historical cross-subject geometry-criticality association; see metric-status note above |
+| Propofol minimum eigenvalue spacing | d about 0.71 | Fitted spacing differs between awake and sedated states |
+| Propofol spectral radius | about 0.9980 awake versus 1.0025 sedated | Fitted local dynamics shift toward the unit-circle boundary under sedation |
+| Sleep N3 versus rapid-eye-movement spacing | d about -2.51 | Strong within-cohort fitted-geometry separation |
+| Pre-N3 spectral-radius drift | p = 0.0014; non-overlapping validation p = 0.032 | Small-sample, pipeline-conditional pre-boundary association |
+| Geometry-only iEEG discrimination | leave-one-subject-out area under the curve about 0.948 | Geometry features carry discriminative information within the declared cohort |
+| Combined iEEG features | leave-one-subject-out area under the curve about 0.957 | Geometry and criticality features are complementary in this cohort |
+
+The sleep classification result of area under the curve = 1.00 is reported only as a small-sample within-cohort upper bound, not as an out-of-cohort generalization estimate.
 
 ## Quick start
 
@@ -43,239 +63,82 @@ pip install -e ".[dev]"
 pytest
 ```
 
-This installs the `cmcc` analysis package and runs the portable test suite (manuscript audit against checked-in JSON results + synthetic unit tests). No private datasets are required for `pytest`.
+The portable test suite does not require the raw research datasets. It checks synthetic mathematical behavior and audits checked-in manuscript/result relationships.
 
-## Installation (Dependencies)
+## Data
 
-The analysis pipeline requires Python >= 3.10. Preferred install:
+Raw data are not redistributed in this repository. The analyses use four external datasets:
 
-```bash
-pip install -e ".[dev]"
-```
+| Dataset | Recording | Role |
+|---|---|---|
+| COGITATE Experiment 1 | intracranial electroencephalography | Primary intracranial analysis |
+| OpenNeuro ds004752 | stereoelectroencephalography | Secondary cross-dataset generalization/consistency check |
+| OpenNeuro ds005620 | scalp electroencephalography under Propofol | State-contrast analysis |
+| ANPHY-Sleep | polysomnography / scalp electroencephalography | Sleep-state and pre-transition analysis |
 
-Legacy alternatives still work:
+Detailed provenance, subject counts, exclusions, modalities, and source links are in `REPLICATION_AND_DATA_PROVENANCE.md` and `data/README_data.md`.
 
-```bash
-pip install -r code/requirements.txt
-# or
-conda env create -f code/environment.yml
-conda activate operator-geometry
-```
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| MNE-Python | >= 1.6 | EEG/iEEG data loading and preprocessing |
-| NumPy | >= 1.24 | Array operations |
-| SciPy | >= 1.11 | Signal processing, statistics |
-| scikit-learn | >= 1.3 | PCA, LDA decoding |
-| pandas | >= 2.0 | Data manipulation |
-| statsmodels | >= 0.14 | Linear mixed-effects models |
-| powerlaw | >= 1.5 | Avalanche size distribution fitting |
-| antropy | >= 0.1.6 | Lempel-Ziv complexity, DFA |
-| neurokit2 | >= 0.2 | Signal complexity measures |
-| Matplotlib | >= 3.7 | Figure generation |
-| seaborn | >= 0.12 | Statistical visualization |
-| h5py | >= 3.9 | HDF5 intermediate storage |
-| PyYAML | >= 6.0 | Pipeline configuration |
-| pytest | >= 7.0 | Test suite (via `.[dev]`) |
-
-## Installation (Data)
-
-The full pipeline requires four public datasets. No raw data is included in this repository.
-
-| Dataset | Subjects | Source | Link / DOI | Used For |
-|---------|----------|--------|------------|----------|
-| COGITATE iEEG Exp. 1 (ECoG) | 18 | Cogitate Consortium | [cogitate-data.ae.mpg.de](https://cogitate-data.ae.mpg.de/) | Primary iEEG analysis |
-| Zurich SEEG (ds004752) | 15 | OpenNeuro | [10.18112/openneuro.ds004752.v1.0.1](https://doi.org/10.18112/openneuro.ds004752.v1.0.1) | Secondary cross-dataset generalization test |
-| Cambridge Propofol EEG (ds005620) | 20 | OpenNeuro | [10.18112/openneuro.ds005620.v1.0.0](https://doi.org/10.18112/openneuro.ds005620.v1.0.0) | Propofol state contrasts |
-| ANPHY-Sleep polysomnography | 10 | OSF | [10.17605/OSF.IO/R26FH](https://doi.org/10.17605/OSF.IO/R26FH) | Sleep state contrasts |
-
-After downloading, set environment variables pointing to your local copies. These names are the canonical contract (resolved by `cmcc.data_roots`):
+Canonical environment variables:
 
 ```bash
-# Linux / macOS
 export IEEG_DATA_ROOT=/path/to/Cogitate_IEEG_EXP1
 export DS004752_DATA_ROOT=/path/to/ds004752
 export PROPOFOL_DATA_ROOT=/path/to/ds005620
 export SLEEP_DATA_ROOT=/path/to/ANPHY-Sleep
-
-# Windows PowerShell
-$env:IEEG_DATA_ROOT = "C:\path\to\Cogitate_IEEG_EXP1"
-$env:DS004752_DATA_ROOT = "C:\path\to\ds004752"
-$env:PROPOFOL_DATA_ROOT = "C:\path\to\ds005620"
-$env:SLEEP_DATA_ROOT = "C:\path\to\ANPHY-Sleep"
 ```
 
-See `data/README_data.md` for detailed download instructions and `REPLICATION_AND_DATA_PROVENANCE.md` for dataset provenance.
+## Reproducibility
 
-## Reproducing the Analysis
+The repository separates three layers of reproducibility:
 
-### Without External Data
+1. **Synthetic mathematical verification**: unit tests check quantities such as spectral radius, eigenvalue spacing, eigenvector overlap, participation ratio, effective rank, and operator fitting on constructed inputs with known behavior.
+2. **Artifact-level verification**: checked-in JavaScript Object Notation (JSON) results and manuscript audit tests keep reported values tied to machine-readable outputs.
+3. **Raw-data reproduction**: users with the external datasets can rerun the full pipeline using the documented data roots and analysis scripts.
 
-All machine-readable statistical results are provided in `results/json_results/` (28 JSON files including a ds004752 subdirectory). A summary of key statistics is in `results/summary_statistics.csv`. These files are sufficient to verify every quantitative claim in the manuscript without re-running the pipeline.
+The canonical configuration is `code/config.yaml`. Some historical exploratory scripts remain in the repository for provenance but are not part of the canonical reproduction path.
 
-### With External Data
+## Repository layout
 
-Pipeline configuration is controlled entirely by `code/config.yaml`. All parameters (PCA components = 15, CSD regularization lambda = 10^-5, VAR window = 500 ms, step = 100 ms, random seed = 42) are versioned for reproducibility.
-
-```bash
-cd code
-bash run_analysis.sh
-```
-
-### Steps to Use the Pipeline
-
-1. **Set parameters**: Edit `code/config.yaml` to set data paths, preprocessing parameters, and statistical thresholds. The default configuration reproduces all manuscript results.
-
-2. **Primary iEEG analysis**: Run `scripts/run_all_subjects.py` to process all 18 ECoG subjects from the Cogitate iEEG dataset. This computes per-subject criticality measures (branching ratio, LZc, DFA, tau), fits sliding-window VAR(1) operators, and extracts eigenvalue geometry metrics.
-
-3. **Broadband comparison**: Run `scripts/run_all_subjects_broadband.py` to repeat the analysis on broadband (unfiltered) data for the HG vs BB comparison.
-
-4. **Secondary cross-dataset generalization test**: Run `scripts/run_ds004752.py` to analyze the 15-subject Zurich SEEG dataset (OpenNeuro ds004752) with the same pipeline. This is a separate dataset from the primary Cogitate iEEG analysis, with different subjects, electrodes (SEEG depth vs ECoG surface), paradigm (Sternberg vs visual consciousness), and lab (Zurich vs Cogitate consortium sites), but uses the same software pipeline. See `REPLICATION_AND_DATA_PROVENANCE.md` for details.
-
-5. **Statistical analyses**: Individual analysis scripts in `scripts/analysis/` compute all reported statistics, including band comparisons, operator-geometry correlations, gap-power independence tests, state contrasts, shared-subspace robustness, surrogate controls, jackknife sensitivity, multi-block sleep robustness, temporal precedence of geometry before sleep transitions (`_temporal_precedence.py`), and the pre-submission adversarial falsification battery (`_falsification_battery.py`).
-
-6. **Results**: All outputs are saved as machine-readable JSON files in `results/json_results/`. Key figures are generated in `results/figures/`.
-
-Please make sure to thoroughly read the docstrings in the code to understand the functionality of each module. If you encounter any problems, please report them as issues in the repository.
-
-## Compiling the Manuscript
-
-```bash
-cd manuscript
-pdflatex main.tex
-biber main
-pdflatex main.tex
-pdflatex main.tex  # third pass for cross-references
-```
-
-Requires a LaTeX distribution (e.g., MiKTeX, TeX Live) with `biblatex`, `biber`, `elsarticle`, `amsmath`, `booktabs`, `hyperref`, `siunitx`, `threeparttable`, `orcidlink`, and `microtype`.
-
-## Repository Structure
-
-```
+```text
 .
-+-- manuscript/
-|   +-- main.tex                     # Full manuscript (LaTeX, Elsevier/elsarticle)
-|   +-- references.bib               # BibLaTeX bibliography
-|   +-- figures/                     # 9 manuscript figures + 7 supplementary (PNG)
-|   +-- tables/
-|
-+-- code/
-|   +-- analysis_pipeline/
-|   |   +-- cmcc/                    # Installable Python package
-|   |   |   +-- analysis/            # Contrasts, decoding, dynamical systems
-|   |   |   +-- features/            # Avalanche, branching, complexity, DFA, entropy, PAC
-|   |   |   +-- io/                  # Data loading, schema validation
-|   |   |   +-- preprocess/          # Epoching, filtering, QC, re-referencing
-|   |   |   +-- viz/                 # Plotting modules
-|   |   +-- scripts/                 # Pipeline entry points and analysis scripts
-|   +-- config.yaml                  # Pipeline configuration
-|   +-- requirements.txt             # Python dependencies
-|   +-- environment.yml              # Conda environment
-|   +-- run_analysis.sh              # Reproduce everything
-|
-+-- results/
-|   +-- json_results/                # 28 machine-readable JSON output files
-|   +-- summary_statistics.csv       # Key headline numbers
-|
-+-- data/
-|   +-- README_data.md               # Dataset download links (no raw data)
-|
-+-- REPLICATION_AND_DATA_PROVENANCE.md
-+-- KEY_MIGRATION.md
-+-- CITATION.cff
-+-- LICENSE
-+-- README.md
+|-- code/
+|   |-- analysis_pipeline/
+|   |   |-- cmcc/                  # installable analysis package
+|   |   `-- scripts/               # pipeline and analysis runners
+|   `-- config.yaml                # canonical configuration
+|-- data/
+|   `-- README_data.md             # data acquisition notes
+|-- manuscript/                    # manuscript source and figures
+|-- results/
+|   |-- json_results/              # machine-readable result artifacts
+|   `-- summary_statistics.csv
+|-- tests/                         # public audit and synthetic tests
+|-- ARCHITECTURE.md
+|-- KEY_MIGRATION.md
+|-- PUBLIC_AUDIT.md
+|-- REPLICATION_AND_DATA_PROVENANCE.md
+|-- SCIENTIFIC_INTEGRITY.md
+|-- CITATION.cff
+`-- LICENSE
 ```
 
-## Key Results
+## Interpretation and review
 
-### Primary Findings
+If you are reviewing the work scientifically, start here:
 
-| Metric | Value | Context |
-|--------|-------|---------|
-| Branching ratio sigma (HG vs BB) | t = -5.74, p = 8.9e-6 | HG more subcritical than BB |
-| LME band effect on sigma | coef = -0.017, p = 9.3e-9 | Confirmed by mixed-effects model |
-| sigma vs ND score | r = 0.860, p = 4.8e-6 | Cross-subject geometry-criticality link |
-| LZc vs ND score | r = -0.684, p = 0.002 | Complexity inversely tracks geometry |
-| Propofol: spectral radius shift | d = -1.66, p = 4.8e-7 | Toward instability under sedation |
-| Propofol: eigenvalue gap | d = 0.71, p = 0.005 | Tighter spacing under sedation |
-| Sleep: N3 vs REM gap | d = -2.51, p = 2.4e-5 | REM = tightest spacing |
-| Delta-delta (gap vs sensitivity) | r = -0.683, p = 0.0009 | Survives alpha control (r = -0.676) |
-| Temporal precedence: spectral radius (N2→N3) | slope p = 0.0014, d = 1.19, 9/10 subjects | Geometry drifts before sleep staging boundary |
-| Temporal precedence: eigenvalue gap (N2→N3) | slope p = 0.00063, d = 1.34, 9/10 subjects | Two geometry dimensions pre-transition |
-| Temporal precedence: N2→REM (null) | spectral radius p = 0.46, gap p = 0.38 | Selective to N3 descent, not all transitions |
-| LOSO classification: propofol vs awake | AUC = 0.913, label-shuffle p = 0.000 | Geometry features classify state above null |
-| LOSO classification: N3 vs REM | AUC = 1.000, label-shuffle p = 0.001 | Perfect geometry-based state separation |
+1. `PUBLIC_AUDIT.md` for known issues, resolved ambiguities, and items that require raw-data recomputation.
+2. `REPLICATION_AND_DATA_PROVENANCE.md` for dataset separation and analysis-to-dataset mapping.
+3. `KEY_MIGRATION.md` for the legacy `ep_score` versus current ND distinction.
+4. `ARCHITECTURE.md` for claim-to-code organization.
+5. `results/json_results/` for machine-readable outputs.
+6. `tests/` for mathematical and manuscript/result audit checks.
 
-### Robustness and Falsification
+## Citation
 
-| Check | Result | Interpretation |
-|-------|--------|----------------|
-| Shared-subspace PCA (propofol) | d = 0.78 vs 0.71 (per-state) | Effect strengthens under common PCA |
-| Surrogate control (200/subject) | real r = 0.076 vs surr r = 0.097, p = 0.23 | Sensitivity not specific to neural structure |
-| Jackknife: sigma vs ND score | 18/18 drops significant, r in [0.79, 0.89] | No single subject drives the correlation |
-| Multi-block sleep: N3 vs REM | d = 3.03, p = 7.9e-6 (3-block avg) | Gap contrast not driven by block selection |
-| Secondary cross-dataset generalization test (SEEG) | spectral sensitivity p ~ 2.5e-8 | Geometry-dynamics relationships generalize to Zurich SEEG dataset |
-| Adversarial: label destruction | p = 0.000 (propofol), p = 0.001 (sleep) | Results not due to label structure |
-| Adversarial: subject jackknife | propofol AUC [0.903, 0.983]; sleep [1.000, 1.000] | No influential subject drives results |
-| Adversarial: temporal jackknife | sign consistent across all LOO iterations | Pre-transition drift not artefactual |
-| Adversarial: spectral confounds | 3/4 features survive residualization (|d| >= 0.5) | Geometry effects not explained by power |
-| Adversarial: window attacks | slope retains 84% magnitude at 3x decimation | Robust to window-parameter changes |
-| Adversarial: model competition | geometry AUC 0.913 vs alpha-power baseline 0.500 | Geometry not reducible to spectral power |
-| Adversarial: feature ablation | PARTIAL — spectral radius dominates | Biological finding, not methodological flaw |
+Citation metadata are provided in `CITATION.cff`. The manuscript and figures are licensed under Creative Commons Attribution 4.0; software is licensed under the Massachusetts Institute of Technology (MIT) License.
 
-## Figures
+## Contact
 
-| Figure | File | Description |
-|--------|------|-------------|
-| Figure 1 | `lme_paired_bands.png` | Band-specific criticality measures in intracranial recordings |
-| Figure 2 | `ep_summary.png` | Fitted operator-geometry summaries versus criticality and complexity across subjects |
-| Figure 3 | `gap_vs_alpha_discriminating_test.png` | Eigenvalue gap is independent of alpha power in propofol EEG |
-| Figure 4 | `ep_propofol_summary.png` | Propofol-induced reorganization of fitted operator geometry in scalp EEG |
-| Figure 5 | `delta_delta_scatter.png` | Relationship between propofol-induced changes in gap and sensitivity |
-| Figure 6 | `sleep_dynamics_summary.png` | Sleep-stage differences in fitted operator geometry |
-| Figure 7 | `pca_scatter_sleep.png` | Geometry-only PCA state-space across wake, N3, and REM sleep |
-| Figure 8 | `pac_summary.png` | Phase-amplitude coupling is linked selectively to tau |
-| Figure 9 | `chirality_summary.png` | Chirality and non-Hermitian decomposition |
-
-**Supplementary figures** (archived in `manuscript/figures/`, not referenced in the current manuscript): `trajectory_N2_to_N3_spectral_radius.png`, `trajectory_N2_to_N3_eigenvalue_gap.png`, `slopes_N2_to_N3_spectral_radius.png`, `spectral_confound_map.png`, `auc_bars.png`, `falsification_scorecard.png`, `sleep_gap_histograms.png`.
-
-## Contributors
-
-* Phillip Peterkin (Independent Researcher)
-
-> Citation: Peterkin, P. (2026). Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions. *Manuscript submitted for publication*.
-
-```bibtex
-@article{Peterkin2026,
-  author  = {Peterkin, Phillip},
-  title   = {Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions},
-  year    = {2026},
-  note    = {Manuscript submitted for publication},
-  url     = {https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry}
-}
-```
-
-See `CITATION.cff` for machine-readable citation metadata.
-
-## License
-
-"Fitted Operator Geometry" Copyright (c) 2026, Phillip Peterkin. All rights reserved.
-
-This repository uses a dual license:
-
-**Code** (Python scripts, configuration files, shell scripts): MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-**Manuscript and figures**: Creative Commons Attribution 4.0 International License (CC-BY-4.0)
-
-You are free to share and adapt the material for any purpose, even commercially, under the following terms: You must give appropriate credit, provide a link to the license, and indicate if changes were made.
-
-Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+Phillip Peterkin  
+Independent Researcher  
+ORCID: 0009-0006-4525-6685

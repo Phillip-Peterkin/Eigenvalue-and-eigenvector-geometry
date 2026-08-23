@@ -2,56 +2,72 @@
 
 Companion code for:
 
-> Peterkin, P. (2026). *Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions.*
+> Peterkin, P. (2026). *Fitted-Operator Geometry as a Complementary Descriptive Axis for Brain-State Discrimination in Human iEEG and Scalp EEG.*
 
 ## Layout
 
 | Path | Role |
-|------|------|
-| `code/analysis_pipeline/cmcc/` | Installable analysis package (`pip install -e ".[dev]"`) |
+|---|---|
+| `code/analysis_pipeline/cmcc/` | Installable analysis package |
 | `code/config.yaml` | Canonical versioned pipeline parameters |
-| `AGENTS.md` | Anti-leakage and scientific integrity rules for contributors/agents |
-| `preregistration_spec.json` | Frozen confirmatory analysis contract + primary predictions |
-| `code/analysis_pipeline/scripts/` | End-to-end runners (need local datasets) |
-| `tests/` | Manuscript-to-JSON audit + citation/repo/unit hygiene |
-| `code/analysis_pipeline/tests/` | Unit tests for geometry / falsification / amplification |
-| `results/json_results/` | Checked-in machine-readable statistics for zero-data verification |
-| `manuscript/` | LaTeX manuscript and figures |
+| `code/analysis_pipeline/scripts/` | End-to-end and analysis-specific runners |
+| `tests/` | Public release, manuscript-to-result, and synthetic mathematical tests |
+| `code/analysis_pipeline/tests/` | Additional unit and analysis tests |
+| `results/json_results/` | Checked-in machine-readable historical and current result artifacts |
+| `manuscript/` | Manuscript source and figures |
+| `PUBLIC_AUDIT.md` | Known issues, resolved ambiguities, and release gate |
+| `SCIENTIFIC_INTEGRITY.md` | Scientific contribution and leakage rules |
+| `KEY_MIGRATION.md` | Historical `ep_score` versus current Near-Degeneracy terminology |
+| `REPLICATION_AND_DATA_PROVENANCE.md` | Dataset and analysis provenance |
+| `preregistration_spec.json` | Frozen public repository analysis contract |
 
-## Quick verification (no private data)
+## Quick verification without raw datasets
 
 ```bash
 pip install -e ".[dev]"
 pytest
 ```
 
-This runs manuscript audit tests against `results/json_results/` and synthetic unit tests for operator-geometry helpers. Scripts import `cmcc` from the installed package — there is no `sys.path` hack to a missing `src/` directory.
+The portable suite includes synthetic mathematical tests plus checks that public claims remain tied to machine-readable artifacts and documented metric definitions.
 
-## Dataset root contract
+## Dataset-root contract
 
 | Variable | Dataset |
-|----------|---------|
-| `IEEG_DATA_ROOT` | Cogitate iEEG Experiment 1 |
-| `DS004752_DATA_ROOT` | Zurich SEEG (OpenNeuro ds004752) |
-| `PROPOFOL_DATA_ROOT` | Cambridge propofol EEG (ds005620) |
+|---|---|
+| `IEEG_DATA_ROOT` | COGITATE intracranial electroencephalography Experiment 1 |
+| `DS004752_DATA_ROOT` | Zurich stereoelectroencephalography, OpenNeuro ds004752 |
+| `PROPOFOL_DATA_ROOT` | Cambridge Propofol scalp electroencephalography, OpenNeuro ds005620 |
 | `SLEEP_DATA_ROOT` | ANPHY-Sleep polysomnography |
 | `RESULTS_ROOT` | Optional analysis output root |
 
-Resolution is implemented in `cmcc.data_roots`. Legacy aliases (`COGITATE_IEEG_ROOT`, `DS005620_ROOT`, `ANPHY_SLEEP_ROOT`) are accepted but not documented for new use.
+Resolution is implemented in `cmcc.data_roots`. No public reproduction path should depend on a machine-local absolute path.
 
-## Entrypoints
+## Canonical entry points
 
 ```bash
 pip install -e ".[dev]"
 python code/analysis_pipeline/scripts/run_pipeline.py
 python code/analysis_pipeline/scripts/run_all_subjects.py
+python code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py
 ```
 
-Primary runners load `code/config.yaml`. Some exploratory seizure scripts still reference historical `configs/*.yaml` filenames that are not shipped; treat those as research notebooks in script form, not the canonical public path.
+The canonical broadband wrapper requires the explicit `preprocessing.broadband_passband` configuration entry and prevents a fresh broadband run from silently reusing the high-gamma passband. The older broadband script is retained for provenance.
+
+## Scientific object map
+
+The primary fitted object is a first-order vector autoregressive matrix estimated in sliding windows. Publicly reported geometry summaries include:
+
+- spectral radius;
+- minimum eigenvalue spacing;
+- eigenvector condition number;
+- related derived geometry summaries.
+
+The historical `ep_score` is a proximity heuristic based on closest-pair overlap divided by eigenvalue spacing. The current manuscript Near-Degeneracy score is a distinct composite based on transformed crowding and eigenvector conditioning. See `KEY_MIGRATION.md` and `PUBLIC_AUDIT.md` before using either quantity in a new analysis.
 
 ## Scientific integrity notes
 
-- Geometry metrics summarize **fitted VAR(1) operators**, not ground-truth neural generators.
-- Manuscript audit tests lock quantitative claims to checked-in JSON; they are confirmatory bookkeeping, not a substitute for synthetic unit tests of the estimators.
-- Synthetic science unit tests live in `tests/unit/test_operator_geometry.py` and cover spectral radius, minimum eigenvalue gap, eigenvector overlap, legacy proximity score (`ep_score`), manuscript near-degeneracy (ND) score, participation ratio / effective rank, and branching ratio on constructed inputs.
-- No silent averaging helpers are part of the public package API; aggregation rules are explicit in analysis scripts.
+- Fitted operators are descriptive local linearizations, not identified neural mechanisms.
+- Synthetic tests validate mathematical helper behavior independently of checked-in empirical results.
+- Manuscript/result audit tests are bookkeeping safeguards and do not substitute for estimator validation.
+- Exploratory scripts and negative results remain visible when they constrain interpretation.
+- Subject-preserving predictive evaluation and explicit aggregation rules are required by `SCIENTIFIC_INTEGRITY.md`.

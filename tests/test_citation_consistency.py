@@ -1,34 +1,39 @@
-"""Guard against citation year drift across public-facing files."""
+"""Guard against citation drift across public-facing files."""
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
+import yaml
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_YEAR = "2026"
+CANONICAL_TITLE = (
+    "Fitted-Operator Geometry as a Complementary Descriptive Axis for "
+    "Brain-State Discrimination in Human iEEG and Scalp EEG"
+)
 
 
-def test_readme_intro_year_is_canonical() -> None:
+def _citation_metadata() -> dict:
+    return yaml.safe_load((REPO_ROOT / "CITATION.cff").read_text(encoding="utf-8"))
+
+
+def test_readme_title_matches_citation_metadata() -> None:
     readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    match = re.search(r"Peterkin\s*\((\d{4})\)", readme)
-    assert match is not None
-    assert match.group(1) == CANONICAL_YEAR
+    first_line = readme.splitlines()[0]
+    assert first_line == f"# {CANONICAL_TITLE}"
+    assert _citation_metadata()["title"] == CANONICAL_TITLE
 
 
-def test_readme_bibtex_year_is_canonical() -> None:
+def test_readme_points_to_canonical_citation_file() -> None:
     readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    year = re.search(r"year\s*=\s*\{(\d{4})\}", readme)
-    key = re.search(r"@article\{Peterkin(\d{4})", readme)
-    assert year is not None and key is not None
-    assert year.group(1) == CANONICAL_YEAR
-    assert key.group(1) == CANONICAL_YEAR
+    assert "Citation metadata are provided in `CITATION.cff`" in readme
 
 
 def test_citation_cff_release_year_is_canonical() -> None:
-    text = (REPO_ROOT / "CITATION.cff").read_text(encoding="utf-8")
-    match = re.search(r'date-released:\s*"(\d{4})-', text)
-    assert match is not None
-    assert match.group(1) == CANONICAL_YEAR
+    metadata = _citation_metadata()
+    release_date = str(metadata["date-released"])
+    assert release_date.startswith(f"{CANONICAL_YEAR}-")
 
 
 def test_no_stale_peterkin_2025_citation_in_readme() -> None:

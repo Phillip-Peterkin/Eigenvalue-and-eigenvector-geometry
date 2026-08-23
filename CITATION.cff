@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use this software or data, please cite it as below."
-title: "Fitted Operator Geometry Reveals Brain-State Structure and Sleep Transitions"
+message: "If you use this software or accompanying manuscript, please cite this repository and the associated paper."
+title: "Fitted-Operator Geometry as a Complementary Descriptive Axis for Brain-State Discrimination in Human iEEG and Scalp EEG"
 type: software
 authors:
   - family-names: Peterkin
@@ -8,27 +8,24 @@ authors:
     orcid: "https://orcid.org/0009-0006-4525-6685"
     affiliation: "Independent Researcher, Albany, Oregon, United States"
 version: "1.0.0"
-date-released: "2026-01-01"
+date-released: "2026-08-22"
 license: MIT
 repository-code: "https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry"
-# doi: TBD (will be assigned upon publication)
 keywords:
-  - criticality
-  - neuronal avalanches
-  - non-normal operator geometry
-  - eigenvalue geometry
+  - neuroscience
+  - operator geometry
+  - vector autoregression
+  - intracranial electroencephalography
+  - electroencephalography
   - anesthesia
   - sleep
-  - electrophysiology
-  - iEEG
-  - EEG
+  - eigenvalue geometry
 abstract: >-
-  Code and results for a study showing that fitted operator geometry reveals
-  brain-state structure and sleep transitions. Sliding-window VAR(1) fits
-  summarize eigenvalue crowding and eigenvector geometry across three human
-  electrophysiology datasets. Key findings: ND score tracks branching ratio
-  (r = 0.86); eigenvalue spacing distinguishes propofol sedation (d = 0.71)
-  and REM from N3 (d = -2.51) independently of alpha/delta power; spectral
-  radius shifts before N2-to-N3 transitions (p = 0.0014; non-overlapping
-  validation p = 0.032). All results are conditional on this estimator and
-  pipeline.
+  Code, machine-readable results, robustness analyses, and manuscript sources
+  for a descriptive study of fitted first-order vector autoregressive operators
+  across human intracranial electroencephalography and scalp electroencephalography
+  datasets. The repository evaluates spectral radius, minimum eigenvalue spacing,
+  eigenvector conditioning, and related geometry summaries across band, anesthesia,
+  and sleep-state contrasts. All results are conditional on the declared estimator
+  and preprocessing pipeline and are not interpreted as identification of underlying
+  neural mechanisms.
