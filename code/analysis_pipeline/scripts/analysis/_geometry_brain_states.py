@@ -20,12 +20,12 @@ from pathlib import Path
 # editable install first, matching the historical runner's behavior.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
+import _geometry_brain_states_legacy as _legacy  # noqa: E402
+
 from cmcc.analysis.geometry_embedding import (  # noqa: E402
     extract_propofol_features_semantic,
     extract_sleep_features_semantic,
 )
-
-import _geometry_brain_states_legacy as _legacy  # noqa: E402
 
 
 def main() -> None:
