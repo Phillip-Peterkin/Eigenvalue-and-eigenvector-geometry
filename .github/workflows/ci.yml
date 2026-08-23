@@ -35,8 +35,13 @@ jobs:
       - name: Check dependency consistency
         run: python -m pip check
 
-      - name: Ruff lint
-        run: ruff check code/analysis_pipeline/cmcc tests
+      - name: Ruff lint package, tests, and canonical public runners
+        run: |
+          ruff check \
+            code/analysis_pipeline/cmcc \
+            tests \
+            code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py \
+            code/analysis_pipeline/scripts/analysis/_geometry_brain_states.py
 
       - name: Run portable test suite
         run: python -m pytest -q --tb=short
