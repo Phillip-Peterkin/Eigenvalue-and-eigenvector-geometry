@@ -115,6 +115,21 @@ class TestManuscriptNdScore:
         nd = compute_nd_score(gaps, kappas)
         assert np.nanmean(nd) == pytest.approx(0.0, abs=1e-12)
 
+    def test_negative_metric_inputs_remain_nan(self) -> None:
+        gaps = np.array([0.1, -0.1, 0.01, 0.001])
+        kappas = np.array([2.0, 5.0, 20.0, -3.0])
+        nd = compute_nd_score(gaps, kappas)
+        assert np.isfinite(nd[0])
+        assert np.isnan(nd[1])
+        assert np.isfinite(nd[2])
+        assert np.isnan(nd[3])
+
+    def test_opposite_sign_pc1_loadings_raise(self) -> None:
+        gaps = np.array([0.1, 0.01, 0.001, 0.0001])
+        kappas = np.array([1000.0, 100.0, 10.0, 1.0])
+        with pytest.raises(ValueError, match="loadings must share a nonzero sign"):
+            compute_nd_score(gaps, kappas)
+
     def test_shape_mismatch_raises(self) -> None:
         with pytest.raises(ValueError, match="share shape"):
             compute_nd_score(np.array([0.1, 0.2]), np.array([1.0]))
