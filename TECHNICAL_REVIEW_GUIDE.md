@@ -57,7 +57,7 @@ The current ND implementation fails loudly for scientifically ambiguous opposite
 
 Open `SCIENTIFIC_INTEGRITY.md`, then inspect `code/analysis_pipeline/cmcc/analysis/geometry_embedding_legacy.py` and the current compatibility surface `code/analysis_pipeline/cmcc/analysis/geometry_embedding.py`.
 
-Historical state classifiers use leave-one-subject-out splitting and fit standardization inside each training fold before transforming the held-out subject. Overlapping windows are not treated as independent subjects.
+Historical state classifiers use **Leave-one-subject-out (LOSO)** splitting and fit standardization inside each training fold before transforming the held-out subject. Overlapping windows are not treated as independent subjects.
 
 Important semantic note: the historical state-space classifier reads `mean_ep_score`. Older code called that column `nd_score`; numerically it is the legacy proximity statistic. `results/RESULT_SCHEMA_NOTES.md` documents the mapping. The repository does not claim that the historical classifier validates the current PC1 ND score.
 
