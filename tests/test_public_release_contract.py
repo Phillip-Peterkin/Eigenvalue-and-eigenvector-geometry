@@ -131,6 +131,28 @@ def test_historical_state_classifier_schema_is_documented() -> None:
     assert "mean_ep_score" in notes
 
 
+def test_public_state_runner_uses_semantic_extractors() -> None:
+    runner = (
+        ROOT
+        / "code"
+        / "analysis_pipeline"
+        / "scripts"
+        / "analysis"
+        / "_geometry_brain_states.py"
+    ).read_text(encoding="utf-8")
+    assert "extract_propofol_features_semantic" in runner
+    assert "extract_sleep_features_semantic" in runner
+    assert "legacy_proximity_score" in runner
+    assert (
+        ROOT
+        / "code"
+        / "analysis_pipeline"
+        / "scripts"
+        / "analysis"
+        / "_geometry_brain_states_legacy.py"
+    ).exists()
+
+
 def test_readme_removes_unmapped_auc_headlines() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "AUC about 0.948" not in readme
