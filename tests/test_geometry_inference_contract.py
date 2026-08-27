@@ -4,7 +4,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from cmcc.analysis.geometry_embedding import (
+from cmcc.analysis.current_geometry_embedding import (
     GeometryFeatureTable,
     _rows_for_sampled_subjects,
     _semantic_feature_names,
