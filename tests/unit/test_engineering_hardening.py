@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from importlib import metadata
 from pathlib import Path
 
@@ -58,9 +59,24 @@ def test_provenance_uses_distribution_names_correctly() -> None:
     assert versions["operator-geometry"] == metadata.version("operator-geometry")
 
 
+def test_release_contract_manifest_matches_git_blob_hashes() -> None:
+    with (REPO_ROOT / "release_contract_manifest.json").open(encoding="utf-8") as handle:
+        manifest = json.load(handle)
+    assert manifest["hash_type"] == "git_blob_sha1"
+    for relative_path, expected_hash in manifest["files"].items():
+        path = REPO_ROOT / relative_path
+        assert path.is_file(), relative_path
+        actual = subprocess.run(
+            ["git", "hash-object", str(path)],
+            cwd=REPO_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        assert actual == expected_hash, f"Scientific contract drift: {relative_path}"
+
+
 def test_minimum_gap_is_invariant_to_input_order_with_mode_limit() -> None:
-    # The closest leading-magnitude pair is deliberately placed after index 20
-    # in one ordering. The helper must define "leading" internally.
     dominant = np.linspace(5.0, 1.0, 18).astype(complex)
     close_pair = np.array([10.0 + 0.0j, 10.0 + 1e-6j])
     small = np.array([0.1 + 0.0j, 0.2 + 0.0j, 0.3 + 0.0j, 0.4 + 0.0j])
