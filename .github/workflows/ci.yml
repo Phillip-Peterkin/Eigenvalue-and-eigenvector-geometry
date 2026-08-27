@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, engineering-hardening-review]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -46,9 +46,49 @@ jobs:
             code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py \
             code/analysis_pipeline/scripts/analysis/_geometry_brain_states.py
 
-      - name: Run portable test suite
-        run: python -m pytest -q --tb=short
+      - name: Reject broad warning suppression in public package paths
+        shell: bash
+        run: |
+          if grep -R --line-number --fixed-string 'filterwarnings("ignore")' code/analysis_pipeline/cmcc; then
+            echo "Broad warning suppression is not allowed in the public package."
+            exit 1
+          fi
 
-      - name: Build distributable wheel
+      - name: Run portable test suite with coverage
+        run: |
+          python -m pytest -q --tb=short \
+            --cov=cmcc \
+            --cov-report=term-missing \
+            --cov-fail-under=25
+
+      - name: Build and smoke-test distributable wheel
         if: matrix.python-version == '3.11'
-        run: python -m pip wheel . --no-deps -w dist
+        shell: bash
+        run: |
+          python -m pip wheel . --no-deps -w dist
+          python -m pip install --force-reinstall --no-deps dist/operator_geometry-*.whl
+          python -c "import cmcc; from importlib.metadata import version; assert cmcc.__version__ == version('operator-geometry')"
+
+  reference-environment:
+    name: Pinned Python 3.11 reference environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-reference.txt
+
+      - name: Install pinned reference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-reference.txt
+          python -m pip install -e . --no-deps
+          python -m pip check
+
+      - name: Run reference-environment test suite
+        run: python -m pytest -q --tb=short
