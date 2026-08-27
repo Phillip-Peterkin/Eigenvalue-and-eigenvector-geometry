@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "cohort_id": "cogitate_primary_ieeg_v1",
+  "dataset": "COGITATE iEEG Experiment 1",
+  "role": "primary_intracranial_analysis",
+  "expected_subject_count": 18,
+  "subjects": [
+    "CE103",
+    "CE110",
+    "CF102",
+    "CF103",
+    "CF104",
+    "CF105",
+    "CF106",
+    "CF109",
+    "CF110",
+    "CF113",
+    "CF119",
+    "CF121",
+    "CF122",
+    "CF124",
+    "CF125",
+    "CF126",
+    "CG103",
+    "CG104"
+  ],
+  "expected_runs": ["DurR1", "DurR2", "DurR3", "DurR4", "DurR5"],
+  "selection_policy": "fixed_manifest",
+  "filesystem_discovery_allowed_for_canonical_reproduction": false,
+  "source_of_subject_ids": "results/json_results/jackknife_sensitivity.json",
+  "notes": "This manifest freezes the 18-subject cohort underlying the primary historical operator-geometry correlations. Canonical reproduction must not infer the scientific cohort from whatever directories happen to be present on a local machine."
+}
