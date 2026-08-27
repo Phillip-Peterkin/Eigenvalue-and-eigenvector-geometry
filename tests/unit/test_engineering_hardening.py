@@ -7,9 +7,11 @@ from importlib import metadata
 from pathlib import Path
 
 import numpy as np
+import pytest
 import yaml
 
 import cmcc
+from cmcc.analysis.validated_var import estimate_var_operator
 from cmcc.config import CANONICAL_COGITATE_SUBJECTS, DEFAULTS, load_config
 from cmcc.features.operator_geometry import minimum_eigenvalue_gap
 from cmcc.provenance import _get_package_versions
@@ -89,3 +91,36 @@ def test_minimum_gap_is_invariant_to_input_order_with_mode_limit() -> None:
 
     assert gap_a == gap_b
     assert {evals[i_a], evals[j_a]} == {shuffled[i_b], shuffled[j_b]}
+
+
+@pytest.mark.parametrize(
+    ("data", "window_size", "step_size", "regularization", "message"),
+    [
+        (np.ones(100), 20, 5, 1e-4, "2-D"),
+        (np.array([[1.0, np.nan, 2.0]]), 2, 1, 1e-4, "finite"),
+        (np.ones((2, 100)), 20, 0, 1e-4, "step_size"),
+        (np.ones((2, 100)), 20, 5, -1.0, "regularization"),
+    ],
+)
+def test_validated_var_rejects_malformed_inputs(
+    data: np.ndarray,
+    window_size: int,
+    step_size: int,
+    regularization: float,
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        estimate_var_operator(
+            data,
+            window_size=window_size,
+            step_size=step_size,
+            regularization=regularization,
+        )
+
+
+def test_validated_var_accepts_finite_well_formed_input() -> None:
+    rng = np.random.default_rng(123)
+    data = rng.normal(size=(3, 400))
+    result = estimate_var_operator(data, window_size=80, step_size=40, regularization=1e-4)
+    assert result.jacobians.shape[1:] == (3, 3)
+    assert np.all(np.isfinite(result.spectral_radius))
