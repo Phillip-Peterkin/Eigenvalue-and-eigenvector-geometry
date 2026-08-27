@@ -12,7 +12,7 @@ This audit records the scientific and engineering state of the public repository
 | Canonical config/default drift | Resolved with regression test | `code/config.yaml` and `cmcc.config.DEFAULTS` must remain equal |
 | Reference software environment | Added | `requirements-reference.txt` provides a pinned Python 3.11 reviewer baseline while `pyproject.toml` retains supported library ranges |
 | Package version/provenance metadata | Resolved | Package version is read from distribution metadata; provenance uses distribution names and records config/cohort/Git/platform/package information |
-| Numerical warning policy | Hardened | Runtime warnings fail the portable test suite; broad warning suppression is rejected in the installable package |
+| Numerical warning policy | Hardened | Unexpected runtime warnings fail the portable test suite; narrow, declared exceptions cover synthetic degenerate cases; broad warning suppression is rejected in the installable package |
 | Primitive eigenvalue-gap ordering | Resolved | Leading modes are defined internally by eigenvalue magnitude, making truncated minimum-gap calculation invariant to input ordering |
 | VAR fitting input contract | Hardened for new code | `cmcc.analysis.validated_var.estimate_var_operator` rejects malformed/non-finite inputs and invalid window, step, or regularization values before delegating to the retained estimator |
 | Release-contract drift detection | Added | `release_contract_manifest.json` pins canonical configuration, cohort/spec files, and headline result artifacts by Git blob hash |
@@ -23,7 +23,7 @@ This audit records the scientific and engineering state of the public repository
 | Historical classifier uncertainty | Corrected for new runs | Historical point LOSO AUC retained; old bootstrap/null uncertainty is provenance-only because duplicate subject draws were collapsed and finite null p-values lacked +1 correction |
 | Current ND window-level implementation | Implemented and synthetically tested | PC1-based paired-valid-window construct with explicit orientation/validity rules |
 | Subject-level current-ND correlation | Open scientific item | Requires a prospective aggregation/normalization rule and a new result artifact |
-| Broadband vs high-gamma raw-data reconciliation | Open empirical item | Execution path is hardened and strict; corrected raw-data output still needs reconciliation with the historical checked-in artifact |
+| Broadband vs high-gamma configuration and raw-data reconciliation | Open empirical item | Configuration/execution path is hardened and strict; corrected raw-data output still needs reconciliation with the historical checked-in artifact |
 | Exceptional-point terminology | Resolved in interpretation | Historical naming only; no exact exceptional-point claim |
 | Zurich ds004752 analysis | Resolved in interpretation | Secondary consistency/generalization analysis, not independent replication |
 | Spectral-sensitivity surrogate result | Resolved in interpretation | Absolute magnitude is not treated as a standalone neural marker |
@@ -79,7 +79,7 @@ Run provenance now reads installed package versions from distribution metadata. 
 
 ## 6. Numerical and test hardening
 
-Pytest no longer globally hides `RuntimeWarning` or `UserWarning`. Runtime warnings are errors in the portable suite, while other warnings remain visible. CI rejects unqualified `warnings.filterwarnings("ignore")` in the installable `cmcc` package. Historical/exploratory scripts are retained separately and classified in `code/analysis_pipeline/scripts/README.md` rather than being represented as canonical merely because they are executable.
+Pytest no longer globally hides `RuntimeWarning` or `UserWarning`. Unexpected runtime warnings are errors in the portable suite. Narrow message-specific exceptions are declared only for known synthetic degeneracies, including all-NaN bootstrap columns that intentionally represent time points with no available subject coverage. Other warnings remain visible. CI rejects unqualified `warnings.filterwarnings("ignore")` in the installable `cmcc` package. Historical/exploratory scripts are retained separately and classified in `code/analysis_pipeline/scripts/README.md` rather than being represented as canonical merely because they are executable.
 
 The public minimum-eigenvalue-gap helper now defines leading modes by descending eigenvalue magnitude before mode truncation and maps the selected pair back to caller indices. This removes an implicit ordering dependency from the public numerical API.
 
