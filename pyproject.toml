@@ -66,6 +66,7 @@ filterwarnings = [
   "error::RuntimeWarning",
   "ignore:Precision loss occurred in moment calculation due to catastrophic cancellation.*:RuntimeWarning",
   "ignore:Mean of empty slice:RuntimeWarning",
+  "ignore:All-NaN slice encountered:RuntimeWarning",
   "ignore:An input array is constant.*:RuntimeWarning",
 ]
 
