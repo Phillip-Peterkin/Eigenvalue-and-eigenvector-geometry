@@ -1,71 +1,139 @@
 # Fitted-Operator Geometry as a Complementary Descriptive Axis for Brain-State Discrimination in Human iEEG and Scalp EEG
 
+**Phillip Peterkin**  
+Independent Researcher, Albany, Oregon, United States  
+ORCID: 0009-0006-4525-6685
+
 [![License: MIT](https://img.shields.io/badge/Code-MIT-yellow.svg)](LICENSE)
 [![Manuscript: CC BY 4.0](https://img.shields.io/badge/Manuscript-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![CI](https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/actions/workflows/ci.yml/badge.svg)](https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 
-This repository contains an installable Python analysis package, machine-readable results, robustness and falsification checks, automated tests, and manuscript sources for a descriptive study of fitted linear-operator geometry in human intracranial electroencephalography (iEEG) and scalp electroencephalography (EEG).
+This repository accompanies the manuscript **Fitted-Operator Geometry as a Complementary Descriptive Axis for Brain-State Discrimination in Human iEEG and Scalp EEG**. It contains the analysis code, machine-readable result artifacts, figures, robustness analyses, reproducibility checks, and manuscript sources used in the study.
 
-The central object is a sliding-window first-order vector autoregressive model, VAR(1). The analysis extracts spectral radius, eigenvalue spacing, eigenvector conditioning, and related summaries from each fitted coefficient matrix. These are treated as properties of fitted local linearizations, not direct measurements of the brain's true dynamical generator.
+[Manuscript source](manuscript/main.tex) | [Technical review guide](TECHNICAL_REVIEW_GUIDE.md) | [Replication and data provenance](REPLICATION_AND_DATA_PROVENANCE.md) | [Public audit](PUBLIC_AUDIT.md)
 
-## Fast technical review
+## Overview
 
-If you are reviewing the project as software or computational research, start with [`TECHNICAL_REVIEW_GUIDE.md`](TECHNICAL_REVIEW_GUIDE.md). It maps the end-to-end architecture to concrete modules, tests, provenance artifacts, leakage controls, failure behavior, and reproduction commands.
+Neural-state analyses commonly summarize recordings through spectral power, complexity, connectivity, and criticality-related statistics. These measures are informative, but they do not directly characterize the geometry of a fitted multivariate dynamical operator.
 
-For scientific review, read [`PUBLIC_AUDIT.md`](PUBLIC_AUDIT.md) and [`SCIENTIFIC_INTEGRITY.md`](SCIENTIFIC_INTEGRITY.md) before the manuscript. Those files make the project's historical corrections and remaining release gates explicit.
+This study evaluates whether short-window fitted operators provide a complementary descriptive representation of brain state. Human intracranial electroencephalography (iEEG) and scalp electroencephalography (EEG) are analyzed using sliding-window first-order vector autoregressive models, VAR(1). For each window, the fitted coefficient matrix is summarized through eigenvalue and eigenvector quantities, including spectral radius, minimum eigenvalue spacing, and eigenvector conditioning.
 
-## Scientific scope
+The fitted matrices are treated as local linear approximations under a declared preprocessing and estimation pipeline. They are not interpreted as direct measurements of the brain's underlying physical transition operator.
 
-The repository intentionally makes narrow claims:
+## Analytical framework
 
-- fitted-operator geometry is descriptive and pipeline-dependent;
-- no causal claim is made that fitted geometry generates conscious state, anesthesia state, or sleep stage;
-- no claim is made that mathematically exact exceptional points are detected in neural tissue;
-- minimum eigenvalue spacing is dimension-dependent and is interpreted comparatively under fixed settings;
-- the threshold-derived branching statistic is treated as criticality-related, not as an estimator-independent latent branching parameter;
-- OpenNeuro ds004752 is a secondary cross-dataset consistency/generalization analysis, not an independent preregistered replication;
-- surrogate analyses constrain absolute sensitivity quantities that can also arise from autoregressive fitting to autocorrelated signals.
-
-## Metric semantics: legacy proximity is not current ND
-
-Earlier analyses stored a quantity under `ep_score` / `mean_ep_score`:
+For a multichannel signal \(x_t\), the local model is
 
 ```text
-legacy_proximity_score = eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10)
+x(t+1) = A x(t) + error
 ```
 
-The current Near-Degeneracy (ND) score is a different construction. It uses paired valid windows, transformed eigenvalue crowding and eigenvector conditioning, within-analysis-unit standardization, and a sign-normalized first-principal-component projection.
+The analysis proceeds as follows:
 
-These quantities are not algebraically equivalent. Therefore:
+```text
+Multichannel neural recordings
+            |
+            v
+ Dataset-specific preprocessing
+            |
+            v
+      Sliding time windows
+            |
+            v
+       Fit VAR(1) matrix A
+            |
+            v
+  Eigenvalues and eigenvectors
+            |
+            v
+ Spectral and geometric summaries
+            |
+            v
+State, band, and transition analyses
+```
 
-- the historical cross-subject `r ~= 0.86` association belongs to the legacy proximity statistic;
-- the checked-in historical `geometry_brain_states.json` artifact contains the legacy proximity values even though an older schema called the feature `nd_score`;
-- a simple subject mean of current within-unit standardized ND is not used as a substitute, because that mean is approximately zero by construction;
-- any future subject-level current-ND result requires a prospectively specified aggregation rule and a new result artifact.
+Primary fitted-operator quantities include:
 
-The current compatibility module documents the historical schema without changing its numbers. See `KEY_MIGRATION.md`, `PUBLIC_AUDIT.md`, and `results/RESULT_SCHEMA_NOTES.md`.
+- **Spectral radius:** the largest eigenvalue magnitude of the fitted matrix.
+- **Minimum eigenvalue spacing:** the smallest pairwise distance between fitted eigenvalues under fixed dimensional settings.
+- **Eigenvector condition number:** a measure of sensitivity and non-orthogonality in the fitted eigenvector basis.
+- **Composite geometric summaries:** historical and current constructions derived from eigenvalue crowding and eigenvector structure, documented separately where their definitions differ.
 
-## Main empirical results
+## Results
 
-The checked-in artifacts support the following descriptive results under the declared pipeline:
+### High-gamma and broadband activity differ under the declared branching-related estimator
 
-| Analysis | Result | Interpretation |
-|---|---:|---|
-| High-gamma vs broadband branching statistic | paired t(17) = -5.74, p = 8.9e-6 | The two signal definitions differ under this criticality-related estimator |
-| Mixed-effects band contrast | coefficient about -0.0173, p = 9.3e-9 | Band difference persists in the mixed-effects analysis |
-| Legacy proximity vs branching statistic | r about 0.86 | Historical cross-subject association; not a current-ND result |
-| Propofol minimum eigenvalue spacing | d about 0.71 | Fitted spacing differs between awake and sedated states |
-| Propofol spectral radius | about 0.9980 awake vs 1.0025 sedated | Small fitted stability-margin shift under sedation |
-| Sleep N3 vs REM spacing | d about -2.51 | Strong within-cohort fitted-spacing separation |
-| Pre-N3 spectral-radius drift | p = 0.0014; non-overlap p = 0.032 | Small-sample, pipeline-conditional pre-boundary association |
-| Historical geometry-feature classifier, awake vs propofol | LOSO AUC = 0.9125 | Subject-preserving discrimination; feature bundle includes legacy proximity field |
+In the primary intracranial analysis, the threshold-derived branching statistic was lower in high-gamma activity than in broadband activity, with \(\sigma_{HG}=0.9735\) and \(\sigma_{BB}=0.9908\), paired \(t(17)=-5.74\), \(p=8.9\times10^{-6}\). A mixed-effects band contrast was also significant, with a coefficient of approximately -0.0173 and \(p=9.3\times10^{-9}\).
 
-The historical sleep classifier reaches AUC = 1.00 for N3 vs REM in the ten-subject cohort. It is reported as a within-cohort upper bound, not an out-of-cohort generalization estimate.
+The branching quantity is treated as a criticality-related statistic under the declared thresholding and preprocessing procedure, not as an estimator-independent measurement of a latent neuronal branching parameter.
 
-During the August 2026 engineering review, two earlier classification headlines were removed because no clean matching checked-in result artifact could be identified. Public headline numbers must have an inspectable artifact path.
+### Historical geometry associations are retained with their original metric
 
-## Quick start
+An earlier per-window proximity statistic combined closest-pair eigenvector overlap with minimum eigenvalue spacing. Across 18 intracranial electroencephalography subjects, the historical subject-level proximity summary was associated with the branching statistic at approximately \(r=0.86\). Minimum spacing itself was negatively associated with the branching statistic, while other complexity measures showed distinct relationships with the historical geometry summary.
+
+These results are preserved as historical results of the original proximity statistic. They are not relabeled as results of the current Near-Degeneracy score.
+
+### Propofol anesthesia is associated with changes in fitted-operator geometry
+
+In the propofol electroencephalography cohort, minimum eigenvalue spacing differed between awake and sedated states, with an effect size of approximately \(d=0.71\). Spectral radius shifted from approximately 0.9980 while awake to 1.0025 during sedation, and eigenvector conditioning also changed under sedation. The spacing effect remained present under shared-subspace estimation and alternative spacing summaries.
+
+![Propofol fitted-geometry state vectors](results/figures/geometry_embedding/state_vectors_propofol.png)
+
+### Sleep stages show distinct fitted-geometric organization
+
+The strongest sleep-state contrast was observed between N3 sleep and rapid eye movement (REM) sleep. Minimum eigenvalue spacing differed with an effect size of approximately \(d=-2.51\). Awake and REM states also differed, while awake and N3 did not show the same headline spacing effect.
+
+![Sleep fitted-geometry state vectors](results/figures/geometry_embedding/state_vectors_sleep.png)
+
+### Historical fitted-geometry features discriminate brain states within the studied cohorts
+
+A historical four-feature state representation containing minimum eigenvalue spacing, eigenvector condition number, spectral radius, and the legacy proximity statistic achieved **LOSO AUC = 0.9125** for awake versus propofol. Leave-one-subject-out (LOSO) evaluation keeps each held-out subject separate from model fitting and standardization.
+
+The historical N3-versus-REM sleep classifier reached an area under the receiver operating characteristic curve (AUC) of 1.00 in the ten-subject sleep cohort. This value is treated as a within-cohort upper bound rather than an estimate of external generalization performance.
+
+![Geometry classifier performance](results/figures/geometry_embedding/auc_bars.png)
+
+### Fitted spectral radius changes before scored N2-to-N3 transitions
+
+Across the 120 seconds preceding scored N2-to-N3 transitions, spectral radius changed systematically, with group \(p=0.0014\). A stricter non-overlapping-window validation remained significant at \(p=0.032\). Minimum eigenvalue spacing showed a supportive trend but did not survive the same stricter non-overlap criterion.
+
+The result is interpreted as a pre-boundary association under the fitted pipeline rather than evidence that operator geometry causes the transition.
+
+![Spectral radius before N2-to-N3 transitions](results/figures/temporal_precedence/trajectory_N2_to_N3_spectral_radius.png)
+
+### Geometry is evaluated against conventional signal structure and falsification controls
+
+The analysis directly tests whether fitted-geometric separation is reducible to conventional signal-power differences. Additional controls include shared-subspace principal component analysis, alternative spacing summaries, ridge-regularization sweeps, non-overlapping windows, and phase-randomized surrogate analyses.
+
+The surrogate analysis produced an important negative result: absolute spectral-sensitivity magnitudes in the tested propofol subset did not exceed the surrogate group mean. That quantity is therefore not promoted as a neural-specific marker.
+
+![Geometry versus power](results/figures/geometry_embedding/geometry_vs_power.png)
+
+## Interpretation and scope
+
+The results support fitted-operator geometry as a complementary descriptive axis for neural-state analysis under the declared estimator and preprocessing choices. The principal observation is not that eigenvalues or eigenvectors identify a hidden biological mechanism, but that the organization of fitted local dynamics contains measurable state-associated structure across intracranial, anesthesia, and sleep analyses.
+
+The scalp electroencephalography findings show that state differences can appear in multiple geometric properties, and the pre-transition analysis suggests that some fitted quantities vary before a scored sleep-stage boundary. These findings motivate further testing with larger cohorts, prospectively specified aggregation rules, and external validation data.
+
+Interpretation remains conditional on model order, dimensionality reduction, window length, filtering, finite-sample estimation, and the source recordings themselves. Minimum eigenvalue spacing is dimension-dependent, and composite geometry metrics require explicit definition and provenance.
+
+## Data
+
+Raw research data are not redistributed in this repository. Four external datasets are represented in the analysis record:
+
+| Dataset | Recording | Role |
+|---|---|---|
+| COGITATE Experiment 1 | intracranial electroencephalography | Primary intracranial analysis |
+| OpenNeuro ds004752 | stereoelectroencephalography | Secondary cross-dataset consistency/generalization analysis |
+| OpenNeuro ds005620 | scalp electroencephalography under propofol | Anesthesia state-contrast analysis |
+| ANPHY-Sleep | polysomnography / scalp electroencephalography | Sleep-state and pre-transition analysis |
+
+Dataset links, subject counts, exclusions, analysis roles, and provenance are documented in [`REPLICATION_AND_DATA_PROVENANCE.md`](REPLICATION_AND_DATA_PROVENANCE.md) and [`data/README_data.md`](data/README_data.md).
+
+## Reproducing the analyses
+
+### Portable test suite
 
 ```bash
 git clone https://github.com/Phillip-Peterkin/Eigenvalue-and-eigenvector-geometry.git
@@ -74,22 +142,11 @@ python -m pip install -e ".[dev]"
 python -m pytest -q
 ```
 
-The portable suite does not require raw research datasets. It checks mathematical known-answer behavior, synthetic fitted systems, public scientific contracts, and manuscript/result consistency.
+The portable suite does not require the raw research datasets. It checks mathematical known-answer behavior, synthetic fitted systems, manuscript-to-result consistency, and public scientific contracts.
 
-## Data
+### Raw-data configuration
 
-Raw research data are not redistributed here. The analysis record uses four external datasets:
-
-| Dataset | Recording | Role |
-|---|---|---|
-| COGITATE Experiment 1 | iEEG | Primary intracranial analysis |
-| OpenNeuro ds004752 | stereoelectroencephalography | Secondary consistency/generalization analysis |
-| OpenNeuro ds005620 | scalp EEG under propofol | Anesthesia state-contrast analysis |
-| ANPHY-Sleep | polysomnography / scalp EEG | Sleep-state and pre-transition analysis |
-
-Detailed acquisition links, subject counts, exclusions, and analysis roles are in `REPLICATION_AND_DATA_PROVENANCE.md` and `data/README_data.md`.
-
-Canonical data-root environment variables:
+For raw-data reproduction, configure the canonical dataset roots:
 
 ```bash
 export IEEG_DATA_ROOT=/path/to/Cogitate_IEEG_EXP1
@@ -98,55 +155,66 @@ export PROPOFOL_DATA_ROOT=/path/to/ds005620
 export SLEEP_DATA_ROOT=/path/to/ANPHY-Sleep
 ```
 
-## Reproducibility layers
+The corresponding runners and configuration are documented in [`TECHNICAL_REVIEW_GUIDE.md`](TECHNICAL_REVIEW_GUIDE.md) and [`code/config.yaml`](code/config.yaml).
 
-1. **Mathematical verification**: synthetic tests exercise spectral radius, spacing, overlap, participation ratio, effective rank, current ND behavior, and fitted VAR recovery on constructed systems.
-2. **Artifact verification**: manuscript-audit tests lock reported statistics to checked-in JSON artifacts.
-3. **Scientific-contract verification**: public-release tests prevent known terminology and configuration regressions.
-4. **Raw-data reproduction**: users with the external datasets can execute the documented canonical runners. Remaining raw-data release gates are listed openly in `PUBLIC_AUDIT.md`.
-
-## Repository layout
+## Repository structure
 
 ```text
 .
 |-- code/
 |   |-- analysis_pipeline/
-|   |   |-- cmcc/                  # installable package
-|   |   `-- scripts/               # analysis runners
+|   |   |-- cmcc/                  # installable analysis package
+|   |   `-- scripts/               # canonical and historical analysis runners
 |   `-- config.yaml                # canonical configuration
-|-- data/README_data.md
+|-- data/
+|   `-- README_data.md             # dataset and access notes
 |-- manuscript/
-|   |-- main.tex                   # current aligned public manuscript
-|   `-- archive/                   # pre-alignment source retained for provenance
+|   |-- main.tex                   # current public manuscript
+|   `-- archive/                   # retained pre-alignment manuscript source
 |-- results/
+|   |-- figures/                   # result and robustness figures
 |   |-- json_results/              # machine-readable result artifacts
 |   `-- RESULT_SCHEMA_NOTES.md     # historical/current field semantics
-|-- tests/                         # repository-level audits and unit tests
+|-- tests/                         # mathematical, scientific-contract, and audit tests
 |-- TECHNICAL_REVIEW_GUIDE.md
+|-- REPLICATION_AND_DATA_PROVENANCE.md
 |-- PUBLIC_AUDIT.md
 |-- SCIENTIFIC_INTEGRITY.md
-|-- REPLICATION_AND_DATA_PROVENANCE.md
 |-- KEY_MIGRATION.md
 |-- CITATION.cff
 `-- LICENSE
 ```
 
-## Review order
+## Scientific record and metric provenance
 
-A technical reviewer can assess the project quickly in this order:
+Earlier analyses stored a proximity quantity under `ep_score` and `mean_ep_score`:
 
-1. `TECHNICAL_REVIEW_GUIDE.md`
-2. `.github/workflows/ci.yml`
-3. `tests/unit/test_operator_geometry.py`
-4. `tests/test_manuscript_audit.py`
-5. `tests/test_public_release_contract.py`
-6. `PUBLIC_AUDIT.md`
-7. `results/json_results/`
-8. `manuscript/main.tex`
+```text
+legacy_proximity_score = eigenvector_overlap / (minimum_eigenvalue_gap + 1e-10)
+```
+
+The current Near-Degeneracy (ND) score is a different construction based on paired valid windows, transformed eigenvalue crowding, eigenvector conditioning, within-analysis-unit standardization, and a sign-normalized first-principal-component projection.
+
+The two quantities are not algebraically equivalent. Consequently, the historical cross-subject association at approximately \(r=0.86\) and the historical state-classification artifacts remain attached to the legacy proximity statistic. A simple subject mean of current within-unit standardized ND is not substituted for those historical results because that mean is approximately zero by construction.
+
+The complete migration record is documented in [`KEY_MIGRATION.md`](KEY_MIGRATION.md), [`PUBLIC_AUDIT.md`](PUBLIC_AUDIT.md), and [`results/RESULT_SCHEMA_NOTES.md`](results/RESULT_SCHEMA_NOTES.md).
+
+## Review and reproducibility record
+
+For software and computational review, begin with [`TECHNICAL_REVIEW_GUIDE.md`](TECHNICAL_REVIEW_GUIDE.md). For scientific review, historical corrections, release gates, subject-boundary rules, and result-integrity controls are documented in [`PUBLIC_AUDIT.md`](PUBLIC_AUDIT.md) and [`SCIENTIFIC_INTEGRITY.md`](SCIENTIFIC_INTEGRITY.md).
+
+The repository separates four reproducibility layers:
+
+1. Mathematical verification using synthetic and known-answer tests.
+2. Artifact verification linking reported statistics to checked-in result files.
+3. Scientific-contract verification preventing known terminology and configuration regressions.
+4. Raw-data reproduction using the documented external datasets and canonical runners.
 
 ## Citation
 
-Citation metadata are provided in `CITATION.cff`. Software is licensed under the Massachusetts Institute of Technology (MIT) License. Manuscript text and figures are licensed under Creative Commons Attribution 4.0.
+Citation metadata are provided in `CITATION.cff`.
+
+Software is licensed under the Massachusetts Institute of Technology (MIT) License. Manuscript text and figures are licensed under Creative Commons Attribution 4.0.
 
 ## Contact
 
