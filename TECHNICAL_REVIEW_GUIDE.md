@@ -1,6 +1,6 @@
 # Technical Review Guide
 
-This document provides a short path for reviewers assessing the repository as computational research and scientific software.
+This document provides a short path for reviewers assessing the repository as computational research and scientific software. The authoritative list of resolved issues and open release gates is maintained in `PUBLIC_AUDIT.md`.
 
 ## What to evaluate
 
@@ -87,7 +87,7 @@ The surrogate result that weakens interpretation of absolute spectral sensitivit
 
 Continuous Integration is defined in `.github/workflows/ci.yml`. It tests Python 3.10, 3.11, and 3.12, checks dependency consistency, runs Ruff, executes the portable suite with coverage, rejects broad warning suppression in the installable package, builds and installs the wheel, verifies package/distribution version agreement, and separately runs the suite in the pinned Python 3.11 reference environment.
 
-Warnings remain visible during tests rather than being globally suppressed. Expected numerical edge-case warnings in synthetic tests are reported; malformed inputs to the current public numerical entry points are rejected explicitly by contract tests.
+Unexpected runtime warnings fail the test suite. Narrow message-specific exceptions are declared for synthetic edge cases whose missing support is itself the quantity under test, such as intentionally all-NaN bootstrap columns. Other warnings remain visible, and malformed inputs to current public numerical entry points are rejected explicitly by contract tests.
 
 Local broad-environment verification:
 
