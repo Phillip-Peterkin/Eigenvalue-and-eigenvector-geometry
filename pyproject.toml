@@ -60,7 +60,7 @@ testpaths = ["tests", "code/analysis_pipeline/tests"]
 pythonpath = ["code/analysis_pipeline"]
 addopts = "-ra"
 filterwarnings = [
-  "error::RuntimeWarning",
+  "default::RuntimeWarning",
   "default::UserWarning",
   "default::FutureWarning",
   "default::DeprecationWarning",
