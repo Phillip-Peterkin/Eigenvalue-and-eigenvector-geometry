@@ -47,9 +47,9 @@ The minimum-gap helper defines leading modes internally by eigenvalue magnitude 
 
 The canonical primary intracranial cohort is versioned in `cohorts/cogitate_primary.json` and mirrored in `code/config.yaml`. Canonical reproduction must use this fixed manifest rather than discovering subjects from local directory contents. `tests/unit/test_engineering_hardening.py` enforces synchronization between the manifest, YAML configuration, and installed package defaults.
 
-Open `SCIENTIFIC_INTEGRITY.md`, then inspect `code/analysis_pipeline/cmcc/analysis/geometry_embedding_legacy.py` and the current compatibility surface `code/analysis_pipeline/cmcc/analysis/geometry_embedding.py`.
+For current inference, inspect `code/analysis_pipeline/cmcc/analysis/current_geometry_embedding.py`. The broad `geometry_embedding.py` module remains a compatibility surface and `geometry_embedding_legacy.py` remains the historical implementation for provenance.
 
-Historical state classifiers use Leave-One-Subject-Out (LOSO) splitting and fit standardization inside each training fold before transforming the held-out subject. Overlapping windows are not treated as independent subjects.
+Historical state classifiers use **Leave-one-subject-out (LOSO)** splitting and fit standardization inside each training fold before transforming the held-out subject. Overlapping windows are not treated as independent subjects.
 
 Important semantic note: the historical state-space classifier reads `mean_ep_score`. Older code called that column `nd_score`; numerically it is the legacy proximity statistic. `results/RESULT_SCHEMA_NOTES.md` documents the mapping. The repository does not claim that the historical classifier validates the current PC1 ND score.
 
@@ -86,6 +86,8 @@ The surrogate result that weakens interpretation of absolute spectral sensitivit
 ### 5. Build and test discipline
 
 Continuous Integration is defined in `.github/workflows/ci.yml`. It tests Python 3.10, 3.11, and 3.12, checks dependency consistency, runs Ruff, executes the portable suite with coverage, rejects broad warning suppression in the installable package, builds and installs the wheel, verifies package/distribution version agreement, and separately runs the suite in the pinned Python 3.11 reference environment.
+
+Warnings remain visible during tests rather than being globally suppressed. Expected numerical edge-case warnings in synthetic tests are reported; malformed inputs to the current public numerical entry points are rejected explicitly by contract tests.
 
 Local broad-environment verification:
 
@@ -132,6 +134,10 @@ python code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py
 It fails if an expected subject or expected run is missing, or if any required subject analysis does not complete successfully. The optional `--best-effort` mode discovers local subjects and tolerates partial failure, but it is explicitly exploratory and is not a valid release-reproduction path.
 
 The broadband/high-gamma distinction is explicit in configuration. The canonical broadband wrapper validates and records the effective passband while adapting to the retained historical implementation without changing the locked historical artifact.
+
+## Numerical fitting contract
+
+New library code should prefer `cmcc.analysis.validated_var.estimate_var_operator`. It validates array dimensionality and finite values, positive stride, non-negative regularization, window/channel constraints, and finite key outputs before delegating to the retained VAR(1) implementation.
 
 ## Script classification
 
