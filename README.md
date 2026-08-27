@@ -78,13 +78,9 @@ These results are preserved as historical results of the original proximity stat
 
 In the propofol electroencephalography cohort, minimum eigenvalue spacing differed between awake and sedated states, with an effect size of approximately \(d=0.71\). Spectral radius shifted from approximately 0.9980 while awake to 1.0025 during sedation, and eigenvector conditioning also changed under sedation. The spacing effect remained present under shared-subspace estimation and alternative spacing summaries.
 
-<p align="center"><img src="results/figures/geometry_embedding/state_vectors_propofol.png" alt="Propofol fitted-geometry state vectors" width="520"></p>
-
 ### Sleep stages show distinct fitted-geometric organization
 
 The strongest sleep-state contrast was observed between N3 sleep and rapid eye movement (REM) sleep. Minimum eigenvalue spacing differed with an effect size of approximately \(d=-2.51\). Awake and REM states also differed, while awake and N3 did not show the same headline spacing effect.
-
-<p align="center"><img src="results/figures/geometry_embedding/state_vectors_sleep.png" alt="Sleep fitted-geometry state vectors" width="520"></p>
 
 ### Historical fitted-geometry features discriminate brain states within the studied cohorts
 
@@ -92,23 +88,17 @@ A historical four-feature state representation containing minimum eigenvalue spa
 
 The historical N3-versus-REM sleep classifier reached an area under the receiver operating characteristic curve (AUC) of 1.00 in the ten-subject sleep cohort. This value is treated as a within-cohort upper bound rather than an estimate of external generalization performance.
 
-<p align="center"><img src="results/figures/geometry_embedding/auc_bars.png" alt="Geometry classifier performance" width="480"></p>
-
 ### Fitted spectral radius changes before scored N2-to-N3 transitions
 
 Across the 120 seconds preceding scored N2-to-N3 transitions, spectral radius changed systematically, with group \(p=0.0014\). A stricter non-overlapping-window validation remained significant at \(p=0.032\). Minimum eigenvalue spacing showed a supportive trend but did not survive the same stricter non-overlap criterion.
 
 The result is interpreted as a pre-boundary association under the fitted pipeline rather than evidence that operator geometry causes the transition.
 
-<p align="center"><img src="results/figures/temporal_precedence/trajectory_N2_to_N3_spectral_radius.png" alt="Spectral radius before N2-to-N3 transitions" width="540"></p>
-
 ### Geometry is evaluated against conventional signal structure and falsification controls
 
 The analysis directly tests whether fitted-geometric separation is reducible to conventional signal-power differences. Additional controls include shared-subspace principal component analysis, alternative spacing summaries, ridge-regularization sweeps, non-overlapping windows, and phase-randomized surrogate analyses.
 
 The surrogate analysis produced an important negative result: absolute spectral-sensitivity magnitudes in the tested propofol subset did not exceed the surrogate group mean. That quantity is therefore not promoted as a neural-specific marker.
-
-<p align="center"><img src="results/figures/geometry_embedding/geometry_vs_power.png" alt="Geometry versus power" width="560"></p>
 
 ## Interpretation and scope
 
