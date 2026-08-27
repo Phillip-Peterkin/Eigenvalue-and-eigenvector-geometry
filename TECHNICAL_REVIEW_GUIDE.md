@@ -1,6 +1,6 @@
 # Technical Review Guide
 
-This document provides a short path for reviewers assessing the repository as computational research and scientific software. The authoritative list of resolved issues and open release gates is maintained in `PUBLIC_AUDIT.md`.
+This document provides a short path for reviewers assessing the repository as computational research and scientific software. The authoritative list of resolved issues and open release gates is maintained in `PUBLIC_AUDIT.md`; subject-boundary, leakage, and inference rules are defined in `SCIENTIFIC_INTEGRITY.md`.
 
 ## What to evaluate
 
