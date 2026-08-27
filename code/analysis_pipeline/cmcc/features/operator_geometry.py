@@ -1,22 +1,7 @@
-"""Pure operator-geometry metric helpers with known synthetic behavior.
+"""Pure operator-geometry metric helpers with explicit numerical contracts.
 
-Scientific rationale
---------------------
-Fitted first-order vector autoregressive (VAR(1)) operators yield eigenvalues
-and eigenvectors. The public analysis summarizes those spectra with:
-
-1. Spectral radius (maximum absolute eigenvalue), a stability-margin summary.
-2. Minimum eigenvalue gap, describing local spectral crowding.
-3. Eigenvector overlap of the closest pair, describing pairwise non-orthogonality.
-4. Historical proximity score (`ep_score` in JSON): overlap / (gap + epsilon).
-5. Current manuscript Near-Degeneracy (ND) score: first-principal-component
-   projection of within-array standardized eigenvalue crowding and log
-   eigenvector condition number, with sign normalized to positive loadings.
-6. Singular-value concentration summaries such as participation ratio and
-   effective rank.
-
-The historical proximity score and current manuscript ND score are distinct
-statistics. Backward-compatible names do not imply mathematical equivalence.
+The historical proximity score and current Near-Degeneracy (ND) score are
+mathematically distinct. Backward-compatible names do not imply equivalence.
 """
 from __future__ import annotations
 
@@ -26,11 +11,20 @@ PROXIMITY_SCORE_EPSILON = 1e-10
 ND_SCORE_EPSILON = 1e-12
 
 
+def _as_finite_vector(values: np.ndarray, *, name: str) -> np.ndarray:
+    arr = np.asarray(values)
+    if arr.ndim != 1:
+        raise ValueError(f"{name} must be one-dimensional")
+    if arr.size == 0:
+        raise ValueError(f"{name} must be non-empty")
+    if not np.all(np.isfinite(arr)):
+        raise ValueError(f"{name} must contain only finite values")
+    return arr
+
+
 def spectral_radius_from_eigenvalues(eigenvalues: np.ndarray) -> float:
     """Return the maximum absolute eigenvalue for one fitted window."""
-    evals = np.asarray(eigenvalues)
-    if evals.size == 0:
-        raise ValueError("eigenvalues must be non-empty")
+    evals = _as_finite_vector(eigenvalues, name="eigenvalues")
     return float(np.max(np.abs(evals)))
 
 
@@ -38,33 +32,48 @@ def minimum_eigenvalue_gap(
     eigenvalues: np.ndarray,
     max_modes: int = 20,
 ) -> tuple[float, int, int]:
-    """Return the smallest pairwise eigenvalue spacing among leading modes."""
-    evals = np.asarray(eigenvalues)
-    n_modes = int(evals.shape[0])
-    if n_modes < 2:
-        raise ValueError("Need at least two eigenvalues to compute a gap")
+    """Return the minimum spacing among the leading-magnitude eigenmodes.
 
-    n_use = min(n_modes, max_modes)
+    `leading` is defined here, not by caller ordering: eigenvalues are ranked by
+    descending magnitude before the `max_modes` truncation. Returned indices
+    always refer to the caller's original array. This makes the result invariant
+    to input ordering while preserving index provenance.
+    """
+    evals = _as_finite_vector(eigenvalues, name="eigenvalues")
+    if evals.size < 2:
+        raise ValueError("Need at least two eigenvalues to compute a gap")
+    if not isinstance(max_modes, int) or isinstance(max_modes, bool) or max_modes < 2:
+        raise ValueError("max_modes must be an integer >= 2")
+
+    order = np.argsort(-np.abs(evals), kind="stable")
+    selected = order[: min(evals.size, max_modes)]
+
     best_gap = np.inf
-    best_i, best_j = 0, 1
-    for ii in range(n_use):
-        for jj in range(ii + 1, n_use):
-            gap = abs(evals[ii] - evals[jj])
+    best_i = int(selected[0])
+    best_j = int(selected[1])
+    for pos_i in range(len(selected)):
+        ii = int(selected[pos_i])
+        for pos_j in range(pos_i + 1, len(selected)):
+            jj = int(selected[pos_j])
+            gap = float(abs(evals[ii] - evals[jj]))
             if gap < best_gap:
-                best_gap = float(gap)
+                best_gap = gap
                 best_i, best_j = ii, jj
     return float(best_gap), best_i, best_j
 
 
 def eigenvector_overlap(vector_i: np.ndarray, vector_j: np.ndarray) -> float:
     """Return absolute cosine similarity between two real or complex vectors."""
-    v_i = np.asarray(vector_i)
-    v_j = np.asarray(vector_j)
-    norm_i = np.linalg.norm(v_i)
-    norm_j = np.linalg.norm(v_j)
-    if norm_i <= 0.0 or norm_j <= 0.0:
+    v_i = _as_finite_vector(vector_i, name="vector_i")
+    v_j = _as_finite_vector(vector_j, name="vector_j")
+    if v_i.shape != v_j.shape:
+        raise ValueError(f"eigenvectors must share shape; got {v_i.shape} vs {v_j.shape}")
+    norm_i = float(np.linalg.norm(v_i))
+    norm_j = float(np.linalg.norm(v_j))
+    if norm_i == 0.0 or norm_j == 0.0:
         return 0.0
-    return float(abs(np.dot(np.conj(v_i), v_j)) / (norm_i * norm_j))
+    value = float(abs(np.vdot(v_i, v_j)) / (norm_i * norm_j))
+    return float(np.clip(value, 0.0, 1.0))
 
 
 def geometry_proximity_score(
@@ -72,15 +81,17 @@ def geometry_proximity_score(
     gap: float,
     epsilon: float = PROXIMITY_SCORE_EPSILON,
 ) -> float:
-    """Return the historical proximity score stored as `ep_score` in JSON.
-
-    score = overlap / (gap + epsilon)
-
-    This is retained for provenance. It is not the current manuscript ND score.
-    """
-    if epsilon <= 0:
-        raise ValueError("epsilon must be positive")
-    return float(overlap) / (float(gap) + float(epsilon))
+    """Return the historical proximity score stored as `ep_score` in JSON."""
+    overlap = float(overlap)
+    gap = float(gap)
+    epsilon = float(epsilon)
+    if not np.isfinite(overlap) or overlap < 0.0:
+        raise ValueError("overlap must be finite and non-negative")
+    if not np.isfinite(gap) or gap < 0.0:
+        raise ValueError("gap must be finite and non-negative")
+    if not np.isfinite(epsilon) or epsilon <= 0.0:
+        raise ValueError("epsilon must be finite and positive")
+    return overlap / (gap + epsilon)
 
 
 def _nan_zscore(values: np.ndarray) -> np.ndarray:
@@ -106,33 +117,17 @@ def compute_nd_score(
 ) -> np.ndarray:
     """Compute the current manuscript window-level Near-Degeneracy score.
 
-    For each valid window, define eigenvalue crowding and eigenvector
-    non-orthogonality as::
+    Valid paired windows are transformed as
 
-        c = -log10(gap + epsilon)
-        k =  log10(condition_number + epsilon)
+    `crowding = -log10(gap + epsilon)` and
+    `nonorthogonality = log10(condition_number + epsilon)`.
 
-    A window contributes to the analysis only when both metric inputs are
-    finite and non-negative. Unpaired or invalid windows remain ``NaN`` and are
-    excluded before either feature is standardized, so they cannot influence
-    valid-window scores indirectly. The paired feature series are z-scored
-    within the supplied analysis unit, stacked as an ``n_windows x 2`` matrix,
-    and projected onto the first principal component of their covariance.
-
-    The manuscript ND construct assumes a common direction in which greater
-    crowding and greater non-orthogonality load positively. Principal-component
-    sign is arbitrary, so same-sign loadings are oriented positive. If the
-    first component has opposite-sign or zero loadings, no global sign flip can
-    satisfy that scientific definition and this function fails loudly rather
-    than silently redefining ND.
-
-    This implementation intentionally differs from the historical `ep_score`
-    ratio. It also means the mean score within the same standardized analysis
-    unit is approximately zero by construction, which is important when
-    designing subject-level aggregation.
+    Both series are standardized within the supplied analysis unit and projected
+    onto PC1. Same-sign loadings are oriented positive; opposite-sign or zero
+    loadings fail loudly because they do not satisfy the declared ND construct.
     """
-    if epsilon <= 0:
-        raise ValueError("epsilon must be positive")
+    if not np.isfinite(epsilon) or epsilon <= 0:
+        raise ValueError("epsilon must be finite and positive")
 
     gap_arr = np.asarray(gaps, dtype=float)
     kappa_arr = np.asarray(condition_numbers, dtype=float)
@@ -145,7 +140,6 @@ def compute_nd_score(
 
     crowding = np.full(gap_arr.shape, np.nan, dtype=float)
     nonorthogonality = np.full(kappa_arr.shape, np.nan, dtype=float)
-
     valid_pair = (
         np.isfinite(gap_arr)
         & (gap_arr >= 0.0)
@@ -157,7 +151,6 @@ def compute_nd_score(
 
     z_c = _nan_zscore(crowding)
     z_k = _nan_zscore(nonorthogonality)
-
     scores = np.full(gap_arr.shape, np.nan, dtype=float)
     finite = np.isfinite(z_c) & np.isfinite(z_k)
     if finite.sum() == 0:
@@ -171,7 +164,6 @@ def compute_nd_score(
     covariance = np.cov(x, rowvar=False, bias=True)
     eigenvalues, eigenvectors = np.linalg.eigh(covariance)
     loading = np.asarray(eigenvectors[:, int(np.argmax(eigenvalues))], dtype=float)
-
     if loading[0] * loading[1] <= 0.0:
         raise ValueError(
             "Near-Degeneracy PC1 loadings must share a nonzero sign so both can be oriented positive"
@@ -184,25 +176,20 @@ def compute_nd_score(
 
 
 def participation_ratio(singular_values: np.ndarray) -> float:
-    """Return the participation ratio of a singular-value spectrum.
-
-    ``PR = (sum sigma_i)^2 / sum(sigma_i^2)``.
-    Uniform nonzero spectra approach the number of modes; a rank-one spectrum
-    returns one.
-    """
-    sigma = np.abs(np.asarray(singular_values, dtype=float))
+    """Return `(sum sigma)^2 / sum(sigma^2)` for a finite singular-value vector."""
+    sigma = np.abs(_as_finite_vector(np.asarray(singular_values, dtype=float), name="singular_values"))
     s_sum = float(sigma.sum())
     s_sq_sum = float((sigma**2).sum())
-    if s_sq_sum <= 0.0:
+    if s_sq_sum == 0.0:
         return 0.0
     return (s_sum**2) / s_sq_sum
 
 
 def effective_rank(singular_values: np.ndarray) -> float:
-    """Return Shannon effective rank of a singular-value spectrum."""
-    sigma = np.abs(np.asarray(singular_values, dtype=float))
+    """Return Shannon effective rank of a finite singular-value spectrum."""
+    sigma = np.abs(_as_finite_vector(np.asarray(singular_values, dtype=float), name="singular_values"))
     s_sum = float(sigma.sum())
-    if s_sum <= 0.0:
+    if s_sum == 0.0:
         return 0.0
     p = sigma / s_sum
     p = p[p > 0]

@@ -1,4 +1,4 @@
-"""Public entry point for the historical geometry brain-state test battery.
+"""Public entry point for the corrected historical geometry brain-state battery.
 
 The historical runner is retained in ``_geometry_brain_states_legacy.py`` for
 computational provenance. That runner populated its feature named ``nd_score``
@@ -18,13 +18,11 @@ import os
 import sys
 from pathlib import Path
 
-# Support direct execution from the scripts directory without requiring an
-# editable install first, matching the historical runner's behavior.
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 import _geometry_brain_states_legacy as _legacy  # noqa: E402
 
-from cmcc.analysis.geometry_embedding import (  # noqa: E402
+from cmcc.analysis.current_geometry_embedding import (  # noqa: E402
     analyze_geometric_structure,
     classify_states_loso,
     compare_geometry_vs_power,
@@ -65,14 +63,7 @@ def _load_repository_amplification_r() -> float | None:
 
 
 def _run_preserving_historical_artifact() -> Path:
-    """Run the delegated battery under an exclusive process-safe file lock.
-
-    The lock covers the full delegated run because the historical implementation
-    temporarily writes the locked historical result path before this wrapper
-    restores it. A stale lock can remain after a hard process termination; that
-    condition fails loudly and requires explicit operator removal rather than an
-    unsafe automatic takeover.
-    """
+    """Run the delegated battery under an exclusive process-safe file lock."""
     historical_path = _legacy.RESULTS_JSON / HISTORICAL_ARTIFACT
     corrected_path = _legacy.RESULTS_JSON / CORRECTED_ARTIFACT
     lock_path = _legacy.RESULTS_JSON / LOCK_ARTIFACT

@@ -60,8 +60,14 @@ testpaths = ["tests", "code/analysis_pipeline/tests"]
 pythonpath = ["code/analysis_pipeline"]
 addopts = "-ra"
 filterwarnings = [
-  "ignore::UserWarning",
-  "ignore::RuntimeWarning",
+  "default::UserWarning",
+  "default::FutureWarning",
+  "default::DeprecationWarning",
+  "error::RuntimeWarning",
+  "ignore:Precision loss occurred in moment calculation due to catastrophic cancellation.*:RuntimeWarning",
+  "ignore:Mean of empty slice:RuntimeWarning",
+  "ignore:All-NaN slice encountered:RuntimeWarning",
+  "ignore:An input array is constant.*:RuntimeWarning",
 ]
 
 [tool.ruff]

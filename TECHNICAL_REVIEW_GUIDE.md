@@ -1,19 +1,19 @@
 # Technical Review Guide
 
-This document is a short path for reviewers assessing the repository as computational research and scientific software.
+This document provides a short path for reviewers assessing the repository as computational research and scientific software. The authoritative list of resolved issues and open release gates is maintained in `PUBLIC_AUDIT.md`; subject-boundary, leakage, and inference rules are defined in `SCIENTIFIC_INTEGRITY.md`.
 
 ## What to evaluate
 
-The project demonstrates an end-to-end workflow rather than a single notebook:
+The project implements an end-to-end workflow rather than a single notebook:
 
 ```text
 external electrophysiology datasets
         |
         v
-schema-aware loaders and data-root contracts
+fixed cohort + data-root contracts
         |
         v
-preprocessing and dimensionality controls
+schema-aware loaders and preprocessing
         |
         v
 sliding-window VAR(1) fitting
@@ -25,13 +25,13 @@ primitive operator metrics + historical/current composites
 subject-level statistics / subject-preserving validation
         |
         v
-machine-readable JSON artifacts
+machine-readable result artifacts
         |
         v
-manuscript audit tests and public scientific contracts
+artifact, manuscript, and release-contract tests
 ```
 
-The most important design choice is separation of *computation* from *interpretation*. Historical artifacts are not rewritten merely because terminology changed. Instead, current code and documentation specify which old fields remain valid numerically and which labels must not be promoted into current constructs.
+The central engineering design choice is separation of computation, interpretation, and provenance. Historical artifacts are not rewritten merely because terminology or inference code changed. Current code and documentation instead specify which old fields remain numerically valid, which labels are historical, and which execution paths are approved for new runs.
 
 ## Five-minute review path
 
@@ -39,46 +39,42 @@ The most important design choice is separation of *computation* from *interpreta
 
 Open `code/analysis_pipeline/cmcc/features/operator_geometry.py` and `tests/unit/test_operator_geometry.py`.
 
-The unit tests include known-answer checks for:
+The unit tests cover spectral radius, eigenvalue spacing, complex eigenvector overlap, historical proximity-score arithmetic, PC1-based Near-Degeneracy behavior, invalid/unpaired-window handling, ambiguous PC1 orientation, participation ratio, effective rank, and recovery of a known synthetic linear system.
 
-- spectral radius;
-- minimum eigenvalue spacing;
-- real/complex eigenvector overlap;
-- historical proximity-score arithmetic;
-- PC1-based Near-Degeneracy behavior;
-- invalid/unpaired-window handling;
-- ambiguous PC1 orientation;
-- participation ratio and effective rank; and
-- recovery of a known synthetic linear system.
+The minimum-gap helper defines leading modes internally by eigenvalue magnitude so truncation is invariant to caller ordering. The current ND implementation fails loudly for scientifically ambiguous opposite-sign PC1 loadings rather than silently choosing a convenient orientation.
 
-The current ND implementation fails loudly for scientifically ambiguous opposite-sign PC1 loadings rather than silently choosing a convenient orientation.
+### 2. Cohort, leakage, and subject boundaries
 
-### 2. Leakage and subject boundaries
+The canonical primary intracranial cohort is versioned in `cohorts/cogitate_primary.json` and mirrored in `code/config.yaml`. Canonical reproduction must use this fixed manifest rather than discovering subjects from local directory contents. `tests/unit/test_engineering_hardening.py` enforces synchronization between the manifest, YAML configuration, and installed package defaults.
 
-Open `SCIENTIFIC_INTEGRITY.md`, then inspect `code/analysis_pipeline/cmcc/analysis/geometry_embedding_legacy.py` and the current compatibility surface `code/analysis_pipeline/cmcc/analysis/geometry_embedding.py`.
+For current inference, inspect `code/analysis_pipeline/cmcc/analysis/current_geometry_embedding.py`. The broad `geometry_embedding.py` module remains a compatibility surface and `geometry_embedding_legacy.py` remains the historical implementation for provenance.
 
 Historical state classifiers use **Leave-one-subject-out (LOSO)** splitting and fit standardization inside each training fold before transforming the held-out subject. Overlapping windows are not treated as independent subjects.
 
 Important semantic note: the historical state-space classifier reads `mean_ep_score`. Older code called that column `nd_score`; numerically it is the legacy proximity statistic. `results/RESULT_SCHEMA_NOTES.md` documents the mapping. The repository does not claim that the historical classifier validates the current PC1 ND score.
 
-### 3. Result provenance
+### 3. Result and release provenance
 
-Open:
+Inspect:
 
+- `release_contract_manifest.json`
+- `preregistration_spec.json`
 - `results/json_results/broadband_comparison.json`
 - `results/json_results/exceptional_points.json`
 - `results/json_results/ep_propofol_eeg.json`
 - `results/json_results/ep_sleep_dynamics.json`
 - `results/json_results/geometry_brain_states.json`
-- `results/json_results/temporal_precedence.json` when present
+- `results/json_results/temporal_precedence.json`
 
-Then inspect `tests/test_manuscript_audit.py`. The purpose of these tests is to prevent prose numbers from drifting away from machine-readable results.
+The release-contract manifest pins the canonical configuration, cohort manifest, repository analysis contract, and headline result artifacts by Git blob hash. Tests fail if those files drift without an explicit manifest update. This is a repository-level drift detector; a signed release tag remains the preferred external immutability boundary.
+
+`cmcc.provenance` records the Git commit, full configuration hash and snapshot, Python/platform information, canonical subject list, cohort manifest, and installed distribution versions using package metadata rather than import-name guesses.
 
 ### 4. Falsification and robustness
 
 The project contains controls for several plausible failure modes:
 
-- shared-subspace PCA for state-comparison coordinate dependence;
+- shared-subspace principal component analysis for state-comparison coordinate dependence;
 - alternative nearest-neighbor spacing summaries;
 - ridge-regularization sweeps;
 - non-overlapping-window checks;
@@ -89,9 +85,11 @@ The surrogate result that weakens interpretation of absolute spectral sensitivit
 
 ### 5. Build and test discipline
 
-Continuous Integration is defined in `.github/workflows/ci.yml`. It installs from a clean runner, checks package dependency consistency, runs Ruff, builds the distributable wheel on the reference Python job, and executes the full portable test suite across supported Python versions.
+Continuous Integration is defined in `.github/workflows/ci.yml`. It tests Python 3.10, 3.11, and 3.12, checks dependency consistency, runs Ruff, executes the portable suite with coverage, rejects broad warning suppression in the installable package, builds and installs the wheel, verifies package/distribution version agreement, and separately runs the suite in the pinned Python 3.11 reference environment.
 
-Local verification mirrors the CI scope:
+Unexpected runtime warnings fail the test suite. Narrow message-specific exceptions are declared for synthetic edge cases whose missing support is itself the quantity under test, such as intentionally all-NaN bootstrap columns. Other warnings remain visible, and malformed inputs to current public numerical entry points are rejected explicitly by contract tests.
+
+Local broad-environment verification:
 
 ```bash
 python -m pip install -e ".[dev]"
@@ -101,15 +99,24 @@ ruff check \
   tests \
   code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py \
   code/analysis_pipeline/scripts/analysis/_geometry_brain_states.py
-python -m pytest -q
+python -m pytest -q --cov=cmcc --cov-fail-under=25
 python -m pip wheel . --no-deps -w dist
+```
+
+Reference-environment verification on Python 3.11:
+
+```bash
+python -m pip install -r requirements-reference.txt
+python -m pip install -e . --no-deps
+python -m pip check
+python -m pytest -q
 ```
 
 Raw research datasets are not required for the portable suite.
 
 ## Canonical configuration and data roots
 
-`code/config.yaml` is the canonical public configuration. Dataset locations are supplied through environment variables rather than private absolute paths:
+`code/config.yaml` is the canonical public configuration. `cohorts/cogitate_primary.json` freezes the primary 18-subject COGITATE cohort and expected run IDs. Dataset locations are supplied through environment variables rather than private absolute paths:
 
 ```bash
 export IEEG_DATA_ROOT=/path/to/Cogitate_IEEG_EXP1
@@ -118,7 +125,23 @@ export PROPOFOL_DATA_ROOT=/path/to/ds005620
 export SLEEP_DATA_ROOT=/path/to/ANPHY-Sleep
 ```
 
-The broadband/high-gamma distinction is explicit in configuration and the canonical broadband runner validates the effective passband and records provenance.
+Canonical broadband reproduction is strict by default:
+
+```bash
+python code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py
+```
+
+It fails if an expected subject or expected run is missing, or if any required subject analysis does not complete successfully. The optional `--best-effort` mode discovers local subjects and tolerates partial failure, but it is explicitly exploratory and is not a valid release-reproduction path.
+
+The broadband/high-gamma distinction is explicit in configuration. The canonical broadband wrapper validates and records the effective passband while adapting to the retained historical implementation without changing the locked historical artifact.
+
+## Numerical fitting contract
+
+New library code should prefer `cmcc.analysis.validated_var.estimate_var_operator`. It validates array dimensionality and finite values, positive stride, non-negative regularization, window/channel constraints, and finite key outputs before delegating to the retained VAR(1) implementation.
+
+## Script classification
+
+`code/analysis_pipeline/scripts/README.md` distinguishes canonical public entry points from historical and exploratory scripts retained for provenance. Historical executability is not equivalent to current approval. New canonical paths must have versioned inputs, explicit failure semantics, CI or contract tests, and non-overwriting outputs.
 
 ## Historical versus current metrics
 
@@ -130,10 +153,14 @@ legacy proximity = eigenvector overlap / (minimum gap + 1e-10)
 
 and the current ND score, which is a first-principal-component projection of standardized transformed eigenvalue crowding and eigenvector conditioning.
 
-The historical `r ~= 0.86` cross-subject result and the historical state-classification artifacts use the legacy proximity statistic. The current ND implementation is mathematically tested, but a new subject-level current-ND claim requires a prospectively specified aggregation rule and a new raw-data/result run.
+The historical `r ~= 0.86` cross-subject result and historical state-classification artifacts use the legacy proximity statistic. The current ND implementation is mathematically tested, but a new subject-level current-ND claim requires a prospectively specified aggregation rule and a new raw-data/result run.
+
+## Hosting controls outside the repository
+
+Two desirable release controls are GitHub repository settings rather than source-code changes: protect `main` with required CI checks and use signed release tags/commits for formal releases. The repository-level tests and hash manifest do not substitute for those hosting controls.
 
 ## What remains open
 
-The repository is intentionally explicit about unfinished scientific release gates. See `PUBLIC_AUDIT.md` for the authoritative list. The main outstanding raw-data item is end-to-end reproduction of the canonical broadband path against the historical checked-in band-comparison artifact. Current ND also requires a prospectively specified subject-level aggregation before any historical subject-level correlation can be re-expressed using that construct.
+The main outstanding raw-data gate is end-to-end execution of the strict canonical broadband path against the source dataset and reconciliation with the checked-in historical `broadband_comparison.json` artifact. The source data are intentionally not stored in this repository, so that empirical reconciliation cannot be completed by the portable CI suite.
 
-These open items are not hidden because technical review is stronger when the boundary between verified, historical, and unresolved work is visible.
+Current ND also requires a prospectively specified subject-level aggregation before any historical subject-level correlation can be re-expressed using that construct. These open items remain explicit because the boundary between verified, historical, and unresolved work is part of the technical record.

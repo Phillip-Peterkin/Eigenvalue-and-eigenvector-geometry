@@ -5,6 +5,8 @@
   "status_note": "This file freezes the public repository analysis contract. It is not a claim that every analysis was externally preregistered before data inspection. Exploratory analyses must remain labeled exploratory.",
   "pipeline_name": "Fitted operator geometry using sliding-window VAR(1) models",
   "canonical_config": "code/config.yaml",
+  "canonical_cohort_manifest": "cohorts/cogitate_primary.json",
+  "canonical_execution_mode": "strict_reproduction",
   "frozen_parameters": {
     "operator_model": "Sliding-window first-order vector autoregressive model; preprocessing differs by recording modality as documented in the manuscript and provenance file",
     "scalp_pca_components": 15,
@@ -25,13 +27,16 @@
       "eigenvector_condition_number"
     ],
     "subject_boundary_rule": "All predictive cross-validation preserves subject identity; no subject appears in both training and evaluation folds",
+    "cohort_selection_rule": "Canonical primary intracranial reproduction uses the fixed 18-subject manifest in cohorts/cogitate_primary.json and must not infer the scientific cohort from local directory contents.",
+    "strict_failure_rule": "Canonical reproduction fails if any expected subject or expected run is missing or if any required subject analysis does not return status OK.",
     "shared_subspace_control": "State contrasts are accompanied by shared-subspace controls where documented"
   },
   "datasets": {
     "primary_ieeg": {
       "name": "COGITATE iEEG Experiment 1",
       "role": "primary_intracranial_analysis",
-      "env_var": "IEEG_DATA_ROOT"
+      "env_var": "IEEG_DATA_ROOT",
+      "cohort_manifest": "cohorts/cogitate_primary.json"
     },
     "propofol_eeg": {
       "name": "Cambridge Propofol EEG, OpenNeuro ds005620",
@@ -93,7 +98,7 @@
   ],
   "open_alignment_items": [
     "Recompute the final manuscript ND subject-level analysis under an explicitly defined aggregation rule before attaching the historical r approximately 0.86 result to ND.",
-    "Verify end-to-end that the broadband runner consumes an explicit broadband passband and reproduces the historical broadband comparison from raw data."
+    "Verify end-to-end that the strict canonical broadband runner reproduces the historical broadband comparison from raw data."
   ],
   "leakage_policy": {
     "file": "SCIENTIFIC_INTEGRITY.md",
