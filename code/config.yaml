@@ -1,7 +1,27 @@
 data:
   root: "./data/Cogitate_IEEG_EXP1"
-  subjects: ["CE103"]
+  cohort_manifest: "cohorts/cogitate_primary.json"
+  subjects:
+    - "CE103"
+    - "CE110"
+    - "CF102"
+    - "CF103"
+    - "CF104"
+    - "CF105"
+    - "CF106"
+    - "CF109"
+    - "CF110"
+    - "CF113"
+    - "CF119"
+    - "CF121"
+    - "CF122"
+    - "CF124"
+    - "CF125"
+    - "CF126"
+    - "CG103"
+    - "CG104"
   runs: ["DurR1", "DurR2", "DurR3", "DurR4", "DurR5"]
+  strict_reproduction: true
 
 preprocessing:
   line_freq: 60.0
