@@ -1,9 +1,11 @@
 """Canonical broadband runner for the public reproduction path.
 
-Canonical mode is intentionally strict: the scientific cohort comes from the
-versioned configuration/manifest, never from whatever directories happen to be
-present on a reviewer's machine. A best-effort mode exists for exploratory batch
-processing, but it is opt-in and is not a valid release-reproduction path.
+Canonical broadband reproduction requires an explicit broadband passband and a
+versioned cohort. Canonical mode is intentionally strict: the scientific cohort
+comes from the versioned configuration/manifest, never from whatever directories
+happen to be present on a reviewer's machine. A best-effort mode exists for
+exploratory batch processing, but it is opt-in and is not a valid release-
+reproduction path.
 """
 from __future__ import annotations
 
