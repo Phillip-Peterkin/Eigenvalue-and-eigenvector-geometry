@@ -14,23 +14,26 @@ import json
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
 import yaml
+
+from cmcc.analysis.dynamical_systems import estimate_jacobian
+from cmcc.analysis.seizure_dynamics import (
+    compute_seizure_trajectory,
+)
 from cmcc.io.loader_chbmit import build_seizure_catalog, load_raw_edf
 from cmcc.preprocess.seizure_eeg import (
-    fit_baseline_pca, preprocess_chbmit_raw, project_to_pca,
+    fit_baseline_pca,
+    preprocess_chbmit_raw,
+    project_to_pca,
 )
-from cmcc.analysis.seizure_dynamics import (
-    compute_seizure_trajectory, compute_preictal_slope,
-)
-from cmcc.analysis.dynamical_systems import estimate_jacobian
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = CMCC_ROOT / "configs" / "chbmit.yaml"
@@ -95,7 +98,7 @@ def extract_period_stats(traj, jac, sfreq):
     ictal_mask = (traj.time_sec >= 0) & (traj.time_sec < traj.seizure_duration)
     post_mask = (traj.time_sec >= traj.seizure_duration + 120)
 
-    jac_n = len(jac.spectral_radius)
+    _jac_n = len(jac.spectral_radius)
 
     def safe_mean(arr, mask):
         m = mask[:len(arr)] if len(mask) > len(arr) else mask
@@ -345,7 +348,7 @@ def main():
             if s["ictal_raw_mean"] > s["pre_raw_mean"] * 2:
                 log(f"    *** ONSET SPIKE: ictal raw is {s['ictal_raw_mean']/s['pre_raw_mean']:.1f}x pre-ictal")
             if s["resid_ictal"] < 0.05:
-                log(f"    *** SUSPICIOUS: very low ictal residual variance = overfitting")
+                log("    *** SUSPICIOUS: very low ictal residual variance = overfitting")
 
     results_path = CMCC_ROOT / "results_chbmit" / "analysis" / "diagnostic_comprehensive.json"
 

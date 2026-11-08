@@ -14,11 +14,11 @@ import json
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
@@ -85,7 +85,7 @@ def self_align_trajectories(trajectories, align_window_sec=(-600, 300)):
 
 
 def compute_aligned_average(aligned_trajs, time_grid):
-    n_grid = len(time_grid)
+    _n_grid = len(time_grid)
     fields = ["min_spacing_z", "spectral_radius_z", "alpha_power_z", "delta_power_z"]
     all_interp = {f: [] for f in fields}
 

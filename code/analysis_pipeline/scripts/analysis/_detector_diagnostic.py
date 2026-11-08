@@ -12,14 +12,15 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score
+from sklearn.preprocessing import StandardScaler
 
 warnings.filterwarnings("ignore")
 
@@ -60,17 +61,23 @@ def extract_features(traj, t_start, t_end):
         return None
 
     def sm(arr):
-        v = arr[mask]; f = np.isfinite(v)
+        v = arr[mask]
+        f = np.isfinite(v)
         return float(np.mean(v[f])) if f.sum() > 0 else np.nan
 
     def ss(arr):
-        v = arr[mask]; f = np.isfinite(v)
+        v = arr[mask]
+        f = np.isfinite(v)
         return float(np.std(v[f])) if f.sum() > 2 else np.nan
 
     def slope(arr):
-        v = arr[mask]; tt = t[mask]; f = np.isfinite(v)
-        if f.sum() < 3: return np.nan
-        tf = tt[f] - tt[f].mean(); vf = v[f]
+        v = arr[mask]
+        tt = t[mask]
+        f = np.isfinite(v)
+        if f.sum() < 3:
+            return np.nan
+        tf = tt[f] - tt[f].mean()
+        vf = v[f]
         d = np.sum(tf ** 2)
         return float(np.sum(tf * vf) / d) if d > 0 else np.nan
 
@@ -250,7 +257,7 @@ def main():
         }
         print(f"  {feat_name:20s} {d:10.3f} {uni_auc:10.3f} {np.nanmean(pre_vals):10.3f} {np.nanmean(bl_vals):10.3f}")
 
-    print(f"\n  Same analysis split by regime:")
+    print("\n  Same analysis split by regime:")
     for regime_name, regime_val in [("narrowing", "narrowing"), ("widening", "widening")]:
         print(f"\n  --- {regime_name} ---")
         pre_r = pre_df[pre_df["group"] == regime_name]
@@ -277,10 +284,10 @@ def main():
 
     all_near_zero = all(abs(bl_means[f]) < 0.3 for f in FEATURES if "z" not in f or f in ["sr_mean", "ep_mean", "sp_mean"])
     print(f"  Baseline features near zero (z-scored): {all_near_zero}")
-    print(f"  This means sham windows from baseline are trivially 'normal'")
-    print(f"  Pre-ictal features deviate from zero only in the last 5-10 min")
-    print(f"  => Detector learns 'not zero' rather than 'pre-ictal signature'")
-    print(f"  => Any non-baseline segment will trigger (including random noise)")
+    print("  This means sham windows from baseline are trivially 'normal'")
+    print("  Pre-ictal features deviate from zero only in the last 5-10 min")
+    print("  => Detector learns 'not zero' rather than 'pre-ictal signature'")
+    print("  => Any non-baseline segment will trigger (including random noise)")
 
     out = {
         "description": "Detector diagnostic - why Stage 2 fails",

@@ -1,4 +1,3 @@
-import os
 """Discriminating test: Is the eigenvalue gap tightening under propofol
 just alpha hypersynchrony, or a topological signature independent of frequency?
 
@@ -19,25 +18,27 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
-from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 from cmcc.analysis.ep_advanced import (
-    _effective_n,
     _adjusted_correlation_p,
+    _effective_n,
     compute_alpha_power_per_window,
 )
+from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("PROPOFOL_DATA_ROOT", "./data/ds005620"))
@@ -90,7 +91,7 @@ def analyze_gap_alpha(subject_id, condition):
 
     jac = ep_tc["jac_result"]
     ep = ep_tc["ep_result"]
-    n_windows = len(jac.window_centers)
+    _n_windows = len(jac.window_centers)
     window_samples = int(WINDOW_SEC * sfreq)
 
     gaps = ep.min_eigenvalue_gaps
@@ -135,8 +136,8 @@ def main():
     log("=" * 70)
     log("GAP vs ALPHA POWER — Discriminating Test")
     log(f"Alpha band: {ALPHA_BAND[0]}-{ALPHA_BAND[1]} Hz")
-    log(f"If |r| > 0.8: tightening = alpha hypersynchrony")
-    log(f"If |r| < 0.3: topological signature independent of alpha")
+    log("If |r| > 0.8: tightening = alpha hypersynchrony")
+    log("If |r| < 0.3: topological signature independent of alpha")
     log("=" * 70)
 
     subjects = [s for s in SUBJECT_IDS if f"sub-{s}" not in EXCLUDED_SUBJECTS]
@@ -155,7 +156,7 @@ def main():
                         f"[{result['n_windows']} windows, {time.time()-t0:.0f}s]")
                     all_results.append(result)
                 else:
-                    log(f"    SKIP: insufficient data")
+                    log("    SKIP: insufficient data")
             except Exception as e:
                 log(f"    ERROR: {e}")
 
@@ -166,7 +167,7 @@ def main():
     awake_results = [r for r in all_results if r["condition"] == "awake"]
 
     log(f"\n{'='*70}")
-    log(f"SUMMARY")
+    log("SUMMARY")
     log(f"{'='*70}")
 
     group = {}
@@ -233,23 +234,23 @@ def main():
         n_total = len(sed_results)
 
         log(f"\n{'='*70}")
-        log(f"VERDICT")
+        log("VERDICT")
         log(f"{'='*70}")
         if n_high > n_total * 0.5:
             log(f"  |r| > 0.8 in {n_high}/{n_total} subjects.")
-            log(f"  --> Gap tightening IS alpha hypersynchrony.")
-            log(f"      The 'pathological tightening' is driven by propofol-induced")
-            log(f"      alpha oscillations, not an independent topological feature.")
+            log("  --> Gap tightening IS alpha hypersynchrony.")
+            log("      The 'pathological tightening' is driven by propofol-induced")
+            log("      alpha oscillations, not an independent topological feature.")
             group["verdict"] = "alpha_hypersynchrony"
         elif abs(mean_sed_r) < 0.3 and n_high == 0:
             log(f"  Mean |r| = {abs(mean_sed_r):.3f}, 0/{n_total} subjects above 0.8.")
-            log(f"  --> TOPOLOGICAL SIGNATURE independent of alpha band.")
-            log(f"      The eigenvalue gap dynamics under propofol represent a")
-            log(f"      geometric property of the Jacobian NOT reducible to alpha power.")
+            log("  --> TOPOLOGICAL SIGNATURE independent of alpha band.")
+            log("      The eigenvalue gap dynamics under propofol represent a")
+            log("      geometric property of the Jacobian NOT reducible to alpha power.")
             group["verdict"] = "topological_signature"
         else:
             log(f"  Mean |r| = {abs(mean_sed_r):.3f}, {n_high}/{n_total} above 0.8.")
-            log(f"  --> MIXED: partial alpha coupling. Further band decomposition needed.")
+            log("  --> MIXED: partial alpha coupling. Further band decomposition needed.")
             group["verdict"] = "mixed"
 
     # ── Figures ──

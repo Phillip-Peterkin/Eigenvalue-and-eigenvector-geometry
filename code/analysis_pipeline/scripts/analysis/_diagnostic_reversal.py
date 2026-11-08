@@ -10,20 +10,24 @@ import gc
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 warnings.filterwarnings("ignore")
 
 import yaml
+
+from cmcc.analysis.dynamical_systems import estimate_jacobian
+from cmcc.analysis.seizure_dynamics import compute_seizure_trajectory
 from cmcc.io.loader_chbmit import build_seizure_catalog, load_raw_edf
 from cmcc.preprocess.seizure_eeg import (
-    fit_baseline_pca, preprocess_chbmit_raw, project_to_pca,
+    fit_baseline_pca,
+    preprocess_chbmit_raw,
+    project_to_pca,
 )
-from cmcc.analysis.seizure_dynamics import compute_seizure_trajectory
-from cmcc.analysis.dynamical_systems import estimate_jacobian
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = CMCC_ROOT / "configs" / "chbmit.yaml"

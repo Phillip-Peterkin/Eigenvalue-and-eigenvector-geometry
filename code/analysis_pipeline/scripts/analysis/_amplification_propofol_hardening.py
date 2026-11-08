@@ -35,7 +35,6 @@ from __future__ import annotations
 
 import gc
 import json
-import os
 import time
 import warnings
 from pathlib import Path
@@ -51,7 +50,6 @@ from cmcc.analysis.dynamical_systems import estimate_jacobian
 from cmcc.data_roots import require_data_root
 from cmcc.features.transient_amplification import (
     analyze_jacobian_amplification,
-    compute_hump_magnitude,
     compute_residual_kreiss,
 )
 from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
@@ -329,7 +327,7 @@ def compute_dose_response_statistics(subjects_data):
             w, pw = sp_stats.wilcoxon(delta)
             d = float(np.mean(delta) / max(np.std(delta, ddof=1), 1e-30))
         else:
-            t, p, w, pw, d = 0, 1.0, 0, 1.0, 0.0
+            _t, p, _w, pw, d = 0, 1.0, 0, 1.0, 0.0
         resid_pairwise[f"awake_vs_{CONDITIONS[j]}"] = {
             "delta_mean": float(np.mean(delta)),
             "delta_median": float(np.median(delta)),

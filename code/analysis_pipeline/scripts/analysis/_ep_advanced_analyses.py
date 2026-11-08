@@ -1,4 +1,3 @@
-import os
 """Advanced EP Analyses for CMCC Pipeline.
 
 Four mechanistic tests of non-Hermitian operator geometry:
@@ -13,30 +12,31 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
+from cmcc.analysis.contrasts import fdr_correction
+from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
+from cmcc.analysis.ep_advanced import (
+    compute_petermann_noise,
+    compute_spectral_radius_sensitivity,
+    compute_state_contrast,
+    compute_svd_dimension,
+)
 from cmcc.config import load_config
 from cmcc.preprocess.filter import SITE_LINE_FREQ
-from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
-from cmcc.analysis.contrasts import fdr_correction
-from cmcc.analysis.ep_advanced import (
-    compute_state_contrast,
-    compute_spectral_radius_sensitivity,
-    compute_svd_dimension,
-    compute_petermann_noise,
-    compute_petermann_noise_surrogate,
-)
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
@@ -62,8 +62,8 @@ def load_group_results():
 
 def load_and_preprocess(subject_id, config):
     from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
     from cmcc.preprocess.reference import apply_laplace
 
     site = subject_id[:2].upper()
@@ -148,7 +148,7 @@ def analyze_single_subject(subject_id, config, hg_results):
 
     data, sfreq, n_samples_raw = load_and_preprocess(subject_id, config)
     if data is None:
-        log(f"    SKIP: no data")
+        log("    SKIP: no data")
         return None
 
     n_ch, n_samples = data.shape
@@ -229,7 +229,7 @@ def analyze_single_subject(subject_id, config, hg_results):
             f"gap_g={sc.gap_contrast.effect_size:.3f} ep_g={sc.ep_score_contrast.effect_size:.3f}")
     else:
         summary["state_contrast"] = None
-        log(f"    state_contrast: SKIP (no events)")
+        log("    state_contrast: SKIP (no events)")
 
     srs = compute_spectral_radius_sensitivity(jac, ep)
     summary["spectral_sensitivity"] = srs
@@ -497,7 +497,7 @@ def main():
     group_stats = compute_group_statistics(all_results)
 
     if group_stats:
-        log(f"\n  Group statistics:")
+        log("\n  Group statistics:")
         for key, val in group_stats.items():
             log(f"    {key}: {val}")
 

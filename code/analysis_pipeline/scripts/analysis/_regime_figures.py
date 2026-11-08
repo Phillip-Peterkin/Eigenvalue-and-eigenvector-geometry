@@ -17,12 +17,12 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
 from sklearn.metrics import roc_curve
 
 warnings.filterwarnings("ignore")
@@ -188,7 +188,7 @@ def figure_16b(precision_json, fig_dir):
     ax.tick_params(labelsize=10)
 
     ax = axes[1]
-    bars = ax.bar(
+    _bars = ax.bar(
         ["Observed", "Null (mean)"],
         [clf["accuracy"], clf["null_accuracy_mean"]],
         yerr=[0, clf["null_accuracy_std"] * 2],
@@ -278,7 +278,7 @@ def figure_16c(precision_json, fig_dir):
     labels = ["Spectral\n(2 feat)", "Spectral +\nGeometry (5 feat)"]
     colors = [SPECTRAL_COLOR, GEOM_COLOR]
 
-    bars = ax.bar(labels, aucs, color=colors, edgecolor="black", linewidth=0.8,
+    _bars = ax.bar(labels, aucs, color=colors, edgecolor="black", linewidth=0.8,
                   alpha=0.85, width=0.45)
     ax.axhline(0.5, color="red", ls="--", lw=1, alpha=0.4)
     ax.set_ylabel("LOSO AUC", fontsize=11)

@@ -1,4 +1,3 @@
-import os
 """Electrode-level spatial mapping of band-specific effects.
 
 Uses available per-channel tau from deep_dive (5 subjects with HG tau)
@@ -8,12 +7,14 @@ analysis, uses subject-level metrics with electrode coverage metadata.
 from __future__ import annotations
 
 import json
+import os
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -237,7 +238,7 @@ def group_coverage_analysis(hg_ok, bb_ok):
         fig.tight_layout()
         fig.savefig(FIG_DIR / "spatial_band_coverage_correlation.png", dpi=150, bbox_inches="tight")
         plt.close(fig)
-        log(f"  Saved: spatial_band_coverage_correlation.png")
+        log("  Saved: spatial_band_coverage_correlation.png")
 
     return {
         "coverage_table": rows,

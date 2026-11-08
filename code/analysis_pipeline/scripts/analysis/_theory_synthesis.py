@@ -8,8 +8,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -426,7 +427,7 @@ def main():
     log(f"{'='*70}")
     log(f"  Title: {theory['title']}")
     log(f"  Version: {theory['version']}")
-    log(f"\n  Core Claims:")
+    log("\n  Core Claims:")
     for c in theory["core_claims"]:
         log(f"    {c['id']}: {c['claim']} [{c['confidence']}]")
     log(f"\n  Novel Contributions: {len(theory['novel_contributions'])}")
@@ -436,7 +437,7 @@ def main():
         f"{output['summary_statistics']['n_moderate']} moderate, "
         f"{output['summary_statistics']['n_weak']} weak, "
         f"{output['summary_statistics']['n_null']} null")
-    log(f"\nDONE")
+    log("\nDONE")
 
 
 if __name__ == "__main__":

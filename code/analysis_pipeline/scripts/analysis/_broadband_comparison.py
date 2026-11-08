@@ -150,7 +150,7 @@ def main():
         hg_arr = np.array(hg_lzc_g)
         bb_arr = np.array(bb_lzc_g)
         t, p = sp_stats.ttest_rel(hg_arr, bb_arr)
-        log(f"  LZc contrast effect (Hedges g):")
+        log("  LZc contrast effect (Hedges g):")
         log(f"    HG:  mean={np.mean(hg_arr):+.4f}")
         log(f"    BB:  mean={np.mean(bb_arr):+.4f}")
         log(f"    Paired: t={t:.3f}, p={p:.4f}")

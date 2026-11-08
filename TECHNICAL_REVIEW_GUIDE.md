@@ -85,7 +85,7 @@ The surrogate result that weakens interpretation of absolute spectral sensitivit
 
 ### 5. Build and test discipline
 
-Continuous Integration is defined in `.github/workflows/ci.yml`. It tests Python 3.10, 3.11, and 3.12, checks dependency consistency, runs Ruff, executes the portable suite with coverage, rejects broad warning suppression in the installable package, builds and installs the wheel, verifies package/distribution version agreement, and separately runs the suite in the pinned Python 3.11 reference environment.
+Continuous Integration is defined in `.github/workflows/ci.yml`. It tests Python 3.10, 3.11, and 3.12, checks dependency consistency, runs Ruff on the package, tests and every analysis script, executes the portable suite with coverage, rejects broad warning suppression in the installable package, builds and installs the wheel, verifies package/distribution version agreement, and separately runs the suite in the pinned Python 3.11 reference environment.
 
 Unexpected runtime warnings fail the test suite. Narrow message-specific exceptions are declared for synthetic edge cases whose missing support is itself the quantity under test, such as intentionally all-NaN bootstrap columns. Other warnings remain visible, and malformed inputs to current public numerical entry points are rejected explicitly by contract tests.
 
@@ -97,9 +97,8 @@ python -m pip check
 ruff check \
   code/analysis_pipeline/cmcc \
   tests \
-  code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py \
-  code/analysis_pipeline/scripts/analysis/_geometry_brain_states.py
-python -m pytest -q --cov=cmcc --cov-fail-under=25
+  code/analysis_pipeline/scripts
+python -m pytest -q --cov=cmcc --cov-fail-under=44
 python -m pip wheel . --no-deps -w dist
 ```
 

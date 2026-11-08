@@ -39,7 +39,6 @@ from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
-from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 from cmcc.analysis.dynamical_systems import estimate_jacobian
 from cmcc.features.transient_amplification import (
     analyze_jacobian_amplification,
@@ -47,6 +46,7 @@ from cmcc.features.transient_amplification import (
     compute_model_free_energy_growth,
     compute_out_of_sample_prediction,
 )
+from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("PROPOFOL_DATA_ROOT", "./data/ds005620"))
@@ -203,7 +203,7 @@ def analyze_subject(subject_id):
 
     awake_data, awake_sfreq = load_condition(subject_id, "awake")
     if awake_data is None:
-        log(f"    SKIP: no awake data")
+        log("    SKIP: no awake data")
         return None
 
     log(f"    awake: {awake_data.shape[0]} comp, {awake_sfreq} Hz, "
@@ -219,7 +219,7 @@ def analyze_subject(subject_id):
 
     sed_data, sed_sfreq = load_condition(subject_id, "sed_run-1")
     if sed_data is None:
-        log(f"    SKIP: no sedation data")
+        log("    SKIP: no sedation data")
         return None
 
     log(f"    sed: {sed_data.shape[0]} comp, {sed_sfreq} Hz, "

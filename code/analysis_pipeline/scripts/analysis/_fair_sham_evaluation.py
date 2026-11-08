@@ -23,24 +23,29 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, roc_curve
 
 warnings.filterwarnings("ignore")
 
 import yaml
+
+from cmcc.analysis.seizure_dynamics import (
+    compute_seizure_trajectory,
+    compute_sham_trajectories,
+)
 from cmcc.io.loader_chbmit import build_seizure_catalog, load_raw_edf
 from cmcc.preprocess.seizure_eeg import (
-    fit_baseline_pca, preprocess_chbmit_raw, project_to_pca,
-)
-from cmcc.analysis.seizure_dynamics import (
-    compute_sham_trajectories, compute_seizure_trajectory,
+    fit_baseline_pca,
+    preprocess_chbmit_raw,
+    project_to_pca,
 )
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -159,7 +164,8 @@ def traj_to_dict(traj):
 
 def find_seizure_free_runs(cfg, catalogs):
     from cmcc.io.loader_chbmit import (
-        discover_sessions, discover_runs, load_events_tsv,
+        discover_runs,
+        load_events_tsv,
     )
     data_root = Path(cfg["data"]["root"])
     seizure_free = {}
@@ -203,7 +209,7 @@ def generate_fair_shams(cfg, catalogs, n_shams_per_subject=3, seed=42):
 
     for sid, runs_info in sorted(sf_runs.items()):
         cat = catalogs[sid]
-        sz_ref = cat.eligible_seizures[0]
+        _sz_ref = cat.eligible_seizures[0]
 
         shams_generated = 0
         for run_info in runs_info[:3]:
@@ -235,7 +241,7 @@ def generate_fair_shams(cfg, catalogs, n_shams_per_subject=3, seed=42):
                 bl_start = 0.0
                 bl_end = min(1200.0, actual_dur * 0.5)
                 if bl_end <= 120:
-                    log(f"    SKIP: too short for baseline")
+                    log("    SKIP: too short for baseline")
                     del data
                     gc.collect()
                     continue
@@ -382,7 +388,7 @@ def generate_fair_shams(cfg, catalogs, n_shams_per_subject=3, seed=42):
 
 
 def run_fair_sprt(seizure_trajs, sham_trajs, df, sham_meta, sprt_feat_cols, seed=42):
-    rng = np.random.default_rng(seed)
+    _rng = np.random.default_rng(seed)
     subjects = df["subject_id"].unique()
     sham_subjects = {m["subject_id"] for m in sham_meta}
 
@@ -436,7 +442,7 @@ def run_fair_sprt(seizure_trajs, sham_trajs, df, sham_meta, sprt_feat_cols, seed
                 detect_rows.append({**pre_f, "label": 1,
                                      "true_regime": row["group_label"]})
 
-        train_sham_subs = [s for s in sham_subjects if s != test_sub]
+        _train_sham_subs = [s for s in sham_subjects if s != test_sub]
         for skey, straj in sham_trajs.items():
             sub_of_sham = skey.split("_sham")[0]
             if sub_of_sham == test_sub:
@@ -657,7 +663,7 @@ def main():
     feat_cols = [c for c in pre_df.columns
                  if not np.all(pre_df[c].isna()) and c in sham_df.columns]
 
-    log(f"\n  Feature separability (Cohen's d, pre-ictal vs FAIR sham):")
+    log("\n  Feature separability (Cohen's d, pre-ictal vs FAIR sham):")
     top_features = []
     for fc in sorted(feat_cols):
         pv = pre_df[fc].dropna().values
@@ -707,7 +713,7 @@ def main():
 
     sh_max = sh_df["max_llr"].values
 
-    log(f"\n  SPRT Results (FAIR shams):")
+    log("\n  SPRT Results (FAIR shams):")
     log(f"  {'Threshold':>10s} {'Det':>8s} {'FA(frac)':>10s} {'FA/hr':>8s} {'FA/day':>8s} {'Warn(min)':>10s}")
     log(f"  {'-'*56}")
 
@@ -732,7 +738,7 @@ def main():
             "median_warning_min": med_warn,
         }
 
-    log(f"\n  Comparison with old (easy) shams:")
+    log("\n  Comparison with old (easy) shams:")
     old_audit = {}
     audit_path = RESULTS_DIR / "detector_audit.json"
     if audit_path.exists():

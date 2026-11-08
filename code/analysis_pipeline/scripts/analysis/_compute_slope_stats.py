@@ -1,9 +1,11 @@
 import os
+
 """Compute slope statistics from the 95 seizure trajectories console output."""
-import numpy as np
-from scipy import stats as sp_stats
 import json
 from pathlib import Path
+
+import numpy as np
+from scipy import stats as sp_stats
 
 slopes = [
     -0.000075, -0.000514, 0.000124, 0.000950, 0.003474, -0.000807, 0.000311, 0.000072,
@@ -134,6 +136,7 @@ print("trajectory arrays which only exist in the running process memory.")
 print("Re-run with vectorized fix to get those statistics.")
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 

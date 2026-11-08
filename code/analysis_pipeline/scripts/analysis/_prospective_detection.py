@@ -31,15 +31,15 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from scipy import stats as sp_stats
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve
 
 warnings.filterwarnings("ignore")
 
@@ -394,7 +394,7 @@ def plot_regime_stratified(regime_results, fig_dir):
         ("widening", "Widening Regime", "#B2182B"),
     ]):
         aucs_regime = []
-        aucs_all = []
+        _aucs_all = []
         for h_key in h_keys:
             r_regime = regime_results.get(regime, {}).get(h_key, {}).get(best_fs, {})
             auc_r = r_regime.get("auc", float("nan")) if isinstance(r_regime, dict) else float("nan")
@@ -499,7 +499,7 @@ def main():
         log(f"  Dataset: {n_pre} pre-ictal + {n_sham} sham = {len(dataset)} segments")
 
         if len(dataset) < 20:
-            log(f"  SKIP: insufficient data")
+            log("  SKIP: insufficient data")
             all_results[h_key] = {"error": "insufficient data"}
             continue
 
@@ -558,7 +558,7 @@ def main():
     if not np.isnan(wt):
         log(f"\n  Earliest significant detection: {wt:.0f} min before onset")
     else:
-        log(f"\n  No horizon reached significance")
+        log("\n  No horizon reached significance")
 
     log("\nGenerating figures...")
     plot_auc_by_horizon(all_results, fig_dir)

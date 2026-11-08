@@ -21,8 +21,9 @@ import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -30,15 +31,19 @@ from scipy import stats as sp_stats
 warnings.filterwarnings("ignore")
 
 import yaml
+
+from cmcc.analysis.dynamical_systems import estimate_jacobian
+from cmcc.analysis.seizure_dynamics import (
+    compute_seizure_trajectory,
+)
+from cmcc.features.dfa import compute_dfa
 from cmcc.io.loader_chbmit import build_seizure_catalog, load_raw_edf
 from cmcc.preprocess.seizure_eeg import (
-    fit_baseline_pca, preprocess_chbmit_raw, project_to_pca, reject_artifact_windows,
+    fit_baseline_pca,
+    preprocess_chbmit_raw,
+    project_to_pca,
+    reject_artifact_windows,
 )
-from cmcc.analysis.seizure_dynamics import (
-    SeizureTrajectory, compute_seizure_trajectory, compute_preictal_slope,
-)
-from cmcc.analysis.dynamical_systems import estimate_jacobian
-from cmcc.features.dfa import compute_dfa
 from cmcc.provenance import log_run, save_summary_json
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -201,7 +206,7 @@ def extract_seizure_features(
         features["pre_dfa_alpha"] = float("nan")
     features["dfa_change"] = features["pre_dfa_alpha"] - features["bl_dfa_alpha"]
 
-    n_jac_windows = len(jac_result.spectral_radius)
+    _n_jac_windows = len(jac_result.spectral_radius)
     jac_time = jac_result.window_centers / sfreq
     jac_bl_mask = (jac_time >= baseline_start) & (jac_time < baseline_end)
     jac_pre_mask = (jac_time >= (seizure_event.onset_sec - 600)) & (jac_time < seizure_event.onset_sec)
@@ -272,7 +277,7 @@ def process_seizure_with_features(seizure_event, cfg, rng):
     baseline_start = max(0.0, baseline_start)
 
     if baseline_end <= baseline_start + 60:
-        log(f"      SKIP: insufficient baseline")
+        log("      SKIP: insufficient baseline")
         return None, None
 
     try:
@@ -378,7 +383,7 @@ def group_comparison(features_list):
             continue
 
         u_stat, p_val = sp_stats.mannwhitneyu(vals_n, vals_w, alternative="two-sided")
-        n_total = len(vals_n) + len(vals_w)
+        _n_total = len(vals_n) + len(vals_w)
         rank_biserial = 1 - (2 * u_stat) / (len(vals_n) * len(vals_w))
 
         feature_tests[feat] = {
@@ -479,7 +484,7 @@ def plot_stratification_figures(features_list, fig_dir):
     fig.savefig(fig_dir / "stratification_slopes.png", dpi=200)
     plt.close(fig)
 
-    sig_features = []
+    _sig_features = []
     for f in features_list:
         pass
 
@@ -492,7 +497,7 @@ def plot_stratification_figures(features_list, fig_dir):
         ("pre_variance", "Pre-ictal Variance"),
     ]
 
-    n_feat = len(key_features)
+    _n_feat = len(key_features)
     fig, axes = plt.subplots(2, 3, figsize=(16, 10))
     axes = axes.flatten()
 
@@ -624,7 +629,7 @@ def main():
     if sig_feats:
         log(f"\n   Significant features (FDR < 0.05): {sig_feats}")
     else:
-        log(f"\n   No features significant after FDR correction")
+        log("\n   No features significant after FDR correction")
 
     log("\n5. Subject specificity...")
     subj_spec = subject_specificity(all_features)

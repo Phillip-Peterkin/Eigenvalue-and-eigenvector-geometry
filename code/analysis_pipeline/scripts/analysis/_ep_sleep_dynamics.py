@@ -1,4 +1,3 @@
-import os
 """Sleep Dynamics EP Analysis — N3 (Deep Sleep) vs REM vs Awake.
 
 Validates the 'Pathological Locking' hypothesis in natural unconsciousness.
@@ -32,12 +31,14 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -45,16 +46,16 @@ from scipy import stats as sp_stats
 warnings.filterwarnings("ignore")
 
 import mne
-from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
-from cmcc.preprocess.qc import detect_bad_channels
+
+from cmcc.analysis.contrasts import fdr_correction
 from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 from cmcc.analysis.ep_advanced import (
-    compute_spectral_radius_sensitivity,
-    compute_alpha_power_per_window,
-    _effective_n,
     _adjusted_correlation_p,
+    _effective_n,
+    compute_spectral_radius_sensitivity,
 )
-from cmcc.analysis.contrasts import fdr_correction
+from cmcc.preprocess.qc import detect_bad_channels
+from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("SLEEP_DATA_ROOT", "./data/ANPHY-Sleep"))
@@ -659,7 +660,7 @@ def main():
 
         ta = group_stats.get("test_a_gap_awake_vs_n3", {})
         if ta:
-            log(f"\n  Test A — Gap: Awake vs N3")
+            log("\n  Test A — Gap: Awake vs N3")
             log(f"    Awake gap: {ta.get('mean_awake', 0):.6f}")
             log(f"    N3 gap:    {ta.get('mean_n3', 0):.6f}")
             log(f"    Diff:      {ta.get('mean_diff_n3_minus_awake', 0):.6f}")
@@ -674,20 +675,20 @@ def main():
 
         tc = group_stats.get("test_c_spec_sens_n3_vs_rem", {})
         if tc:
-            log(f"\n  Test C — REM Recovery (N3 vs REM)")
+            log("\n  Test C — REM Recovery (N3 vs REM)")
             log(f"    N3 r:  {tc.get('mean_n3', 0):.4f}")
             log(f"    REM r: {tc.get('mean_rem', 0):.4f}")
             log(f"    t={tc.get('t', 0):.4f}, p={tc.get('p', 0):.6f}, d={tc.get('cohens_d', 0):.3f}")
 
         td = group_stats.get("test_d_gap_delta_independence", {})
         if td:
-            log(f"\n  Test D — Gap-Delta Independence (N3)")
+            log("\n  Test D — Gap-Delta Independence (N3)")
             log(f"    mean r={td.get('mean_r', 0):.4f} +/- {td.get('std_r', 0):.4f}")
             log(f"    |r|>0.3: {td.get('n_above_0.3', 0)}, |r|>0.8: {td.get('n_above_0.8', 0)}")
 
         fdr = group_stats.get("fdr_correction", {})
         if fdr:
-            log(f"\n  FDR Correction:")
+            log("\n  FDR Correction:")
             for label, info in fdr.items():
                 log(f"    {label}: p={info['p']:.6f} sig={info['fdr_significant']}")
 

@@ -1,4 +1,3 @@
-import os
 """Shared-subspace robustness test for sleep EP geometry.
 
 Pools W + N3 + REM data within each subject before PCA, fits once,
@@ -12,12 +11,14 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -25,14 +26,15 @@ from scipy import stats as sp_stats
 warnings.filterwarnings("ignore")
 
 import mne
-from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce_shared
-from cmcc.preprocess.qc import detect_bad_channels
+
+from cmcc.analysis.contrasts import fdr_correction
 from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 from cmcc.analysis.ep_advanced import (
-    compute_spectral_radius_sensitivity,
     compute_alternative_spacing,
+    compute_spectral_radius_sensitivity,
 )
-from cmcc.analysis.contrasts import fdr_correction
+from cmcc.preprocess.qc import detect_bad_channels
+from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce_shared
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("SLEEP_DATA_ROOT", "./data/ANPHY-Sleep"))
@@ -291,7 +293,7 @@ def compute_group_statistics(all_results, original_json_path=None):
     all_p = []
     all_labels = []
 
-    sids = [s["subject"] for s in valid]
+    _sids = [s["subject"] for s in valid]
 
     gap_metrics = ["mean_eigenvalue_gap", "mean_median_nn_gap", "mean_p10_nn_gap"]
     gap_labels = ["min_gap", "median_nn_gap", "p10_nn_gap"]
@@ -490,18 +492,18 @@ def main():
     group_stats = compute_group_statistics(all_results, original_json_path=orig_json)
 
     if group_stats:
-        log(f"\n  Group statistics (shared subspace):")
+        log("\n  Group statistics (shared subspace):")
         for key, val in group_stats.items():
             if key not in ("fdr_correction", "comparison_to_original"):
                 log(f"    {key}: {val}")
         if "fdr_correction" in group_stats:
-            log(f"\n    FDR correction:")
+            log("\n    FDR correction:")
             for label, info in group_stats["fdr_correction"].items():
                 log(f"      {label}: p={info['p']:.6f} sig={info['fdr_significant']}")
         if "comparison_to_original" in group_stats:
             comp = group_stats["comparison_to_original"]
             if "error" not in comp:
-                log(f"\n  Comparison to per-state PCA:")
+                log("\n  Comparison to per-state PCA:")
                 for metric, vals in comp.items():
                     log(f"    {metric}: orig d={vals['original_d']:.2f} -> shared d={vals['shared_d']:.2f}")
 

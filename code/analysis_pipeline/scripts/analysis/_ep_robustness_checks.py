@@ -1,4 +1,3 @@
-import os
 """EP Robustness & Validity Checks.
 
 Three tests that strengthen the scientific validity of the EP findings:
@@ -31,21 +30,23 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
-from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 from cmcc.analysis.ep_advanced import compute_spectral_radius_sensitivity
+from cmcc.preprocess.scalp_eeg import load_ds005620_subject, preprocess_scalp_eeg
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("PROPOFOL_DATA_ROOT", "./data/ds005620"))
@@ -105,7 +106,7 @@ def run_surrogate_test():
         try:
             raw = load_ds005620_subject(subj, DATA_ROOT, task="awake", acq="EC")
         except FileNotFoundError:
-            log(f"    SKIP: not found")
+            log("    SKIP: not found")
             continue
 
         data_pca, sfreq, info = preprocess_scalp_eeg(
@@ -342,7 +343,7 @@ def run_pca_robustness():
         try:
             raw = load_ds005620_subject(subj, DATA_ROOT, task="awake", acq="EC")
         except FileNotFoundError:
-            log(f"    SKIP: not found")
+            log("    SKIP: not found")
             continue
 
         for n_comp in PCA_VARIANTS:

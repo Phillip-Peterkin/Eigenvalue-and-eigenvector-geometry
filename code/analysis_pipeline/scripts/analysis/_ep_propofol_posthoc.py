@@ -13,12 +13,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
-
 
 from cmcc.analysis.contrasts import fdr_correction
 
@@ -75,7 +75,7 @@ def main():
     all_p.append(float(p_gw))
     all_labels.append("gap_widening")
 
-    log(f"\n=== Test A: Gap Widening ===")
+    log("\n=== Test A: Gap Widening ===")
     log(f"  Awake gap:  {np.mean(awake_gap):.6f} +/- {np.std(awake_gap):.6f}")
     log(f"  Sed gap:    {np.mean(sed_gap_r1):.6f} +/- {np.std(sed_gap_r1):.6f}")
     log(f"  Diff (sed-awake): {np.mean(np.array(sed_gap_r1) - np.array(awake_gap)):.6f}")
@@ -104,7 +104,7 @@ def main():
         all_p.append(float(p_dd))
         all_labels.append("delta_delta_correlation")
 
-        log(f"\n=== Test C: Delta-Delta Correlation ===")
+        log("\n=== Test C: Delta-Delta Correlation ===")
         log(f"  Pearson r={r_dd:.4f}, p={p_dd:.6f}")
         log(f"  Spearman rho={rho_dd:.4f}, p={p_sp_dd:.6f}")
         log(f"  N subjects={len(delta_r)}")
@@ -116,7 +116,7 @@ def main():
             label: {"p": float(p), "fdr_significant": bool(sig)}
             for label, p, sig in zip(all_labels, all_p, fdr_sig)
         }
-        log(f"\n=== FDR Correction ===")
+        log("\n=== FDR Correction ===")
         for label, p, sig in zip(all_labels, all_p, fdr_sig):
             log(f"  {label}: p={p:.6f} sig={sig}")
 
@@ -171,8 +171,8 @@ def main():
     with open(out_path, "w") as f:
         json.dump(posthoc, f, indent=2)
     log(f"\n  Results saved: {out_path}")
-    log(f"\n  NOTE: Test B (alpha sensitivity) requires raw PCA data.")
-    log(f"  For Test B, re-run: python scripts/analysis/_ep_propofol_eeg.py")
+    log("\n  NOTE: Test B (alpha sensitivity) requires raw PCA data.")
+    log("  For Test B, re-run: python scripts/analysis/_ep_propofol_eeg.py")
 
 
 if __name__ == "__main__":

@@ -13,14 +13,15 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, accuracy_score
 
 warnings.filterwarnings("ignore")
 
@@ -191,7 +192,7 @@ def main():
     model_aucs.extend([spectral["auc"], geom["auc"]])
     model_colors.extend(["#E66100", "#B2182B"])
 
-    bars = ax.barh(range(len(model_names)), model_aucs, color=model_colors,
+    _bars = ax.barh(range(len(model_names)), model_aucs, color=model_colors,
                    edgecolor="black", linewidth=0.6, alpha=0.85, height=0.6)
     ax.set_yticks(range(len(model_names)))
     ax.set_yticklabels(model_names, fontsize=9)

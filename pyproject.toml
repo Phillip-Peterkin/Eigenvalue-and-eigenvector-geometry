@@ -78,3 +78,7 @@ src = ["code/analysis_pipeline", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I"]
 ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Analysis scripts put code/analysis_pipeline on sys.path before importing cmcc and sibling modules.
+"code/analysis_pipeline/scripts/**/*.py" = ["E402"]

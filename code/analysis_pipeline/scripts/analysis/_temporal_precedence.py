@@ -22,12 +22,11 @@ import os
 import sys
 import time
 import warnings
-from dataclasses import asdict
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 
-import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -35,17 +34,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 warnings.filterwarnings("ignore")
 
 import mne
-from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
-from cmcc.preprocess.qc import detect_bad_channels
+
 from cmcc.analysis.temporal_precedence import (
-    TransitionEvent,
-    TransitionTimecourse,
-    TemporalPrecedenceResult,
-    parse_sleep_staging,
-    find_transitions,
-    compute_transition_geometry,
     analyze_temporal_precedence,
+    compute_transition_geometry,
+    find_transitions,
+    parse_sleep_staging,
 )
+from cmcc.preprocess.qc import detect_bad_channels
+from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
 
 PIPELINE_ROOT = Path(__file__).resolve().parent.parent.parent
 REPO_ROOT = PIPELINE_ROOT.parent.parent
@@ -176,7 +173,7 @@ def process_subject(subject_id, edf_path, staging_path):
     log(f"\n  {subject_id}")
     epochs = parse_sleep_staging(str(staging_path))
     if not epochs:
-        log(f"    No staging data")
+        log("    No staging data")
         return {}
 
     all_timecourses = {}
@@ -196,7 +193,7 @@ def process_subject(subject_id, edf_path, staging_path):
     if not subject_transitions:
         return {}
 
-    log(f"    Loading EDF...")
+    log("    Loading EDF...")
     t0 = time.time()
     try:
         raw = load_raw_eeg(edf_path)

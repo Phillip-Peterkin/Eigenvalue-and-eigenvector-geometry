@@ -28,13 +28,13 @@ All comparisons are relative to each patient's own interictal baseline.
 from __future__ import annotations
 
 import gc
-import json
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -42,6 +42,14 @@ from scipy import stats as sp_stats
 warnings.filterwarnings("ignore")
 
 import yaml
+
+from cmcc.analysis.seizure_dynamics import (
+    SeizureTrajectory,
+    compute_seizure_trajectory,
+    compute_sham_trajectories,
+    compute_surrogate_baseline,
+    partial_correlation_control,
+)
 from cmcc.io.loader_chbmit import (
     build_seizure_catalog,
     catalog_summary,
@@ -52,15 +60,6 @@ from cmcc.preprocess.seizure_eeg import (
     preprocess_chbmit_raw,
     project_to_pca,
     reject_artifact_windows,
-)
-from cmcc.analysis.seizure_dynamics import (
-    SeizureTrajectory,
-    compute_preictal_slope,
-    compute_seizure_trajectory,
-    compute_sham_trajectories,
-    compute_surrogate_baseline,
-    partial_correlation_control,
-    phase_randomize_surrogate,
 )
 from cmcc.provenance import log_run, save_summary_json
 
@@ -116,7 +115,7 @@ def process_single_seizure(seizure_event, cfg, rng):
     baseline_start = max(0.0, baseline_start)
 
     if baseline_end <= baseline_start + 60:
-        log(f"      SKIP: insufficient baseline")
+        log("      SKIP: insufficient baseline")
         return None
 
     try:
@@ -171,7 +170,7 @@ def process_single_seizure(seizure_event, cfg, rng):
 
 def interpolate_to_common_time(trajectories, time_grid):
     """Interpolate trajectories onto a common time grid."""
-    n_grid = len(time_grid)
+    _n_grid = len(time_grid)
     fields = [
         "min_spacing_z", "median_nns_z", "p10_nns_z",
         "spectral_radius_z", "ep_score_z",
@@ -197,7 +196,7 @@ def interpolate_to_common_time(trajectories, time_grid):
 
 def group_statistics(subject_means, time_grid, cfg):
     """Compute group-level statistics on subject-mean trajectories."""
-    stats_cfg = cfg["statistics"]
+    _stats_cfg = cfg["statistics"]
 
     n_subjects, n_time = subject_means.shape
     if n_subjects < 3:
@@ -227,7 +226,6 @@ def group_statistics(subject_means, time_grid, cfg):
         }
 
     try:
-        import statsmodels.api as sm
         from statsmodels.regression.mixed_linear_model import MixedLM
 
         preictal_mask = (time_grid >= -600) & (time_grid < 0)
