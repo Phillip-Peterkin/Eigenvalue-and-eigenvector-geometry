@@ -29,7 +29,6 @@ from __future__ import annotations
 
 import gc
 import json
-import os
 import time
 import warnings
 from pathlib import Path
@@ -275,7 +274,7 @@ def analyze_subject(subject_id, edf_file, staging_file):
     staging_path = DATA_ROOT / subject_id / staging_file
 
     if not edf_path.exists() or not staging_path.exists():
-        log(f"    SKIP: missing files")
+        log("    SKIP: missing files")
         return None
 
     epochs = parse_sleep_staging(staging_path)
@@ -318,7 +317,7 @@ def analyze_subject(subject_id, edf_file, staging_file):
     elapsed = time.time() - t0
 
     if state_results.get("W") is None:
-        log(f"    SKIP: no wake data")
+        log("    SKIP: no wake data")
         return None
 
     all_kreiss = []
@@ -450,7 +449,7 @@ def compute_group_statistics(subjects_data):
             w, pw = sp_stats.wilcoxon(delta_mf)
             d = float(np.mean(delta_mf) / np.std(delta_mf, ddof=1))
         else:
-            t, p, w, pw, d = 0, 1.0, 0, 1.0, 0.0
+            t, p, _w, pw, d = 0, 1.0, 0, 1.0, 0.0
 
         group[contrast_key]["model_free_growth"] = {
             "delta_mean": float(np.mean(delta_mf)),

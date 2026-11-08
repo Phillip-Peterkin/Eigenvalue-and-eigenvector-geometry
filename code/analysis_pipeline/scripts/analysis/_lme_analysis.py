@@ -8,9 +8,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
 import matplotlib
+import pandas as pd
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -268,7 +268,7 @@ def plot_diagnostics(df):
     fig.tight_layout()
     fig.savefig(FIG_DIR / "lme_paired_bands.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
-    log(f"  Saved: lme_paired_bands.png")
+    log("  Saved: lme_paired_bands.png")
 
 
 def main():

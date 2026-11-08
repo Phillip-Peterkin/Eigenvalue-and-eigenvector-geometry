@@ -38,13 +38,12 @@ jobs:
       - name: Check dependency consistency
         run: python -m pip check
 
-      - name: Ruff lint package, tests, and canonical public runners
+      - name: Ruff lint package, tests, and all analysis scripts
         run: |
           ruff check \
             code/analysis_pipeline/cmcc \
             tests \
-            code/analysis_pipeline/scripts/run_all_subjects_broadband_canonical.py \
-            code/analysis_pipeline/scripts/analysis/_geometry_brain_states.py
+            code/analysis_pipeline/scripts
 
       - name: Reject broad warning suppression in public package paths
         shell: bash
@@ -59,7 +58,7 @@ jobs:
           python -m pytest -q --tb=short \
             --cov=cmcc \
             --cov-report=term-missing \
-            --cov-fail-under=25
+            --cov-fail-under=44
 
       - name: Build and smoke-test distributable wheel
         if: matrix.python-version == '3.11'

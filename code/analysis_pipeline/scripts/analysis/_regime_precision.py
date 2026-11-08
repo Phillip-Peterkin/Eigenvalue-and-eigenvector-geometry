@@ -14,15 +14,16 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve
 
 warnings.filterwarnings("ignore")
 
@@ -396,13 +397,13 @@ def main():
     fig_dir = Path(cfg["output"]["results_dir"]) / "figures" / "regime_precision"
     fig_dir.mkdir(parents=True, exist_ok=True)
 
-    log(f"\n14a. Locked group definition: raw_spacing_change sign")
+    log("\n14a. Locked group definition: raw_spacing_change sign")
     n_narrow = int((df["group_label"] == 1).sum())
     n_wide = int((df["group_label"] == 0).sum())
     log(f"   Narrowing (raw_spacing_change < 0): {n_narrow}")
     log(f"   Widening  (raw_spacing_change >= 0): {n_wide}")
 
-    log(f"\n14b. Cross-validated classifier (LOSO, 5 change metrics)...")
+    log("\n14b. Cross-validated classifier (LOSO, 5 change metrics)...")
     sig_features = [
         "spectral_slope_change", "dfa_change",
         "spectral_radius_change", "residual_var_change", "pre_ep_score_z",
@@ -418,7 +419,7 @@ def main():
 
     plot_classifier_results(clf_results, fig_dir)
 
-    log(f"\n14c. Timing and clinical differences...")
+    log("\n14c. Timing and clinical differences...")
     timing_results = run_timing_comparison(df)
     for col, r in timing_results.items():
         if "error" not in r:
@@ -429,7 +430,7 @@ def main():
 
     plot_timing_comparison(timing_results, fig_dir)
 
-    log(f"\n14d. Incremental value of geometry over spectral features...")
+    log("\n14d. Incremental value of geometry over spectral features...")
     incr_results = run_incremental_value(df, seed=42)
     for name in ["spectral_only", "spectral_plus_geometry"]:
         if name in incr_results and "error" not in incr_results[name]:
@@ -445,7 +446,7 @@ def main():
 
     plot_incremental_value(incr_results, fig_dir)
 
-    log(f"\nSaving results...")
+    log("\nSaving results...")
 
     def sanitize(obj):
         if isinstance(obj, (np.integer,)):

@@ -15,8 +15,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats

@@ -1,4 +1,3 @@
-import os
 """Cross-frequency (PAC) analysis: broadband phase x high-gamma amplitude.
 
 Tests whether phase-amplitude coupling between low-frequency phase and
@@ -12,13 +11,15 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -26,8 +27,8 @@ from scipy import stats as sp_stats
 warnings.filterwarnings("ignore")
 
 from cmcc.config import load_config
-from cmcc.preprocess.filter import SITE_LINE_FREQ
 from cmcc.features.pac import compute_pac, compute_pac_per_channel
+from cmcc.preprocess.filter import SITE_LINE_FREQ
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
@@ -64,8 +65,8 @@ def load_group_results():
 
 def load_raw_durr1(subject_id, config):
     from cmcc.io.loader import load_subject
-    from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
     from cmcc.preprocess.filter import remove_line_noise
+    from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
     from cmcc.preprocess.reference import apply_laplace
 
     site = subject_id[:2].upper()
@@ -170,7 +171,7 @@ def compute_subject_pac(subject_id, config, hg_result):
 
         if len(rel_trials) >= 5 and len(irr_trials) >= 5:
             n_trial_ch = min(5, len(ch_subset))
-            trial_data_ch = data[:n_trial_ch]
+            _trial_data_ch = data[:n_trial_ch]
 
             rel_mis = []
             for _, row in rel_trials.head(20).iterrows():
@@ -347,7 +348,7 @@ def main():
                 log(f"  MI={result['mean_mi']:.4f}, Z={result['mean_z']:.2f}, "
                     f"sig={result['n_significant']}/{result['n_channels']} [{result['elapsed_s']:.0f}s]")
             else:
-                log(f"  SKIP")
+                log("  SKIP")
         except Exception as e:
             log(f"  ERROR: {e}")
 

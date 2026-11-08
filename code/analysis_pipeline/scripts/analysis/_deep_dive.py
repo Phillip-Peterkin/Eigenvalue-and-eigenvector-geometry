@@ -15,9 +15,10 @@ import time
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -61,12 +62,12 @@ def load_atlas_labels(data_root, subject_id, atlas="desikan"):
 
 
 def compute_per_channel_tau(subject_id, config):
-    from cmcc.io.loader import load_subject
-    from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
-    from cmcc.preprocess.reference import apply_laplace
     from cmcc.features.avalanche import detect_avalanches
     from cmcc.features.powerlaw_fit import _fit_single_distribution
+    from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
+    from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
+    from cmcc.preprocess.reference import apply_laplace
 
     t0 = time.time()
     site = subject_id[:2].upper()
@@ -227,7 +228,7 @@ def plot_electrode_tau_map(electrodes, tau_values, subject_id, reason, output_di
     fig.tight_layout()
     fig.savefig(output_dir / f"{subject_id}_electrode_maps.png", dpi=150)
     plt.close(fig)
-    log(f"    Electrode maps saved")
+    log("    Electrode maps saved")
 
 
 def plot_behavioral_profile(summary, subject_id, output_dir):
@@ -283,7 +284,7 @@ def main():
 
         summary_path = RESULTS_DIR / f"summary_{subject_id}_pooled.json"
         if not summary_path.exists():
-            log(f"  No summary found, skipping")
+            log("  No summary found, skipping")
             continue
         with open(summary_path) as f:
             summary = json.load(f)
@@ -292,13 +293,13 @@ def main():
         atlas = load_atlas_labels(config["data"]["root"], subject_id, "desikan")
 
         if electrodes is None:
-            log(f"  No electrode coordinates found, skipping spatial maps")
+            log("  No electrode coordinates found, skipping spatial maps")
             continue
         log(f"  Electrodes: {len(electrodes)} contacts")
         if atlas is not None:
             log(f"  Atlas labels: {len(atlas)} entries")
 
-        log(f"  Computing per-channel tau...")
+        log("  Computing per-channel tau...")
         tau_per_ch, n_avals_per_ch, ch_names = compute_per_channel_tau(subject_id, config)
 
         plot_electrode_tau_map(electrodes, tau_per_ch, subject_id, reason, DEEP_DIVE_DIR)

@@ -1,4 +1,3 @@
-import os
 """Cross-modal generalization test of EP/criticality dynamics (ds005620).
 
 Tests whether the spectral-radius-to-eigenvalue-gap coupling found in iEEG
@@ -31,30 +30,32 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
+from cmcc.analysis.contrasts import fdr_correction
+from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
+from cmcc.analysis.ep_advanced import (
+    compute_alpha_power_per_window,
+    compute_condition_number_alpha_sensitivity,
+    compute_petermann_noise,
+    compute_spectral_radius_sensitivity,
+    compute_svd_dimension,
+)
 from cmcc.preprocess.scalp_eeg import (
     load_ds005620_subject,
     preprocess_scalp_eeg,
-)
-from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
-from cmcc.analysis.contrasts import fdr_correction
-from cmcc.analysis.ep_advanced import (
-    compute_spectral_radius_sensitivity,
-    compute_svd_dimension,
-    compute_petermann_noise,
-    compute_alpha_power_per_window,
-    compute_condition_number_alpha_sensitivity,
 )
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -215,7 +216,7 @@ def analyze_single_subject(subject_id, data_root):
         subject_id, data_root, "awake",
     )
     if awake_data is None:
-        log(f"    SKIP: no awake data")
+        log("    SKIP: no awake data")
         return None
 
     log(f"    awake: {awake_data.shape[0]} comp, {awake_sfreq} Hz, "
@@ -257,7 +258,7 @@ def analyze_single_subject(subject_id, data_root):
         gc.collect()
 
     if not sed_results:
-        log(f"    SKIP: no sedation data")
+        log("    SKIP: no sedation data")
         return None
 
     sed_pooled = {
@@ -701,12 +702,12 @@ def main():
     group_stats = compute_group_statistics(all_results)
 
     if group_stats:
-        log(f"\n  Group statistics:")
+        log("\n  Group statistics:")
         for key, val in group_stats.items():
             if key != "fdr_correction":
                 log(f"    {key}: {val}")
         if "fdr_correction" in group_stats:
-            log(f"    FDR correction:")
+            log("    FDR correction:")
             for label, info in group_stats["fdr_correction"].items():
                 log(f"      {label}: p={info['p']:.6f} sig={info['fdr_significant']}")
 

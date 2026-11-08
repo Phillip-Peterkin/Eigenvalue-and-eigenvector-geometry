@@ -21,14 +21,15 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, accuracy_score, roc_curve
 
 warnings.filterwarnings("ignore")
 
@@ -161,7 +162,7 @@ def run_two_stage(table, rng, n_perm=200):
     soft_probs = np.full(n_sz, np.nan)
     oracle_probs = np.full(n_sz, np.nan)
     regime_pred_probs = np.full(n_sz, np.nan)
-    true_labels = np.ones(n_sz)
+    _true_labels = np.ones(n_sz)
 
     unstrat_sham = np.full(n_sz, np.nan)
     hard_sham = np.full(n_sz, np.nan)

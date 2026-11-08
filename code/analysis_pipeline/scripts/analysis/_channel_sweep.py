@@ -1,4 +1,3 @@
-import os
 """
 Channel Scaling Sweep — Standalone
 
@@ -14,6 +13,7 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
@@ -22,12 +22,12 @@ import numpy as np
 
 warnings.filterwarnings("ignore")
 
+from cmcc.analysis.dynamical_systems import (
+    decompose_jacobian_hermiticity,
+    estimate_jacobian,
+)
 from cmcc.config import load_config
 from cmcc.preprocess.filter import SITE_LINE_FREQ
-from cmcc.analysis.dynamical_systems import (
-    estimate_jacobian,
-    decompose_jacobian_hermiticity,
-)
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
@@ -47,8 +47,8 @@ def log(msg):
 
 def load_and_preprocess(subject_id, config):
     from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
     from cmcc.preprocess.reference import apply_laplace
 
     site = subject_id[:2].upper()
@@ -90,7 +90,7 @@ def run_sweep_single(subject_id, config):
 
     data, sfreq = load_and_preprocess(subject_id, config)
     if data is None:
-        log(f"    SKIP: no data")
+        log("    SKIP: no data")
         return None
 
     n_ch, n_samples = data.shape

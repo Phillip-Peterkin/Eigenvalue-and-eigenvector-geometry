@@ -24,6 +24,7 @@ Random seed: 42 throughout.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import warnings
@@ -31,11 +32,11 @@ from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
-import os
 
 os.environ.setdefault("PYTHONIOENCODING", "utf-8")
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -43,21 +44,21 @@ import seaborn as sns
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 warnings.filterwarnings("ignore", category=RuntimeWarning, module="sklearn")
 
-from cmcc.analysis.geometry_embedding import (
-    extract_propofol_features,
-    extract_sleep_features,
-    GeometryFeatureTable,
-)
 from cmcc.analysis.falsification import (
     _loso_auc,
-    run_label_shuffle,
     run_classification_jackknife,
-    run_temporal_jackknife,
-    run_leave_two_out,
     run_feature_ablation,
+    run_label_shuffle,
+    run_leave_two_out,
+    run_model_competition,
     run_spectral_confound_check,
     run_temporal_decimation,
-    run_model_competition,
+    run_temporal_jackknife,
+)
+from cmcc.analysis.geometry_embedding import (
+    GeometryFeatureTable,
+    extract_propofol_features,
+    extract_sleep_features,
 )
 
 PIPELINE_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -524,7 +525,7 @@ def main():
             dataset="propofol",
             seed=SEED,
         )
-        log(f"  Propofol vs alpha_power:")
+        log("  Propofol vs alpha_power:")
         for feat, r in result_alpha.per_geometry_correlations.items():
             d = result_alpha.per_geometry_residualized_d.get(feat, float("nan"))
             log(f"    {feat}: r={r:.3f}, residualized d={d:.3f}")
@@ -545,7 +546,7 @@ def main():
             dataset="sleep",
             seed=SEED,
         )
-        log(f"  Sleep N3 vs REM, delta_power:")
+        log("  Sleep N3 vs REM, delta_power:")
         if result_delta.regressor_untestable:
             log(f"    UNTESTABLE: {result_delta.regressor_untestable_reason}")
             log(f"    Regressor variance: {result_delta.regressor_variance:.2e}")
@@ -573,7 +574,7 @@ def main():
             untestable_notes.append(f"{cr.dataset}/{cr.spectral_feature_name} (regressor untestable)")
             continue
         n_computable = sum(1 for d in cr.per_geometry_residualized_d.values() if np.isfinite(d))
-        n_nan = cr.n_features_total - n_computable
+        _n_nan = cr.n_features_total - n_computable
         if n_computable == 0:
             untestable_notes.append(
                 f"{cr.dataset}/{cr.spectral_feature_name} (no both-class coverage for d)"

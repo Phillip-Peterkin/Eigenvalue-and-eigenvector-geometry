@@ -1,4 +1,3 @@
-import os
 """Operator-Geometry Analysis for CMCC Pipeline.
 
 Maps iEEG channels into a high-dimensional state space, estimates
@@ -15,21 +14,23 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
+from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 from cmcc.config import load_config
 from cmcc.preprocess.filter import SITE_LINE_FREQ
-from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 CONFIG_PATH = CMCC_ROOT / "configs" / "default.yaml"
@@ -55,8 +56,8 @@ def load_group_results():
 
 def load_and_preprocess(subject_id, config):
     from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
     from cmcc.preprocess.reference import apply_laplace
 
     site = subject_id[:2].upper()
@@ -98,7 +99,7 @@ def analyze_single_subject(subject_id, config, hg_results):
 
     data, sfreq = load_and_preprocess(subject_id, config)
     if data is None:
-        log(f"    SKIP: no data")
+        log("    SKIP: no data")
         return None
 
     n_ch, n_samples = data.shape
@@ -174,7 +175,7 @@ def plot_summary(subjects_data, output_path):
     min_gaps = [s["min_eigenvalue_gap_min"] for s in valid]
     overlaps = [s["eigenvector_overlap_max"] for s in valid]
     spec_rad = [s["spectral_radius_mean"] for s in valid]
-    cond_nums = [s["condition_number_mean"] for s in valid]
+    _cond_nums = [s["condition_number_mean"] for s in valid]
 
     ax = axes[0, 0]
     ax.scatter(sigmas, ep_scores, c="steelblue", s=50, edgecolor="k", linewidth=0.5)
@@ -261,7 +262,7 @@ def main():
         log(f"    Max overlap:      {np.mean(overlaps):.4f} +/- {np.std(overlaps):.4f}")
         log(f"    Mean EP score:    {np.mean(ep_scores):.4f} +/- {np.std(ep_scores):.4f}")
 
-        log(f"\n  Correlations with criticality:")
+        log("\n  Correlations with criticality:")
         for name, vals in [("sigma", sigmas), ("tau", taus)]:
             r_ep, p_ep = sp_stats.pearsonr(vals, ep_scores)
             r_gap, p_gap = sp_stats.pearsonr(vals, min_gaps)

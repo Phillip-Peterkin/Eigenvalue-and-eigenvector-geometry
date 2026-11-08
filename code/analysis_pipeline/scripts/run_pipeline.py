@@ -15,9 +15,9 @@ import time
 import warnings
 from pathlib import Path
 
+import mne
 import numpy as np
 import pandas as pd
-import mne
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -71,8 +71,8 @@ def main():
     seed = config["random_seed"]
 
     from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
     from cmcc.preprocess.reference import apply_laplace
 
     log(f"\n[2/10] Loading {subject_id} runs: {RUNS}...")
@@ -194,8 +194,8 @@ def main():
 
     log(f"\n[6/10] Complexity (pooled)... [{time.time()-t0:.0f}s]")
     from cmcc.features.complexity import compute_lzc
-    from cmcc.features.entropy import compute_mse
     from cmcc.features.dfa import compute_dfa
+    from cmcc.features.entropy import compute_mse
 
     n_lzc_ch = min(10, n_channels)
     n_lzc_t = min(2000, gamma_concatenated.shape[1])
@@ -324,11 +324,12 @@ def main():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from cmcc.viz.distributions import plot_avalanche_distributions
+
+    from cmcc.provenance import log_run, save_config_snapshot, save_summary_json
     from cmcc.viz.comparisons import plot_condition_comparison
+    from cmcc.viz.distributions import plot_avalanche_distributions
     from cmcc.viz.spatial_maps import plot_electrode_metric_map
     from cmcc.viz.summary import plot_dfa
-    from cmcc.provenance import log_run, save_config_snapshot, save_summary_json
 
     results_dir = Path(config["output"]["results_dir"])
     fig_dir = results_dir / "figures"
@@ -363,7 +364,7 @@ def main():
     plt.close(fig)
     log(f"  Figures saved [{time.time()-t0:.0f}s]")
 
-    prov = log_run(config, results_dir)
+    _prov = log_run(config, results_dir)
     save_config_snapshot(config, results_dir)
 
     summary = {
@@ -431,7 +432,7 @@ def main():
     log(f"  HG power:      g={power_contrast.effect_size:.3f}, p={power_contrast.p_value:.4f}")
     log(f"  LZc contrast:  g={lzc_contrast.effect_size:.3f}, p={lzc_contrast.p_value:.4f} (stim-only, {n_epoch_lzc_ch}ch)")
     if decoding_results:
-        log(f"\n  DECODING (most-critical vs least-critical):")
+        log("\n  DECODING (most-critical vs least-critical):")
         for comp in decoding_results["comparisons"]:
             log(f"    n={comp.n_channels}: most={comp.accuracy_most_critical:.3f} "
                 f"least={comp.accuracy_least_critical:.3f} diff={comp.diff_most_vs_least:+.3f} "

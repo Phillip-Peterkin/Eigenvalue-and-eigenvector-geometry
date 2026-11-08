@@ -23,20 +23,20 @@ D. Snyder-criteria evaluation if separability exists
 """
 from __future__ import annotations
 
-import gc
 import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, roc_curve
+from sklearn.preprocessing import StandardScaler
 
 warnings.filterwarnings("ignore")
 
@@ -123,7 +123,7 @@ def build_subject_norms(sham_trajs):
         if sub not in subject_pools:
             subject_pools[sub] = {f: [] for f in ["min_spacing_raw"] + list(FIELD_MAP.values())}
 
-        t = traj["time_sec"]
+        _t = traj["time_sec"]
         for field in ["min_spacing_raw"] + list(FIELD_MAP.values()):
             if field in traj:
                 vals = traj[field]
@@ -701,7 +701,7 @@ def make_figures(paired_results, level_test, classifier_result,
         labels = ["Pre-ictal", "Interictal"]
         means = [level_test["pre_mean"], level_test["inter_mean"]]
         stds = [level_test["pre_std"], level_test["inter_std"]]
-        bars = ax.bar(labels, means, yerr=stds, color=["#5D3A9B", "#E66100"],
+        _bars = ax.bar(labels, means, yerr=stds, color=["#5D3A9B", "#E66100"],
                       alpha=0.7, capsize=5)
         ax.set_ylabel("Subject-normalized min_spacing")
         ax.set_title(f"Raw Spacing Level Test\nd={level_test['cohens_d']:.3f}, "
@@ -855,7 +855,7 @@ def main():
         log(f"  Null AUC: {classifier_result['null_auc_mean']:.3f}±{classifier_result['null_auc_std']:.3f}")
         log(f"  N features: {classifier_result['n_features']}")
         if classifier_result.get("top_features"):
-            log(f"  Top features by |d|:")
+            log("  Top features by |d|:")
             for tf in classifier_result["top_features"][:5]:
                 log(f"    {tf['feature']:35s} d={tf['cohens_d']:+.3f} AUC={tf['uni_auc']:.3f}")
     else:

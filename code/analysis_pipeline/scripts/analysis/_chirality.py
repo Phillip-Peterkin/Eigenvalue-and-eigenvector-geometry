@@ -12,13 +12,13 @@ from __future__ import annotations
 
 import gc
 import json
-import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
@@ -30,7 +30,6 @@ warnings.filterwarnings("ignore", message=".*toeplitz.*", category=RuntimeWarnin
 from cmcc.analysis.dynamical_systems import (
     compute_ep_proximity_timecourse,
     decompose_jacobian_hermiticity,
-    detect_exceptional_points,
     measure_chirality,
 )
 from cmcc.config import load_config
@@ -62,8 +61,8 @@ def load_group_results():
 
 def load_and_preprocess(subject_id, config):
     from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
     from cmcc.preprocess.reference import apply_laplace
 
     site = subject_id[:2].upper()
@@ -105,7 +104,7 @@ def analyze_single_subject(subject_id, config, hg_results):
 
     data, sfreq = load_and_preprocess(subject_id, config)
     if data is None:
-        log(f"    SKIP: no data")
+        log("    SKIP: no data")
         return None
 
     n_ch, n_samples = data.shape
@@ -213,7 +212,7 @@ def plot_chirality_summary(subjects_data, output_path):
     lzcs = [s["hg_lzc"] for s in valid]
     chi_idx = [s["chirality_index"] for s in valid]
     windings = [s["winding_number"] for s in valid]
-    circ_var = [s["circular_variance"] for s in valid]
+    _circ_var = [s["circular_variance"] for s in valid]
     ep_scores = [s["ep_score_mean"] for s in valid]
     asym_ratios = [s["asymmetry_ratio_mean"] for s in valid]
     max_rot_freqs = [s["max_rotation_freq_mean"] for s in valid]
@@ -391,7 +390,7 @@ def main():
         asym_ratios = [s["asymmetry_ratio_mean"] for s in valid]
         asym_kurtosis = [s["asymmetry_ratio_kurtosis"] for s in valid]
         asym_max = [s["asymmetry_ratio_max"] for s in valid]
-        asym_p95 = [s["asymmetry_ratio_p95"] for s in valid]
+        _asym_p95 = [s["asymmetry_ratio_p95"] for s in valid]
         asym_p99 = [s["asymmetry_ratio_p99"] for s in valid]
         asym_dynrange = [s["asymmetry_dynamic_range"] for s in valid]
         max_rot_freqs = [s["max_rotation_freq_mean"] for s in valid]
@@ -411,7 +410,7 @@ def main():
         n_chiral = sum(1 for c in chi_idx if c > 1.0)
         log(f"    Subjects with chirality_index > 1: {n_chiral}/{len(valid)}")
 
-        log(f"\n  Correlations with criticality:")
+        log("\n  Correlations with criticality:")
         corr_table = {}
         for name, vals in [("sigma", sigmas), ("tau", taus), ("lzc", lzcs)]:
             for metric_name, metric_vals in [("chirality_index", chi_idx),

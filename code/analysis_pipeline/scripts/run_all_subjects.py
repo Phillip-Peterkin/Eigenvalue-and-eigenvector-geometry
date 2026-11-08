@@ -7,15 +7,14 @@ Results are saved per-subject and aggregated into a group summary.
 from __future__ import annotations
 
 import gc
-import json
 import time
 import traceback
 import warnings
 from pathlib import Path
 
+import mne
 import numpy as np
 import pandas as pd
-import mne
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -60,8 +59,8 @@ def run_single_subject(subject_id, config, results_dir):
     seed = config["random_seed"]
 
     from cmcc.io.loader import load_subject
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
     from cmcc.preprocess.reference import apply_laplace
 
     subject_data = load_subject(subject_id, config["data"]["root"], runs=RUNS, preload_edf=True)
@@ -185,14 +184,14 @@ def run_single_subject(subject_id, config, results_dir):
 
     log(f"  Pooled: {n_trials_total} trials, {n_channels} ch [{time.time()-t0:.0f}s]")
 
-    from cmcc.features.avalanche import detect_avalanches
-    from cmcc.features.powerlaw_fit import fit_avalanche_distributions, _fit_single_distribution
-    from cmcc.features.complexity import compute_lzc
-    from cmcc.features.entropy import compute_mse
-    from cmcc.features.dfa import compute_dfa
-    from cmcc.features.branching import compute_branching_ratio
     from cmcc.analysis.contrasts import condition_contrast
     from cmcc.analysis.decoding import criticality_decoding_analysis
+    from cmcc.features.avalanche import detect_avalanches
+    from cmcc.features.branching import compute_branching_ratio
+    from cmcc.features.complexity import compute_lzc
+    from cmcc.features.dfa import compute_dfa
+    from cmcc.features.entropy import compute_mse
+    from cmcc.features.powerlaw_fit import _fit_single_distribution, fit_avalanche_distributions
 
     avalanches = detect_avalanches(gamma_concatenated, sfreq=sfreq,
                                    threshold_sd=config["avalanche"]["threshold_sd"],
@@ -327,9 +326,10 @@ def run_single_subject(subject_id, config, results_dir):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+
+    from cmcc.provenance import save_summary_json
     from cmcc.viz.distributions import plot_avalanche_distributions
     from cmcc.viz.summary import plot_dfa
-    from cmcc.provenance import save_summary_json
 
     fig_dir = results_dir / "figures"
     fig_dir.mkdir(parents=True, exist_ok=True)
@@ -465,11 +465,11 @@ def main():
                 f"diff={np.mean(np.array(n10_most)-np.array(n10_least)):+.3f}")
 
     if skipped:
-        log(f"\n  SKIPPED:")
+        log("\n  SKIPPED:")
         for s in skipped:
             log(f"    {s['subject']}: {s.get('error', '')}")
     if failed:
-        log(f"\n  FAILED:")
+        log("\n  FAILED:")
         for s in failed:
             log(f"    {s['subject']}: {s.get('error', '')}")
 

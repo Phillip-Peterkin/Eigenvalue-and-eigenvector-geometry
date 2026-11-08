@@ -16,14 +16,14 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, roc_curve
 
 warnings.filterwarnings("ignore")
 
@@ -219,13 +219,13 @@ def audit_sham_quality(trajectories, df, rng):
     print(f"\n  Pre-ictal segments: {len(pre_df)}")
     print(f"  Sham segments:      {len(sham_df)}")
 
-    print(f"\n  Sham time distribution (sec from seizure onset):")
+    print("\n  Sham time distribution (sec from seizure onset):")
     if "sham_time_sec" in sham_df.columns:
         st = sham_df["sham_time_sec"]
         print(f"    Range: [{st.min():.0f}, {st.max():.0f}]")
         print(f"    Mean:  {st.mean():.0f}")
-        print(f"    WARNING: All shams come from SAME seizure recording baseline")
-        print(f"    WARNING: Not matched for time-of-day, sleep/wake, or artifact burden")
+        print("    WARNING: All shams come from SAME seizure recording baseline")
+        print("    WARNING: Not matched for time-of-day, sleep/wake, or artifact burden")
         print(f"    WARNING: Distance from seizure: shams are {abs(st.mean())/60:.0f} min "
               f"before seizure, not truly interictal")
 
@@ -233,7 +233,7 @@ def audit_sham_quality(trajectories, df, rng):
                  if c not in {"segment", "key", "sham_time_sec"}
                  and not np.all(pre_df[c].isna())]
 
-    print(f"\n  Feature overlap analysis (Cohen's d, pre-ictal vs sham):")
+    print("\n  Feature overlap analysis (Cohen's d, pre-ictal vs sham):")
     separable = 0
     weak = 0
     negligible = 0

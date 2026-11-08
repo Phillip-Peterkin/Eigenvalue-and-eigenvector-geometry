@@ -40,7 +40,7 @@ The repository separates five engineering layers:
 ```bash
 python -m pip install -e ".[dev]"
 python -m pip check
-python -m pytest -q --cov=cmcc --cov-fail-under=25
+python -m pytest -q --cov=cmcc --cov-fail-under=44
 ```
 
 The portable suite includes synthetic mathematical tests, numerical-input contracts, package/version consistency checks, cohort/config synchronization, release-artifact hash checks, and manuscript-to-result safeguards.

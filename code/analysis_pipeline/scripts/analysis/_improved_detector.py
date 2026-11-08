@@ -18,14 +18,15 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, roc_curve
+from sklearn.preprocessing import StandardScaler
 
 warnings.filterwarnings("ignore")
 
@@ -296,7 +297,7 @@ def loso_classify_regime_aware(df, feat_cols, n_perm=200, seed=42):
 
 
 def run_sprt_simulation(trajectories, df, rng, feat_cols_for_sprt):
-    subjects = df["subject_id"].unique()
+    _subjects = df["subject_id"].unique()
     time_steps = np.arange(-1800 + 300, 60, 30)
 
     training_data = build_improved_dataset(trajectories, df, -60, rng)
@@ -456,7 +457,7 @@ def main():
             top_features.append((fc, abs(uni_auc - 0.5), uni_auc))
 
         top_features.sort(key=lambda x: -x[1])
-        print(f"  Top 15 features by |AUC-0.5|:")
+        print("  Top 15 features by |AUC-0.5|:")
         for fc, delta, auc in top_features[:15]:
             print(f"    {fc:35s}  AUC={auc:.3f}")
 
@@ -471,7 +472,7 @@ def main():
                   f"Sens@5%FAR={result['sensitivity_at_5pct_far']:.3f}  "
                   f"Sens@10%FAR={result['sensitivity_at_10pct_far']:.3f}")
 
-    print(f"\n\n--- Task 28b: SPRT simulation ---")
+    print("\n\n--- Task 28b: SPRT simulation ---")
     dataset_full = build_improved_dataset(trajectories, df, -60, rng)
     all_feat_cols = get_feature_cols(dataset_full)
     top_features_full = []
@@ -508,7 +509,7 @@ def main():
         print(f"  Median warning time: {warned.warning_time_min.median():.1f} min")
         print(f"  Mean warning time:   {warned.warning_time_min.mean():.1f} min")
 
-    print(f"\n  SPRT false alarm analysis:")
+    print("\n  SPRT false alarm analysis:")
     for threshold in [2.0, 3.0, 4.0, 5.0]:
         fa_rate = float(np.mean(sham_alarms >= threshold))
         det_rate = float(np.mean(ps.max_cum_llr >= threshold))
@@ -559,8 +560,8 @@ def main():
     fig.savefig(FIG_DIR / "improved_detection_results.png", dpi=200, bbox_inches="tight")
     plt.close(fig)
 
-    print(f"\n--- Comparison with old detector ---")
-    print(f"  Old:      FA@0.6 = 0.796  Det@0.6 = 0.874")
+    print("\n--- Comparison with old detector ---")
+    print("  Old:      FA@0.6 = 0.796  Det@0.6 = 0.874")
     old_net = 0.874 - 0.796
     for t in [3.0, 4.0, 5.0]:
         fa = float(np.mean(sham_alarms >= t))

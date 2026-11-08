@@ -16,14 +16,14 @@ import json
 import warnings
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 import pandas as pd
-import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, roc_curve
 
 warnings.filterwarnings("ignore")
 
@@ -235,7 +235,7 @@ def main():
     training_table = build_training_table(trajectories, df, rng)
     print(f"Training table: {len(training_table)} seizures, {training_table.subject_id.nunique()} subjects")
 
-    subjects = df["subject_id"].unique()
+    _subjects = df["subject_id"].unique()
     per_seizure = []
 
     for _, row in df.iterrows():
@@ -295,7 +295,7 @@ def main():
 
     stable = ps[np.isfinite(ps.regime_stable_time_min)]
     if len(stable) > 0:
-        print(f"\nRegime stabilization (2-min consecutive):")
+        print("\nRegime stabilization (2-min consecutive):")
         print(f"  Median time: {stable.regime_stable_time_min.median():.1f} min")
         print(f"  Mean time:   {stable.regime_stable_time_min.mean():.1f} min")
 

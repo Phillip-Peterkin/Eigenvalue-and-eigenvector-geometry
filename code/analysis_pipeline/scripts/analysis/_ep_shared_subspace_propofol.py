@@ -1,4 +1,3 @@
-import os
 """Shared-subspace robustness test for propofol EP geometry.
 
 Addresses the single biggest vulnerability in the per-state PCA pipeline:
@@ -16,29 +15,31 @@ from __future__ import annotations
 
 import gc
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
-from cmcc.preprocess.scalp_eeg import (
-    load_ds005620_subject,
-    preprocess_to_csd,
-    pca_reduce_shared,
-)
+from cmcc.analysis.contrasts import fdr_correction
 from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
 from cmcc.analysis.ep_advanced import (
-    compute_spectral_radius_sensitivity,
     compute_alternative_spacing,
+    compute_spectral_radius_sensitivity,
 )
-from cmcc.analysis.contrasts import fdr_correction
+from cmcc.preprocess.scalp_eeg import (
+    load_ds005620_subject,
+    pca_reduce_shared,
+    preprocess_to_csd,
+)
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("PROPOFOL_DATA_ROOT", "./data/ds005620"))
@@ -120,12 +121,12 @@ def analyze_single_subject(subject_id, data_root):
 
     awake_csd, awake_sfreq, awake_info = load_csd(subject_id, data_root, "awake")
     if awake_csd is None:
-        log(f"    SKIP: no awake data")
+        log("    SKIP: no awake data")
         return None
 
     sed_csd, sed_sfreq, sed_info = load_csd(subject_id, data_root, "sed_run-1")
     if sed_csd is None:
-        log(f"    SKIP: no sed_run-1 data")
+        log("    SKIP: no sed_run-1 data")
         return None
 
     n_ch_awake = awake_csd.shape[0]
@@ -366,18 +367,18 @@ def main():
     group_stats = compute_group_statistics(all_results, original_json_path=orig_json)
 
     if group_stats:
-        log(f"\n  Group statistics (shared subspace):")
+        log("\n  Group statistics (shared subspace):")
         for key, val in group_stats.items():
             if key not in ("fdr_correction", "comparison_to_original"):
                 log(f"    {key}: {val}")
         if "fdr_correction" in group_stats:
-            log(f"    FDR correction:")
+            log("    FDR correction:")
             for label, info in group_stats["fdr_correction"].items():
                 log(f"      {label}: p={info['p']:.6f} sig={info['fdr_significant']}")
         if "comparison_to_original" in group_stats:
             comp = group_stats["comparison_to_original"]
             if "error" not in comp:
-                log(f"\n  Comparison to per-state PCA:")
+                log("\n  Comparison to per-state PCA:")
                 for metric, vals in comp.items():
                     log(f"    {metric}: orig d={vals['original_d']:.2f} -> shared d={vals['shared_d']:.2f}")
 

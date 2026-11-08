@@ -28,24 +28,25 @@ sleep-stage scoring, slow oscillation power, or time-of-night effects.
 from __future__ import annotations
 
 import gc
-import os
 import json
+import os
 import time
 import warnings
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from scipy import stats as sp_stats
 
 warnings.filterwarnings("ignore")
 
 import mne
-from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
-from cmcc.preprocess.qc import detect_bad_channels
+
 from cmcc.analysis.dynamical_systems import compute_ep_proximity_timecourse
+from cmcc.preprocess.qc import detect_bad_channels
+from cmcc.preprocess.scalp_eeg import apply_csd, pca_reduce
 
 CMCC_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_ROOT = Path(os.environ.get("SLEEP_DATA_ROOT", "./data/ANPHY-Sleep"))
@@ -213,7 +214,7 @@ def main():
         staging_path = DATA_ROOT / subject_id / staging_name
 
         if not edf_path.exists() or not staging_path.exists():
-            log(f"    SKIP: files not found")
+            log("    SKIP: files not found")
             continue
 
         epochs = parse_sleep_staging(staging_path)

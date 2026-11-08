@@ -14,32 +14,29 @@ import math
 import os
 import sys
 import time
-from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 
-import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from cmcc.analysis.temporal_precedence import TransitionTimecourse
 from cmcc.analysis.geometry_commitment import (
-    ExtendedWindowResult,
-    ChangepointResult,
     BistabilityResult,
-    TrajectoryPredictionResult,
     CommitmentWindowResult,
+    TrajectoryPredictionResult,
     analyze_extended_window,
-    detect_commitment_changepoints,
     analyze_n2_bistability,
-    predict_transition_type_from_trajectory,
     characterize_commitment_window,
+    detect_commitment_changepoints,
+    predict_transition_type_from_trajectory,
 )
+from cmcc.analysis.temporal_precedence import TransitionTimecourse
 
 PIPELINE_ROOT = Path(__file__).resolve().parent.parent.parent
 REPO_ROOT = PIPELINE_ROOT.parent.parent
@@ -394,7 +391,7 @@ def append_csv_rows(q3_result, q4_result, q5_result):
     marker = "geometry_commitment,"
     if marker in existing:
         lines = existing.splitlines()
-        lines = [l for l in lines if not l.startswith(marker)]
+        lines = [ln for ln in lines if not ln.startswith(marker)]
         existing = "\n".join(lines)
         if existing and not existing.endswith("\n"):
             existing += "\n"
@@ -626,7 +623,7 @@ def main():
     with open(summary_path, "w") as f:
         f.write("GEOMETRIC TRANSITION COMMITMENT ANALYSIS — KEY STATISTICS\n")
         f.write("=" * 60 + "\n\n")
-        f.write(f"Dataset: ANPHY-Sleep, n=10 subjects\n")
+        f.write("Dataset: ANPHY-Sleep, n=10 subjects\n")
         f.write(f"Raw data available: {RAW_DATA_AVAILABLE}\n\n")
 
         f.write("Q1: Extended Drift Window (120-s best-effort)\n")

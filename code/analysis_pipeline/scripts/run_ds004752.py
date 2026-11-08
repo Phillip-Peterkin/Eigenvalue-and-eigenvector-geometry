@@ -37,15 +37,14 @@ Key differences from Cogitate pipeline
 from __future__ import annotations
 
 import gc
-import json
 import time
 import traceback
 import warnings
 from pathlib import Path
 
+import mne
 import numpy as np
 import pandas as pd
-import mne
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -68,11 +67,11 @@ def run_single_subject(subject_id, config, results_dir):
     line_freq = config["preprocessing"]["line_freq"]
 
     from cmcc.io.loader_bids_ieeg import (
-        load_bids_ieeg_subject,
         get_neural_channels,
+        load_bids_ieeg_subject,
     )
+    from cmcc.preprocess.filter import extract_high_gamma, remove_line_noise
     from cmcc.preprocess.qc import detect_bad_channels, mark_bad_channels
-    from cmcc.preprocess.filter import remove_line_noise, extract_high_gamma
 
     subject_data = load_bids_ieeg_subject(
         subject_id, config["data"]["root"], preload=True,
@@ -226,14 +225,14 @@ def run_single_subject(subject_id, config, results_dir):
 
     log(f"  Pooled: {n_trials_total} trials, {n_channels} ch, {gamma_concatenated.shape[1]} continuous samples [{time.time()-t0:.0f}s]")
 
-    from cmcc.features.avalanche import detect_avalanches
-    from cmcc.features.powerlaw_fit import fit_avalanche_distributions, _fit_single_distribution
-    from cmcc.features.complexity import compute_lzc
-    from cmcc.features.entropy import compute_mse
-    from cmcc.features.dfa import compute_dfa
-    from cmcc.features.branching import compute_branching_ratio
     from cmcc.analysis.contrasts import condition_contrast
     from cmcc.analysis.decoding import criticality_decoding_analysis
+    from cmcc.features.avalanche import detect_avalanches
+    from cmcc.features.branching import compute_branching_ratio
+    from cmcc.features.complexity import compute_lzc
+    from cmcc.features.dfa import compute_dfa
+    from cmcc.features.entropy import compute_mse
+    from cmcc.features.powerlaw_fit import _fit_single_distribution, fit_avalanche_distributions
 
     avalanches = detect_avalanches(
         gamma_concatenated, sfreq=sfreq,
@@ -385,9 +384,10 @@ def run_single_subject(subject_id, config, results_dir):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+
+    from cmcc.provenance import save_summary_json
     from cmcc.viz.distributions import plot_avalanche_distributions
     from cmcc.viz.summary import plot_dfa
-    from cmcc.provenance import save_summary_json
 
     sub_results_dir = results_dir / "per_subject"
     sub_results_dir.mkdir(parents=True, exist_ok=True)
@@ -464,7 +464,7 @@ def main():
     subjects = config["data"]["subjects"]
 
     log(f"{'='*70}")
-    log(f"CMCC INDEPENDENT REPLICATION — ds004752 (Zurich SEEG)")
+    log("CMCC INDEPENDENT REPLICATION — ds004752 (Zurich SEEG)")
     log(f"  {len(subjects)} subjects, line_freq={config['preprocessing']['line_freq']} Hz")
     log(f"  HG passband: {config['preprocessing']['high_gamma_passband']}")
     log(f"  Results: {results_dir}")
@@ -490,7 +490,7 @@ def main():
 
         gc.collect()
 
-    from cmcc.provenance import save_summary_json, log_run
+    from cmcc.provenance import log_run, save_summary_json
     save_summary_json(all_summaries, results_dir, "group_all_subjects.json")
     log_run(config, results_dir / "provenance")
 
@@ -514,7 +514,7 @@ def main():
         log(f"    sigma: mean={np.mean(sigmas):.4f} std={np.std(sigmas):.4f}")
         log(f"    LZc:   mean={np.mean(lzcs):.4f} std={np.std(lzcs):.4f}")
         log(f"    DFA:   mean={np.mean(dfas):.4f} std={np.std(dfas):.4f}")
-        log(f"    (Cogitate reference: tau~1.5, sigma~1.0)")
+        log("    (Cogitate reference: tau~1.5, sigma~1.0)")
 
         if any("decoding" in s and s["decoding"] for s in ok):
             n10_most = [s["decoding"][1]["most"] for s in ok if "decoding" in s and s.get("decoding") and len(s["decoding"]) > 1]
@@ -524,11 +524,11 @@ def main():
                     f"diff={np.mean(np.array(n10_most)-np.array(n10_least)):+.3f}")
 
     if skipped:
-        log(f"\n  SKIPPED:")
+        log("\n  SKIPPED:")
         for s in skipped:
             log(f"    {s['subject']}: {s.get('error', '')}")
     if failed:
-        log(f"\n  FAILED:")
+        log("\n  FAILED:")
         for s in failed:
             log(f"    {s['subject']}: {s.get('error', '')}")
 

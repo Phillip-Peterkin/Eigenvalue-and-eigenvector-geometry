@@ -15,6 +15,7 @@ Random seed: 42 throughout.
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 import warnings
@@ -22,30 +23,31 @@ from dataclasses import asdict
 from pathlib import Path
 
 import numpy as np
-import os
+
 os.environ.setdefault("PYTHONIOENCODING", "utf-8")
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import Ellipse
 import seaborn as sns
+from matplotlib.patches import Ellipse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 warnings.filterwarnings("ignore", category=RuntimeWarning, module="sklearn")
 
 from cmcc.analysis.geometry_embedding import (
-    extract_propofol_features,
-    extract_sleep_features,
-    classify_states_loso,
-    analyze_geometric_structure,
-    compare_geometry_vs_power,
-    check_orthogonality,
-    collate_existing_results,
-    assemble_test_battery,
-    load_temporal_precedence_summary,
     GeometryFeatureTable,
     TemporalPrecedenceSummary,
+    analyze_geometric_structure,
+    assemble_test_battery,
+    check_orthogonality,
+    classify_states_loso,
+    collate_existing_results,
+    compare_geometry_vs_power,
+    extract_propofol_features,
+    extract_sleep_features,
+    load_temporal_precedence_summary,
 )
 
 PIPELINE_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -261,7 +263,7 @@ def plot_auc_bars(sufficiency_results, output_path: Path):
 
     x = np.arange(len(names))
     colors = ["#4477AA" if r.passes_threshold else "#BB5566" for r in sufficiency_results]
-    yerr_low = [a - l for a, l in zip(aucs, ci_low)]
+    yerr_low = [a - lo for a, lo in zip(aucs, ci_low)]
     yerr_high = [h - a for a, h in zip(aucs, ci_high)]
 
     ax.bar(x, aucs, color=colors, alpha=0.8, edgecolor="white")
@@ -505,10 +507,10 @@ def main():
             log(f"  Best early-late d: {temporal_summary.best_early_late_d:.3f}")
             log(f"  Status: {status}")
         else:
-            log(f"  Temporal precedence data incomplete — DEFERRED")
+            log("  Temporal precedence data incomplete — DEFERRED")
     else:
-        log(f"  No temporal_precedence.json found — DEFERRED")
-        log(f"  Run _temporal_precedence.py first to generate results.")
+        log("  No temporal_precedence.json found — DEFERRED")
+        log("  Run _temporal_precedence.py first to generate results.")
 
     log("\n[8/8] Validation: outlier sensitivity + cross-dataset...")
     validation = {}
